@@ -27,7 +27,7 @@
 
   <!-- ============ SHEET 02 ============ -->
   <section kicker="REQUIREMENT GATHERING" number="02">
-    <title>Requirement Gathering Questions</title>
+    <title>Existing Chatbot &amp; Target Audience</title>
 
     <h2>3. Existing Chatbot</h2>
     <question>
@@ -44,7 +44,7 @@
 
   <!-- ============ SHEET 03 ============ -->
   <section kicker="REQUIREMENT GATHERING" number="03">
-    <title>Requirement Gathering Questions</title>
+    <title>Chatbot Placement &amp; Infrastructure</title>
 
     <h2>5. Chatbot Placement</h2>
     <question>
@@ -61,7 +61,7 @@
 
   <!-- ============ SHEET 04 ============ -->
   <section kicker="REQUIREMENT GATHERING" number="04">
-    <title>Requirement Gathering Questions</title>
+    <title>Administration &amp; AI Budget</title>
 
     <h2>7. Administration</h2>
     <question>

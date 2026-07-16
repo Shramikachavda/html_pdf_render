@@ -151,7 +151,7 @@ function compileXMLNode(node, sectionNum) {
 
   const name = node.nodeName.toLowerCase();
 
-  // Custom Question tag (Compiles to standard technical document heading and paragraph)
+  // Custom Question tag (Compiles to standard technical document body question and info note)
   if (name === 'question') {
     const num = node.getAttribute('number') || '';
     let qText = node.getAttribute('text') || '';
@@ -174,24 +174,23 @@ function compileXMLNode(node, sectionNum) {
       });
     }
 
-    // Format heading text matching section number prefix (e.g. 11.1)
-    let headingText = qText.trim();
-    if (sectionNum && num) {
-      const cleanSecNum = parseInt(sectionNum, 10).toString();
-      headingText = `${cleanSecNum}.${num} ${headingText}`;
-    } else if (num) {
-      headingText = `${num} ${headingText}`;
+    const cleanWhyContent = whyContent.trim();
+    let whyHTML = '';
+    if (cleanWhyContent) {
+      const infoIconSVG = `<span class="why-meta"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle; color:var(--doc-secondary);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><strong>Why this is asked:</strong></span>`;
+      
+      if (!cleanWhyContent.startsWith('<p>') && !cleanWhyContent.startsWith('<div') && !cleanWhyContent.startsWith('<ul') && !cleanWhyContent.startsWith('<ol')) {
+        whyHTML = `<p class="why-text">${infoIconSVG} ${cleanWhyContent}</p>`;
+      } else {
+        whyHTML = `<div class="why-text" style="margin-bottom: 4px;">${infoIconSVG}</div>${cleanWhyContent}`;
+      }
     }
 
-    let bodyHTML = whyContent.trim();
-    // Wrap in paragraph if it doesn't already start with block tags
-    if (bodyHTML && !bodyHTML.startsWith('<p>') && !bodyHTML.startsWith('<div') && !bodyHTML.startsWith('<ul') && !bodyHTML.startsWith('<ol')) {
-      bodyHTML = `<p>${bodyHTML}</p>`;
-    }
+    const qPrefix = num ? `Q${num}: ` : '';
 
     return `
-      <h2>${parseMarkdown(headingText)}</h2>
-      ${bodyHTML}
+      <p class="question-body"><strong>${qPrefix}${parseMarkdown(qText)}</strong></p>
+      ${whyHTML}
     `;
   }
 
@@ -305,26 +304,28 @@ function compileXML(text) {
   }
 
   const docRoot = xmlDoc.querySelector('document');
-  let title = 'Theta ChatBot';
-  let project = 'THETA CHATBOT — TECHNICAL DESIGN DOCUMENT';
-  let subtitle = 'Technical Design Document';
-  let author = 'Theta TechnoLabs';
-  let version = 'v1.0';
+  
+  // Read current input values as dynamic fallbacks
+  let title = docTitleInput.value || '';
+  let subtitle = docSubtitleInput.value || '';
+  let author = docAuthorInput.value || '';
+  let version = docVersionInput.value || '';
+  let project = title ? (title.toUpperCase() + ' — TECHNICAL DOCUMENT') : 'DOCUMENT';
 
   if (docRoot) {
     title = docRoot.getAttribute('title') || title;
-    project = docRoot.getAttribute('project') || project;
     subtitle = docRoot.getAttribute('subtitle') || subtitle;
     author = docRoot.getAttribute('author') || author;
     version = docRoot.getAttribute('version') || version;
+    project = docRoot.getAttribute('project') || docRoot.getAttribute('title') || project;
 
-    // Safely update on-screen settings
+    // Safely update on-screen settings only if explicitly defined in XML attributes
     if (!isUpdatingInputs) {
       isUpdatingInputs = true;
-      docTitleInput.value = title;
-      docSubtitleInput.value = subtitle;
-      docAuthorInput.value = author;
-      docVersionInput.value = version;
+      if (docRoot.hasAttribute('title')) docTitleInput.value = title;
+      if (docRoot.hasAttribute('subtitle')) docSubtitleInput.value = subtitle;
+      if (docRoot.hasAttribute('author')) docAuthorInput.value = author;
+      if (docRoot.hasAttribute('version')) docVersionInput.value = version;
       isUpdatingInputs = false;
     }
   }
@@ -494,9 +495,12 @@ function compilePlainText(text) {
     contentParagraphs.forEach(pText => {
       const trimmed = pText.trim();
       if (trimmed.startsWith('Question')) {
-        compiledBody += `<h2>${parseMarkdown(trimmed)}</h2>`;
+        const cleanQText = trimmed.replace(/^Question\s*\d*\s*/i, '').trim();
+        compiledBody += `<p class="question-body"><strong>${parseMarkdown(cleanQText)}</strong></p>`;
       } else if (trimmed.startsWith('Why')) {
-        compiledBody += `<div class="callout"><span class="lbl">EXPLANATION</span>${parseMarkdown(trimmed)}</div>`;
+        const cleanWhyText = trimmed.replace(/^(Why this question is asked:|Why:)\s*/i, '').trim();
+        const infoIconSVG = `<span class="why-meta"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle; color:var(--doc-secondary);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><strong>Why this is asked:</strong></span>`;
+        compiledBody += `<p class="why-text">${infoIconSVG} ${parseMarkdown(cleanWhyText)}</p>`;
       } else {
         compiledBody += `<p>${parseMarkdown(trimmed)}</p>`;
       }

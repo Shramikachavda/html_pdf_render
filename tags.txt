@@ -1,0 +1,179 @@
+# XML → PDF Tag Reference
+
+Write your content in a `.xml` file using the tags below, then run:
+
+```
+python3 build.py your-content.xml output.pdf
+```
+
+That's it — no LLM call, no internet access needed. It uses Python's built-in
+XML parser plus `wkhtmltopdf` (already on this machine) to produce a styled,
+paginated PDF. Re-run any time you edit the XML.
+
+---
+
+## Document structure
+
+```xml
+<doc title="Your Document Title">
+  <cover .../>
+  <toc>...</toc>
+  <sheet>...</sheet>
+  <sheet>...</sheet>
+</doc>
+```
+
+- `<doc>` — the root element. `title` is used in page footers and the browser tab.
+- `<cover>` — optional, one per document, renders as a dark title page.
+- `<toc>` — optional, a table-of-contents page.
+- `<sheet>` — one per page of content. Use as many as you need.
+
+---
+
+## `<cover>` — title page
+
+| Attribute | Purpose |
+|---|---|
+| `kicker` | Small label above the title (e.g. "INTERNAL — DRAFT") |
+| `title` | Big title text |
+| `subtitle` | One-line description |
+
+Child `<field name="...">value</field>` elements populate the metadata table
+(project, author, status, etc.).
+
+```xml
+<cover kicker="INTERNAL — DRAFT" title="My Report" subtitle="What this is about.">
+  <field name="Author">Jane Doe</field>
+  <field name="Status">Draft v1</field>
+</cover>
+```
+
+---
+
+## `<toc>` — contents page
+
+```xml
+<toc title="Contents">
+  <item n="01" title="Introduction" desc="Why this report exists"/>
+  <item n="02" title="Findings" desc="What the research showed"/>
+</toc>
+```
+
+---
+
+## `<sheet>` — one page
+
+| Attribute | Purpose |
+|---|---|
+| `label` | Text running up the side rail (usually doc name · section) |
+| `kicker` | Small eyebrow label above the page title |
+| `title` | The page's big heading |
+| `footnum` | Page number shown in the footer |
+
+Everything else goes **inside** the `<sheet>` as block content, in the order
+you want it to appear:
+
+### `<h2>` / `<h3>` — headings
+```xml
+<h2>A subheading</h2>
+<h3>A MINOR HEADING</h3>
+```
+
+### `<p>` — paragraph
+Supports inline tags inside it: `<b>`/`<strong>` (bold), `<i>`/`<em>` (italic),
+`<code>`/`<mono>` (monospace), `<link href="...">` (hyperlink).
+```xml
+<p>Normal text with <b>bold</b>, <i>italic</i>, <code>inline code</code>,
+and a <link href="https://example.com">link</link>.</p>
+```
+
+### `<list>` / `<orderedlist>` — bullet / numbered list
+```xml
+<list>
+  <item>First point</item>
+  <item>Second point</item>
+</list>
+```
+
+### `<table>` — data table
+```xml
+<table>
+  <row header="1"><cell>Column A</cell><cell>Column B</cell></row>
+  <row><cell>Label</cell><cell mono="1">/api/v1/example</cell></row>
+</table>
+```
+- `header="1"` on a `<row>` makes it the dark header row.
+- `mono="1"` on a `<cell>` renders that value in monospace/code style.
+
+### `<callout>` — blue informational box
+```xml
+<callout label="KEY TAKEAWAY">One sentence summary or note.</callout>
+```
+
+### `<decision>` — amber decision-log box
+```xml
+<decision label="DECISION LOG — TITLE">Why this choice was made.</decision>
+```
+
+### `<tags>` — inline label pills
+```xml
+<tags><tag>PRIMARY</tag><tag>EXTERNAL</tag></tags>
+```
+
+### `<steps>` — numbered step-by-step list
+```xml
+<steps>
+  <step title="Step one">What happens in this step.</step>
+  <step title="Step two">What happens in this step.</step>
+</steps>
+```
+
+### `<raw>` / `<svg>` — raw passthrough
+For anything not covered above — e.g. a hand-written SVG diagram — put raw
+HTML/SVG markup as the element's text content and it's inserted as-is:
+```xml
+<svg><![CDATA[
+<svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="20" width="120" height="60" fill="#fff" stroke="#0d2b45"/>
+</svg>
+]]></svg>
+```
+
+---
+
+## Quick-reference table
+
+| Tag | Where it goes | Purpose |
+|---|---|---|
+| `<doc>` | root | Whole document, holds a `title` |
+| `<cover>` | inside `<doc>` | Dark title page |
+| `<field>` | inside `<cover>` | One metadata row |
+| `<toc>` | inside `<doc>` | Contents page |
+| `<item>` | inside `<toc>` | One contents entry |
+| `<sheet>` | inside `<doc>` | One content page |
+| `<h2>` / `<h3>` | inside `<sheet>` | Headings |
+| `<p>` | inside `<sheet>` | Paragraph |
+| `<list>` / `<orderedlist>` | inside `<sheet>` | Bullet / numbered list |
+| `<item>` | inside `<list>`/`<orderedlist>` | One list item |
+| `<table>` | inside `<sheet>` | Data table |
+| `<row>` / `<cell>` | inside `<table>` | Table row / cell |
+| `<callout>` | inside `<sheet>` | Blue info box |
+| `<decision>` | inside `<sheet>` | Amber decision box |
+| `<tags>` / `<tag>` | inside `<sheet>` | Inline label pills |
+| `<steps>` / `<step>` | inside `<sheet>` | Numbered step list |
+| `<raw>` / `<svg>` | inside `<sheet>` | Raw HTML/SVG passthrough |
+| `<b>` `<i>` `<code>` `<link>` | inside any text | Inline formatting |
+
+---
+
+## Files in this kit
+
+| File | Purpose |
+|---|---|
+| `build.py` | The converter script — run this |
+| `example-content.xml` | A working example using every tag |
+| `TAGS.md` | This file |
+
+```
+python3 build.py example-content.xml example-output.pdf
+```

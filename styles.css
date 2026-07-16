@@ -746,6 +746,31 @@ strong {
   margin-bottom: 1.5mm; 
 }
 
+/* Inline Q&A and why styles */
+.question-body {
+  font-weight: 700;
+  margin-bottom: 3pt;
+  color: var(--doc-primary);
+}
+
+.why-text {
+  margin-top: 4pt;
+  margin-bottom: 10pt;
+  font-size: 9.5pt;
+  color: #4b5563;
+  line-height: 1.55;
+  text-align: justify;
+}
+
+.why-meta {
+  color: var(--doc-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
 /* Table spec & revtable */
 table.spec {
   width: 100%;
