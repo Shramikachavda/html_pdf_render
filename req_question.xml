@@ -1,0 +1,78 @@
+<document title="Requirement Gathering Questions" project="REQUIREMENT GATHERING — CHATBOT" author="Theta TechnoLabs" version="v1.0" owner_site="https://www.thetatechnolabs.in/">
+
+  <!-- ============ SHEET 01 ============ -->
+  <section kicker="REQUIREMENT GATHERING" number="01">
+    <title>Requirement Gathering Questions</title>
+    
+    <h2>1. Project Scope</h2>
+    <question number="1">
+      <text>Which website(s) should the chatbot support (e.g., only thetatechnolabs.in or multiple domains such as .com and .ca)?</text>
+      <why>This determines the overall scope of the chatbot's knowledge base and helps define how the data should be organized and stored. Supporting multiple websites may require separate knowledge collections, metadata management, or a scalable storage architecture to efficiently manage content from different domains.</why>
+    </question>
+
+    <h2>2. Website Content &amp; Knowledge Base</h2>
+    <question number="1">
+      <text>How frequently is the website content updated (e.g., service pages, portfolios, case studies)?</text>
+      <why>The frequency of website updates helps determine how often the knowledge base should be refreshed to ensure users receive accurate and up-to-date information.</why>
+    </question>
+    <question number="2">
+      <text>How often are new blogs or articles published?</text>
+      <why>Blogs are often updated independently of core website pages. Understanding their publishing frequency helps define an appropriate synchronization schedule for blog content.</why>
+    </question>
+    <question number="3">
+      <text>Will someone notify the team about content updates, or can we automate the knowledge base update process using the existing website CMS?</text>
+      <why>This helps determine whether the chatbot's knowledge base should rely on manual updates or whether it can be automatically synchronized whenever content is published or modified through the existing CMS. If CMS automation is available, it can reduce manual effort, keep the knowledge base synchronized with the latest website content, and minimize ongoing maintenance.</why>
+    </question>
+  </section>
+
+  <!-- ============ SHEET 02 ============ -->
+  <section kicker="REQUIREMENT GATHERING" number="02">
+    <title>Requirement Gathering Questions</title>
+
+    <h2>3. Existing Chatbot</h2>
+    <question>
+      <text>The existing website already has a manual inquiry chat widget on the right side of the website. Are conversation details such as user queries, responses, timestamps, and other interaction data currently being stored? If yes, where is this data stored, and can I access it?</text>
+      <why>Understanding whether the existing inquiry chat stores conversation data helps identify if valuable historical information is already available. Access to this data can provide insights into the most frequently asked questions, common user inquiries, recurring issues, and user behavior. It also helps determine whether the existing chat platform can be used as a source for analytics, reporting, and improving the new chatbot's knowledge base, while understanding where the data is stored (e.g., database, CRM, third-party service, or CMS) helps assess integration and migration possibilities.</why>
+    </question>
+    
+    <h2>4. Target Audience</h2>
+    <question>
+      <text>Who is the primary audience for the chatbot (e.g., potential clients, existing clients, job seekers, or general website visitors)?</text>
+      <why>Understanding the target audience helps define the chatbot's communication style, response depth, supported use cases, and the type of information that should be prioritized.</why>
+    </question>
+  </section>
+
+  <!-- ============ SHEET 03 ============ -->
+  <section kicker="REQUIREMENT GATHERING" number="03">
+    <title>Requirement Gathering Questions</title>
+
+    <h2>5. Chatbot Placement</h2>
+    <question>
+      <text>Should the chatbot be available on every page of the website or only on selected pages?</text>
+      <why>The chatbot's placement affects user accessibility, frontend integration, user experience, and whether context-specific behavior is required for different sections of the website.</why>
+    </question>
+    
+    <h2>6. Infrastructure</h2>
+    <question>
+      <text>Does the existing server have sufficient CPU, RAM, and storage to host the chatbot and its supporting services?</text>
+      <why>This helps determine whether the existing infrastructure is capable of hosting the chatbot and its supporting services. If the available resources are insufficient, cloud deployment or additional infrastructure planning may be required to ensure reliable performance and future scalability.</why>
+    </question>
+  </section>
+
+  <!-- ============ SHEET 04 ============ -->
+  <section kicker="REQUIREMENT GATHERING" number="04">
+    <title>Requirement Gathering Questions</title>
+
+    <h2>7. Administration</h2>
+    <question>
+      <text>Is an admin dashboard required for managing the knowledge base, chatbot configuration, or analytics?</text>
+      <why>This helps identify the required administrative capabilities and provides a better understanding of future system requirements. It also helps determine the most suitable database architecture (for example, PostgreSQL with pgvector or a dedicated vector database) based on future needs such as analytics, conversation history, reporting, and scalability.</why>
+    </question>
+    
+    <h2>8. AI Usage &amp; Budget</h2>
+    <question>
+      <text>Is there a monthly budget limit for AI API usage?</text>
+      <why>Understanding the available budget influences the selection of AI models, response generation strategy, token usage optimization, and long-term operational cost planning.</why>
+    </question>
+  </section>
+</document>
