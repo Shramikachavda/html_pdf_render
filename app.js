@@ -1,100 +1,64 @@
 // ==========================================================================
 // DOCUCRAFT APPLICATION SCRIPT
-// A4 Technical Sheet Layout Engine (XML Compiler)
+// A4 Technical Sheet Layout Engine (XML Compiler - build.py Compatible)
 // ==========================================================================
 
-// Fallback Default Content in XML format using clean <section> tags
-const defaultText = `<document title="Theta ChatBot" project="THETA CHATBOT — TECHNICAL DESIGN DOCUMENT" subtitle="Technical Design Document" author="Theta TechnoLabs" version="v1.0" owner_site="https://www.thetatechnolabs.in/">
-  
-  <!-- ============ COVER ============ -->
-  <cover kicker="INTERNAL TECHNICAL DESIGN DOCUMENT" title="Theta ChatBot" subtitle="Retrieval-grounded website assistant for thetatechnolabs.in — architecture, technology stack, application flow and data handling, end to end.">
-    <revision_table>
-      <row field="Project" value="Theta ChatBot — Static Knowledge-Base Assistant" />
-      <row field="Owner site" value="https://www.thetatechnolabs.in/" />
-      <row field="Prepared for" value="Project Mentor Review" />
-      <row field="Document status" value="Draft v1.0 — for internal review" />
-      <row field="Classification" value="Internal Use Only" />
-    </revision_table>
+// Fallback Default Content in XML format (matching sample_content.txt exactly)
+const defaultText = `<doc title="Example Research Report">
+
+  <cover kicker="INTERNAL — DRAFT" title="Example Research Report"
+         subtitle="A short demo document showing every supported tag.">
+    <field name="Author">Your Name</field>
+    <field name="Status">Draft v1</field>
   </cover>
 
-  <!-- ============ TOC ============ -->
-  <section kicker="SHEET INDEX" number="00">
-    <title>Contents</title>
-    <toc>
-      <item number="01" title="Executive Summary" desc="What we are building, and in one paragraph, how" />
-      <item number="02" title="Overall Approach" desc="RAG methodology · knowledge-base structure, storage &amp; query" />
-      <item number="03" title="Technical Stack &amp; Choices" desc="Frontend / backend / data layer, with justification for each" />
-      <item number="04" title="API Inventory" desc="Every external and internal API, and its exact purpose" />
-      <item number="05" title="System Architecture" desc="Full component diagram and communication paths" />
-      <item number="06" title="Frontend Integration" desc="Embedding the widget into the existing Webflow site" />
-      <item number="07" title="Application Flow" desc="Query lifecycle, sequence diagram, step-by-step trace" />
-    </toc>
-  </section>
+  <toc title="Contents">
+    <item n="01" title="Introduction" desc="Why this report exists"/>
+    <item n="02" title="Findings" desc="What the research showed"/>
+  </toc>
 
-  <!-- ============ 01 EXEC SUMMARY ============ -->
-  <section kicker="01 — OVERVIEW" number="01">
-    <title>Executive Summary</title>
-    <p>Theta ChatBot is a website assistant embedded on <span class="mono">thetatechnolabs.in</span> that answers visitor questions using <strong>only</strong> the company's own website content. It does not answer from the open internet and does not let the underlying language model improvise facts about Theta Technolabs — every answer is grounded in a knowledge base built from our own pages, and the model is instructed to say "I don't have that information" rather than guess.</p>
-    
-    <p>Because the knowledge base is <strong>static</strong> (it changes only when someone deliberately re-scrapes or edits it — not on every page load), we do not need a heavy real-time crawling pipeline. This lets us keep the system small, cheap to run, and easy for one engineer to operate on our own server.</p>
+  <sheet label="EXAMPLE REPORT · INTRO" kicker="01 — OVERVIEW" title="Introduction" footnum="01">
+    <p>This is a normal paragraph. You can use <b>bold</b>, <i>italic</i>,
+       and <code>inline code</code> right inside the text, plus
+       <link href="https://example.com">links</link>.</p>
 
-    <callout label="IN ONE SENTENCE">
-      A visitor's question is converted into a vector, matched against pre-embedded chunks of our own website content stored in Postgres, and the matched chunks are handed to an LLM (Gemini first, OpenAI as a paid fallback) which is told to answer <em>using only that context</em>.
-    </callout>
+    <h2>A subheading</h2>
+    <p>More body text under the subheading.</p>
 
-    <h2>Scope of this document</h2>
-    <p>This document is written so that a technical reviewer with no prior context can understand the full system — what is built, why each choice was made over its alternatives, how the pieces talk to each other, and what happens to a single user message from the moment it is typed to the moment a reply appears.</p>
+    <h3>A MINOR HEADING</h3>
+    <list>
+      <item>First bullet point</item>
+      <item>Second bullet point</item>
+    </list>
 
-    <h2>Key decisions at a glance</h2>
-    <table class="spec">
-      <tr><th style="width:28%">Decision</th><th>Choice made</th></tr>
-      <tr><td>Methodology</td><td class="mono">Retrieval-Augmented Generation (RAG)</td></tr>
-      <tr><td>Knowledge base store</td><td class="mono">PostgreSQL + pgvector — single unified database</td></tr>
-      <tr><td>Backend</td><td class="mono">Python · FastAPI</td></tr>
-      <tr><td>Frontend integration</td><td class="mono">Custom JS/CSS widget embedded into existing Webflow site</td></tr>
-      <tr><td>Primary LLM</td><td class="mono">Google Gemini (1.5 / 2.0 Flash tier)</td></tr>
-      <tr><td>Fallback LLM</td><td class="mono">OpenAI (usage-metered, cost-flagged)</td></tr>
-      <tr><td>Admin dashboard</td><td class="mono">Custom React dashboard reading directly from Postgres</td></tr>
-      <tr><td>Deployment</td><td class="mono">Docker Compose, on-premise company server</td></tr>
-      <tr><td>Widget transport</td><td class="mono">REST (HTTPS JSON), no WebSocket in v1</td></tr>
-    </table>
-  </section>
-
-  <!-- ============ 02 OVERALL APPROACH ============ -->
-  <section kicker="02 — METHODOLOGY" number="02">
-    <title>Overall Approach</title>
-    
-    <question number="1">
-      <text>Why Retrieval-Augmented Generation (RAG)?</text>
-      <why>We are <strong>not</strong> fine-tuning a model on Theta Technolabs data, and we are <strong>not</strong> letting the LLM answer from its own general knowledge. Both would risk the bot inventing facts about our company (wrong pricing, wrong services, wrong contact details). Instead we use RAG: at answer-time, we retrieve the most relevant pieces of our own website content and paste them into the model's prompt as context, then instruct the model to answer strictly from that context.</why>
-    </question>
-
-    <table class="spec">
-      <tr><th style="width:30%">Approach</th><th>Verdict</th></tr>
-      <tr><td>Fine-tuning an LLM on our content</td><td>Rejected — expensive to retrain every time the site changes, and doesn't reliably stop hallucination.</td></tr>
-      <tr><td>Plain prompt with entire site pasted in</td><td>Rejected — website content will exceed context limits as pages grow, and is wasteful/costly per request.</td></tr>
-      <tr><td><strong>RAG (retrieve → ground → generate)</strong></td><td><strong>Selected</strong> — small footprint, always answers from current content, easy to update without retraining.</td></tr>
+    <table>
+      <row header="1"><cell>Column A</cell><cell>Column B</cell></row>
+      <row><cell>Label</cell><cell mono="1">/api/v1/example</cell></row>
+      <row><cell>Label</cell><cell>Plain value</cell></row>
     </table>
 
-    <question number="2">
-      <text>How is the knowledge base structured?</text>
-      <why>The knowledge base is a set of <strong>chunks</strong> — short passages (roughly 150–300 words each) cut from our website pages, each stored with the text itself, a vector embedding of that text, and metadata describing where it came from.</why>
-    </question>
+    <callout label="KEY TAKEAWAY">This is a blue informational callout box.</callout>
 
-    <question number="3">
-      <text>How is the knowledge base built (hybrid pipeline)?</text>
-      <why>
-        <steps>
-          <step number="1" title="One-time scrape">A crawler script walks thetatechnolabs.in (services, about, case studies, contact, blog) and pulls clean text per page, stripping nav/footer boilerplate.</step>
-          <step number="2" title="Chunking">Each page is split into overlapping ~200-word chunks along heading boundaries, so no single chunk loses context mid-sentence.</step>
-          <step number="3" title="Manual curation">Team reviews the scraped chunks in the admin panel — fixes wording, removes irrelevant boilerplate, adds anything missing from the live site (e.g. FAQs that aren't on the page).</step>
-          <step number="4" title="Embedding">Each approved chunk is passed through an embedding model and the resulting vector is stored alongside it in Postgres.</step>
-          <step number="5" title="Freeze as &quot;static&quot;">The knowledge base is now the fixed source of truth. It is only touched again through a deliberate re-scrape or manual edit — never automatically rewritten by user conversations.</step>
-        </steps>
-      </why>
-    </question>
-  </section>
-</document>`;
+    <decision label="DECISION LOG — EXAMPLE">This is an amber decision-log box,
+      used to record why a choice was made.</decision>
+
+    <tags><tag>PRIMARY</tag><tag>EXTERNAL</tag></tags>
+
+    <steps>
+      <step title="Step one">Description of the first step.</step>
+      <step title="Step two">Description of the second step.</step>
+    </steps>
+  </sheet>
+
+  <sheet label="EXAMPLE REPORT · FINDINGS" kicker="02 — RESULTS" title="Findings" footnum="02">
+    <p>Second page content goes here — every sheet becomes one A4 page in the PDF.</p>
+    <orderedlist>
+      <item>Ranked point one</item>
+      <item>Ranked point two</item>
+    </orderedlist>
+  </sheet>
+
+</doc>`;
 
 // DOM Elements
 const textEditor = document.getElementById('text-editor');
@@ -126,11 +90,21 @@ let activeColor = 'blue';
 // flag to prevent infinite loops when updating inputs from parsed XML
 let isUpdatingInputs = false;
 
+// Inline tag maps matching build.py
+const INLINE_TAG_MAP = {
+  "b": "strong",
+  "strong": "strong",
+  "i": "em",
+  "em": "em",
+  "code": "span class=\"mono\"",
+  "mono": "span class=\"mono\"",
+};
+
 // ==========================================================================
 // PARSING SYSTEM
 // ==========================================================================
 
-// Parse markdown helper
+// Parse markdown helper for plain-text fallback
 function parseMarkdown(text) {
   if (!text) return '';
   return text
@@ -139,154 +113,241 @@ function parseMarkdown(text) {
     .replace(/`(.*?)`/g, '<code class="doc-code">$1</code>');
 }
 
-// Compile XML Nodes to HTML
-function compileXMLNode(node, sectionNum) {
-  if (node.nodeType === Node.TEXT_NODE) {
-    return parseMarkdown(node.textContent);
-  }
+// Escape helper matching build.py
+function esc(text) {
+  if (!text) return '';
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 
-  if (node.nodeType !== Node.ELEMENT_NODE) {
-    return '';
-  }
-
-  const name = node.nodeName.toLowerCase();
-
-  // Custom Question tag (Compiles to standard technical document body question and info note)
-  if (name === 'question') {
-    const num = node.getAttribute('number') || '';
-    let qText = node.getAttribute('text') || '';
-    if (!qText) {
-      const textTag = node.querySelector('text');
-      if (textTag) qText = textTag.textContent;
-    }
-    
-    let whyContent = '';
-    const whyTag = node.querySelector('why') || node.querySelector('explanation');
-    if (whyTag) {
-      whyContent = compileXMLNode(whyTag, sectionNum);
-    } else {
-      // Fallback: collect children that are not text or why/explanation
-      node.childNodes.forEach(child => {
-        const cName = child.nodeName.toLowerCase();
-        if (cName !== 'text' && cName !== 'why' && cName !== 'explanation') {
-          whyContent += compileXMLNode(child, sectionNum);
-        }
-      });
-    }
-
-    const cleanWhyContent = whyContent.trim();
-    let whyHTML = '';
-    if (cleanWhyContent) {
-      const infoIconSVG = `<span class="why-meta"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle; color:var(--doc-secondary);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><strong>Why this is asked:</strong></span>`;
+// Compile XML mixed content to inline HTML matching build.py
+function compileInlineHTML(elem) {
+  let parts = [];
+  elem.childNodes.forEach(child => {
+    if (child.nodeType === Node.TEXT_NODE) {
+      parts.push(esc(child.textContent));
+    } else if (child.nodeType === Node.ELEMENT_NODE) {
+      const tag = child.nodeName.toLowerCase();
+      const inner = compileInlineHTML(child);
       
-      if (!cleanWhyContent.startsWith('<p>') && !cleanWhyContent.startsWith('<div') && !cleanWhyContent.startsWith('<ul') && !cleanWhyContent.startsWith('<ol')) {
-        whyHTML = `<p class="why-text">${infoIconSVG} ${cleanWhyContent}</p>`;
+      if (tag === 'link') {
+        const href = esc(child.getAttribute('href') || '#');
+        parts.push(`<a href="${href}">${inner}</a>`);
+      } else if (INLINE_TAG_MAP[tag]) {
+        const open_tag = INLINE_TAG_MAP[tag];
+        const close_tag = open_tag.split(' ')[0];
+        parts.push(`<${open_tag}>${inner}</${close_tag}>`);
       } else {
-        whyHTML = `<div class="why-text" style="margin-bottom: 4px;">${infoIconSVG}</div>${cleanWhyContent}`;
+        parts.push(inner);
       }
     }
-
-    const qPrefix = num ? `Q${num}: ` : '';
-
-    return `
-      <p class="question-body"><strong>${qPrefix}${parseMarkdown(qText)}</strong></p>
-      ${whyHTML}
-    `;
-  }
-
-  // Wrapper tags return compiled children directly
-  if (name === 'why' || name === 'explanation' || name === 'text') {
-    let inner = '';
-    node.childNodes.forEach(child => {
-      inner += compileXMLNode(child, sectionNum);
-    });
-    return inner;
-  }
-
-  // Custom Callout tag
-  if (name === 'callout') {
-    const label = node.getAttribute('label') || 'NOTE';
-    let innerContent = '';
-    node.childNodes.forEach(child => {
-      innerContent += compileXMLNode(child, sectionNum);
-    });
-    return `
-      <div class="callout">
-        <span class="lbl">${label}</span>
-        ${innerContent}
-      </div>
-    `;
-  }
-
-  // Custom Decision tag
-  if (name === 'decision') {
-    const label = node.getAttribute('label') || 'DECISION';
-    let innerContent = '';
-    node.childNodes.forEach(child => {
-      innerContent += compileXMLNode(child, sectionNum);
-    });
-    return `
-      <div class="decision">
-        <span class="lbl">${label}</span>
-        ${innerContent}
-      </div>
-    `;
-  }
-
-  // Custom steps tag
-  if (name === 'steps') {
-    let innerContent = '';
-    node.childNodes.forEach(child => {
-      if (child.nodeName.toLowerCase() === 'step') {
-        const num = child.getAttribute('number') || '';
-        const title = child.getAttribute('title') || '';
-        let desc = '';
-        child.childNodes.forEach(c => { desc += compileXMLNode(c, sectionNum); });
-        innerContent += `
-          <div class="step">
-            ${num ? `<span class="n">${num}</span>` : ''}
-            ${title ? `<span class="t">${title}</span>` : ''}
-            <div class="d">${desc}</div>
-          </div>
-        `;
-      }
-    });
-    return `<div class="steps">${innerContent}</div>`;
-  }
-
-  // Custom toc tag
-  if (name === 'toc') {
-    let innerContent = '';
-    node.childNodes.forEach(child => {
-      if (child.nodeName.toLowerCase() === 'item') {
-        const num = child.getAttribute('number') || '';
-        const title = child.getAttribute('title') || '';
-        const desc = child.getAttribute('desc') || '';
-        innerContent += `
-          <span class="toc-row">
-            <span class="tn">${num}</span>
-            <span class="tt">${title}</span>
-            <span class="td">${desc}</span>
-          </span>
-        `;
-      }
-    });
-    return innerContent;
-  }
-
-  // Compile normal HTML tags (recursively compile attributes and children)
-  let attrStr = '';
-  for (let i = 0; i < node.attributes.length; i++) {
-    const attr = node.attributes[i];
-    attrStr += ` ${attr.name}="${attr.value}"`;
-  }
-
-  let childrenHTML = '';
-  node.childNodes.forEach(child => {
-    childrenHTML += compileXMLNode(child, sectionNum);
   });
+  return parts.join('');
+}
 
-  return `<${name}${attrStr}>${childrenHTML}</${name}>`;
+// Compile Table matching build.py
+function renderTable(tbl) {
+  let rows = '';
+  tbl.querySelectorAll('row').forEach(row => {
+    const isHeader = row.getAttribute('header') === '1';
+    const cellTag = isHeader ? 'th' : 'td';
+    let cells = '';
+    
+    row.querySelectorAll('cell').forEach(cell => {
+      let content = compileInlineHTML(cell);
+      if (cell.getAttribute('mono') === '1' && !isHeader) {
+        content = `<span class="mono">${content}</span>`;
+      }
+      const width = cell.getAttribute('width');
+      const style = width ? ` style="width:${width}"` : '';
+      cells += `<${cellTag}${style}>${content}</${cellTag}>`;
+    });
+    rows += `<tr>${cells}</tr>`;
+  });
+  return `<table class="spec">${rows}</table>`;
+}
+
+// Compile Steps matching build.py
+function renderSteps(stepsEl) {
+  let out = '<div class="steps">';
+  let i = 1;
+  stepsEl.querySelectorAll('step').forEach(step => {
+    const title = esc(step.getAttribute('title') || '');
+    const desc = compileInlineHTML(step);
+    out += `
+      <div class="step">
+        <span class="n">${i}</span>
+        <span class="t">${title}</span>
+        <span class="d">${desc}</span>
+      </div>
+    `;
+    i++;
+  });
+  out += '</div>';
+  return out;
+}
+
+// Compile Tags matching build.py
+function renderTags(tagsEl) {
+  let pills = '';
+  tagsEl.querySelectorAll('tag').forEach(tag => {
+    pills += `<span class="tag">${esc(tag.textContent)}</span>`;
+  });
+  return `<p>${pills}</p>`;
+}
+
+// Compile Callout & Decision matching build.py
+function renderCallout(el, cssClass) {
+  const label = el.getAttribute('label') || '';
+  const body = compileInlineHTML(el);
+  const lblHTML = label ? `<span class="lbl">${esc(label)}</span>` : '';
+  return `<div class="${cssClass}">${lblHTML}${body}</div>`;
+}
+
+// Compile List matching build.py
+function renderList(el, tag) {
+  let items = '';
+  el.querySelectorAll('item').forEach(item => {
+    items += `<li>${compileInlineHTML(item)}</li>`;
+  });
+  return `<${tag}>${items}</${tag}>`;
+}
+
+// Dispatch block-level element compilation matching build.py
+function renderBlock(el) {
+  if (el.nodeType !== Node.ELEMENT_NODE) return '';
+  const t = el.nodeName.toLowerCase();
+  
+  if (t === "h2") {
+    return `<h2>${compileInlineHTML(el)}</h2>`;
+  }
+  if (t === "h3") {
+    return `<h3>${compileInlineHTML(el)}</h3>`;
+  }
+  if (t === "p") {
+    return `<p>${compileInlineHTML(el)}</p>`;
+  }
+  if (t === "table") {
+    return renderTable(el);
+  }
+  if (t === "callout") {
+    return renderCallout(el, "callout");
+  }
+  if (t === "decision") {
+    return renderCallout(el, "decision");
+  }
+  if (t === "steps") {
+    return renderSteps(el);
+  }
+  if (t === "tags") {
+    return renderTags(el);
+  }
+  if (t === "list") {
+    return renderList(el, "ul");
+  }
+  if (t === "orderedlist") {
+    return renderList(el, "ol");
+  }
+  if (t === "why") {
+    const infoIconSVG = `<span class="why-meta"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle; color:var(--doc-secondary);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><strong>Why this is asked:</strong></span>`;
+    return `<p class="why-text">${infoIconSVG} ${compileInlineHTML(el)}</p>`;
+  }
+  if (t === "svg" || t === "raw") {
+    return el.textContent.trim();
+  }
+  return "";
+}
+
+// Compile Sheet Page matching build.py (including backward compatibility for <section>)
+function renderSheet(sheetEl, docTitle) {
+  const label = esc(sheetEl.getAttribute('label') || docTitle);
+  const kicker = esc(sheetEl.getAttribute('kicker') || '');
+  
+  // Backward compatibility check for nested <title> elements inside sections
+  const titleTag = sheetEl.querySelector('title');
+  const title = esc(sheetEl.getAttribute('title') || (titleTag ? titleTag.textContent : ''));
+  const footnum = esc(sheetEl.getAttribute('footnum') || '');
+  
+  let bodyHTML = '';
+  sheetEl.childNodes.forEach(child => {
+    if (child.nodeName.toLowerCase() === 'title') return;
+    bodyHTML += renderBlock(child);
+  });
+  
+  const kickerHTML = kicker ? `<div class="kicker">${kicker}</div>` : '';
+  
+  return `
+    <div class="sheet">
+      <div class="rail"><div class="rail-label mono">${label}</div></div>
+      <div class="sheet-body">
+        ${kickerHTML}
+        ${title ? `<h1 class="section-title">${title}</h1>` : ''}
+        ${bodyHTML}
+      </div>
+      <div class="sheet-foot"><span>${esc(docTitle)}</span><span class="num">SHEET ${footnum}</span></div>
+    </div>
+  `;
+}
+
+// Compile Cover Page matching build.py
+function renderCover(coverEl, docTitle) {
+  const kicker = esc(coverEl.getAttribute('kicker') || '');
+  const title = esc(coverEl.getAttribute('title') || docTitle);
+  const subtitle = esc(coverEl.getAttribute('subtitle') || '');
+  
+  let rows = '';
+  coverEl.querySelectorAll('field').forEach(f => {
+    const fieldName = esc(f.getAttribute('name') || '');
+    const fieldValue = compileInlineHTML(f);
+    rows += `<tr><td>${fieldName}</td><td>${fieldValue}</td></tr>`;
+  });
+  
+  const tableHTML = rows ? `<table class="revtable"><tr><th>Field</th><th>Value</th></tr>${rows}</table>` : '';
+  
+  return `
+    <div class="sheet cover">
+      <div class="cover-inner">
+        <div class="kicker2">${kicker}</div>
+        <h1>${title}</h1>
+        <div class="subtitle">${subtitle}</div>
+        ${tableHTML}
+      </div>
+    </div>
+  `;
+}
+
+// Compile TOC Page matching build.py
+function renderTOC(tocEl, docTitle) {
+  const title = esc(tocEl.getAttribute('title') || 'Contents');
+  const label = esc(tocEl.getAttribute('label') || docTitle);
+  
+  let rows = '';
+  tocEl.querySelectorAll('item').forEach(item => {
+    const n = esc(item.getAttribute('n') || '');
+    const itemTitle = esc(item.getAttribute('title') || '');
+    const desc = esc(item.getAttribute('desc') || '');
+    rows += `
+      <span class="toc-row">
+        <span class="tn">${n}</span>
+        <span class="tt">${itemTitle}</span>
+        <span class="td">${desc}</span>
+      </span>
+    `;
+  });
+  
+  return `
+    <div class="sheet">
+      <div class="rail"><div class="rail-label mono">${label}</div></div>
+      <div class="sheet-body">
+        <div class="kicker">SHEET INDEX</div>
+        <h1 class="section-title">${title}</h1>
+        ${rows}
+      </div>
+      <div class="sheet-foot"><span>${esc(docTitle)}</span><span class="num">SHEET 00</span></div>
+    </div>
+  `;
 }
 
 // XML Document compiler
@@ -303,113 +364,35 @@ function compileXML(text) {
     };
   }
 
-  const docRoot = xmlDoc.querySelector('document');
+  const root = xmlDoc.querySelector('doc') || xmlDoc.querySelector('document');
   
   // Read current input values as dynamic fallbacks
-  let title = docTitleInput.value || '';
-  let subtitle = docSubtitleInput.value || '';
-  let author = docAuthorInput.value || '';
-  let version = docVersionInput.value || '';
-  let project = title ? (title.toUpperCase() + ' — TECHNICAL DOCUMENT') : 'DOCUMENT';
-
-  if (docRoot) {
-    title = docRoot.getAttribute('title') || title;
-    subtitle = docRoot.getAttribute('subtitle') || subtitle;
-    author = docRoot.getAttribute('author') || author;
-    version = docRoot.getAttribute('version') || version;
-    project = docRoot.getAttribute('project') || docRoot.getAttribute('title') || project;
-
-    // Safely update on-screen settings only if explicitly defined in XML attributes
+  let docTitle = docTitleInput.value || '';
+  if (root) {
+    docTitle = root.getAttribute('title') || docTitle;
+    
+    // Safely update on-screen settings
     if (!isUpdatingInputs) {
       isUpdatingInputs = true;
-      if (docRoot.hasAttribute('title')) docTitleInput.value = title;
-      if (docRoot.hasAttribute('subtitle')) docSubtitleInput.value = subtitle;
-      if (docRoot.hasAttribute('author')) docAuthorInput.value = author;
-      if (docRoot.hasAttribute('version')) docVersionInput.value = version;
+      if (root.hasAttribute('title')) docTitleInput.value = docTitle;
       isUpdatingInputs = false;
     }
   }
 
   let finalHTML = '';
-  const childNodes = docRoot ? docRoot.childNodes : xmlDoc.childNodes;
-  let pageCounter = 0;
+  const childNodes = root ? root.childNodes : xmlDoc.childNodes;
 
   childNodes.forEach(node => {
     if (node.nodeType !== Node.ELEMENT_NODE) return;
 
     const name = node.nodeName.toLowerCase();
 
-    // 1. Compile Cover Page
     if (name === 'cover') {
-      const kicker = node.getAttribute('kicker') || 'TECHNICAL DOCUMENT';
-      const cTitle = node.querySelector('title') ? node.querySelector('title').textContent : title;
-      const cSubtitle = node.querySelector('subtitle') ? node.querySelector('subtitle').textContent : subtitle;
-      
-      let revTableHTML = '';
-      const revTable = node.querySelector('revision_table');
-      if (revTable) {
-        let rows = '';
-        revTable.querySelectorAll('row').forEach(row => {
-          const f = row.getAttribute('field') || '';
-          const v = row.getAttribute('value') || '';
-          rows += `<tr><td>${f}</td><td>${v}</td></tr>`;
-        });
-        revTableHTML = `
-          <table class="revtable">
-            <thead>
-              <tr><th>Field</th><th>Value</th></tr>
-            </thead>
-            <tbody>
-              ${rows}
-            </tbody>
-          </table>
-        `;
-      }
-
-      finalHTML += `
-        <div class="sheet cover">
-          <div class="cover-inner">
-            <div class="kicker2">${kicker}</div>
-            <h1>${cTitle}</h1>
-            <div class="subtitle">${cSubtitle}</div>
-            ${revTableHTML}
-          </div>
-        </div>
-      `;
-      pageCounter++;
-    }
-
-    // 2. Compile standard page sheets/sections
-    if (name === 'sheet' || name === 'section') {
-      const kicker = node.getAttribute('kicker') || '';
-      const titleTag = node.querySelector('title');
-      const sTitle = node.getAttribute('title') || (titleTag ? titleTag.textContent : '');
-      const customNum = node.getAttribute('number') || `SHEET ${pageCounter.toString().padStart(2, '0')}`;
-      const sectionNum = node.getAttribute('number') || '';
-      
-      let bodyContent = '';
-      node.childNodes.forEach(child => {
-        if (name === 'section' && child.nodeName.toLowerCase() === 'title') return;
-        bodyContent += compileXMLNode(child, sectionNum);
-      });
-
-      finalHTML += `
-        <div class="sheet">
-          <div class="rail">
-            <div class="rail-label mono">${project}</div>
-          </div>
-          <div class="sheet-body">
-            ${kicker ? `<div class="kicker">${kicker}</div>` : ''}
-            ${sTitle ? `<h1 class="section-title">${sTitle}</h1>` : ''}
-            ${bodyContent}
-          </div>
-          <div class="sheet-foot">
-            <span class="proj">${project}</span>
-            <span class="num">${customNum}</span>
-          </div>
-        </div>
-      `;
-      pageCounter++;
+      finalHTML += renderCover(node, docTitle);
+    } else if (name === 'toc') {
+      finalHTML += renderTOC(node, docTitle);
+    } else if (name === 'sheet' || name === 'section') {
+      finalHTML += renderSheet(node, docTitle);
     }
   });
 
@@ -463,7 +446,7 @@ function compilePlainText(text) {
   const project = title.toUpperCase() + ' — TECHNICAL DOCUMENT';
 
   let finalHTML = '';
-  let pageCounter = 0;
+  let pageCounter = 1;
 
   // 1. Cover page
   finalHTML += `
@@ -481,13 +464,12 @@ function compilePlainText(text) {
       </div>
     </div>
   `;
-  pageCounter++;
 
   // 2. Body pages (1 page per section)
   sections.forEach((sec, idx) => {
     const secKicker = `${sec.number.padStart(2, '0')} — OVERVIEW`;
     const secTitle = sec.title;
-    const pageNum = `SHEET ${pageCounter.toString().padStart(2, '0')}`;
+    const pageNum = pageCounter.toString().padStart(2, '0');
     
     const contentParagraphs = sec.content.split('\n');
     let compiledBody = '';
@@ -517,8 +499,8 @@ function compilePlainText(text) {
           ${compiledBody}
         </div>
         <div class="sheet-foot">
-          <span class="proj">${project}</span>
-          <span class="num">${pageNum}</span>
+          <span>${title}</span>
+          <span class="num">SHEET ${pageNum}</span>
         </div>
       </div>
     `;

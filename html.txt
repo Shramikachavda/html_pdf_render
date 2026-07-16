@@ -1,82 +1,68 @@
-<document title="Theta ChatBot" project="THETA CHATBOT — TECHNICAL DESIGN DOCUMENT" subtitle="Technical Design Document" author="Theta TechnoLabs" version="v1.0" owner_site="https://www.thetatechnolabs.in/">
+<doc title="Theta ChatBot">
   
   <!-- ============ COVER ============ -->
   <cover kicker="INTERNAL TECHNICAL DESIGN DOCUMENT" title="Theta ChatBot" subtitle="Retrieval-grounded website assistant for thetatechnolabs.in — architecture, technology stack, application flow and data handling, end to end.">
-    <revision_table>
-      <row field="Project" value="Theta ChatBot — Static Knowledge-Base Assistant" />
-      <row field="Owner site" value="https://www.thetatechnolabs.in/" />
-      <row field="Prepared for" value="Project Mentor Review" />
-      <row field="Document status" value="Draft v1.0 — for internal review" />
-      <row field="Classification" value="Internal Use Only" />
-    </revision_table>
+    <field name="Project">Theta ChatBot — Static Knowledge-Base Assistant</field>
+    <field name="Owner site">https://www.thetatechnolabs.in/</field>
+    <field name="Prepared for">Project Mentor Review</field>
+    <field name="Document status">Draft v1.0 — for internal review</field>
+    <field name="Classification">Internal Use Only</field>
   </cover>
 
   <!-- ============ TOC ============ -->
-  <section kicker="SHEET INDEX" number="00">
-    <title>Contents</title>
-    <toc>
-      <item number="01" title="Executive Summary" desc="What we are building, and in one paragraph, how" />
-      <item number="02" title="Overall Approach" desc="RAG methodology · knowledge-base structure, storage &amp; query" />
-      <item number="03" title="Technical Stack &amp; Choices" desc="Frontend / backend / data layer, with justification for each" />
-      <item number="04" title="API Inventory" desc="Every external and internal API, and its exact purpose" />
-      <item number="05" title="System Architecture" desc="Full component diagram and communication paths" />
-      <item number="06" title="Frontend Integration" desc="Embedding the widget into the existing Webflow site" />
-      <item number="07" title="Application Flow" desc="Query lifecycle, sequence diagram, step-by-step trace" />
-    </toc>
-  </section>
+  <toc title="Contents">
+    <item n="01" title="Executive Summary" desc="What we are building, and in one paragraph, how" />
+    <item n="02" title="Overall Approach" desc="RAG methodology · knowledge-base structure, storage &amp; query" />
+  </toc>
 
   <!-- ============ 01 EXEC SUMMARY ============ -->
-  <section kicker="01 — OVERVIEW" number="01">
-    <title>Executive Summary</title>
-    <p>Theta ChatBot is a website assistant embedded on <span class="mono">thetatechnolabs.in</span> that answers visitor questions using <strong>only</strong> the company's own website content. It does not answer from the open internet and does not let the underlying language model improvise facts about Theta Technolabs — every answer is grounded in a knowledge base built from our own pages, and the model is instructed to say "I don't have that information" rather than guess.</p>
+  <sheet label="THETA CHATBOT · OVERVIEW" kicker="01 — OVERVIEW" title="Executive Summary" footnum="01">
+    <p>Theta ChatBot is a website assistant embedded on <mono>thetatechnolabs.in</mono> that answers visitor questions using <b>only</b> the company's own website content. It does not answer from the open internet and does not let the underlying language model improvise facts about Theta Technolabs — every answer is grounded in a knowledge base built from our own pages, and the model is instructed to say "I don't have that information" rather than guess.</p>
     
-    <p>Because the knowledge base is <strong>static</strong> (it changes only when someone deliberately re-scrapes or edits it — not on every page load), we do not need a heavy real-time crawling pipeline. This lets us keep the system small, cheap to run, and easy for one engineer to operate on our own server.</p>
+    <p>Because the knowledge base is <b>static</b> (it changes only when someone deliberately re-scrapes or edits it — not on every page load), we do not need a heavy real-time crawling pipeline. This lets us keep the system small, cheap to run, and easy for one engineer to operate on our own server.</p>
 
-    <callout label="IN ONE SENTENCE">
-      A visitor's question is converted into a vector, matched against pre-embedded chunks of our own website content stored in Postgres, and the matched chunks are handed to an LLM (Gemini first, OpenAI as a paid fallback) which is told to answer <em>using only that context</em>.
-    </callout>
+    <callout label="IN ONE SENTENCE">A visitor's question is converted into a vector, matched against pre-embedded chunks of our own website content stored in Postgres, and the matched chunks are handed to an LLM (Gemini first, OpenAI as a paid fallback) which is told to answer <i>using only that context</i>.</callout>
 
     <h2>Scope of this document</h2>
     <p>This document is written so that a technical reviewer with no prior context can understand the full system — what is built, why each choice was made over its alternatives, how the pieces talk to each other, and what happens to a single user message from the moment it is typed to the moment a reply appears.</p>
 
     <h2>Key decisions at a glance</h2>
-    <table class="spec">
-      <tr><th style="width:28%">Decision</th><th>Choice made</th></tr>
-      <tr><td>Methodology</td><td class="mono">Retrieval-Augmented Generation (RAG)</td></tr>
-      <tr><td>Knowledge base store</td><td class="mono">PostgreSQL + pgvector — single unified database</td></tr>
-      <tr><td>Backend</td><td class="mono">Python · FastAPI</td></tr>
-      <tr><td>Frontend integration</td><td class="mono">Custom JS/CSS widget embedded into existing Webflow site</td></tr>
-      <tr><td>Primary LLM</td><td class="mono">Google Gemini (1.5 / 2.0 Flash tier)</td></tr>
-      <tr><td>Fallback LLM</td><td class="mono">OpenAI (usage-metered, cost-flagged)</td></tr>
-      <tr><td>Admin dashboard</td><td class="mono">Custom React dashboard reading directly from Postgres</td></tr>
-      <tr><td>Deployment</td><td class="mono">Docker Compose, on-premise company server</td></tr>
-      <tr><td>Widget transport</td><td class="mono">REST (HTTPS JSON), no WebSocket in v1</td></tr>
+    <table>
+      <row header="1"><cell>Decision</cell><cell>Choice made</cell></row>
+      <row><cell>Methodology</cell><cell mono="1">Retrieval-Augmented Generation (RAG)</cell></row>
+      <row><cell>Knowledge base store</cell><cell mono="1">PostgreSQL + pgvector — single database</cell></row>
+      <row><cell>Backend</cell><cell mono="1">Python · FastAPI</cell></row>
+      <row><cell>Frontend integration</cell><cell mono="1">Custom JS/CSS widget embedded into existing Webflow site</cell></row>
+      <row><cell>Primary LLM</cell><cell mono="1">Google Gemini (1.5 / 2.0 Flash tier)</cell></row>
+      <row><cell>Fallback LLM</cell><cell mono="1">OpenAI (usage-metered, cost-flagged)</cell></row>
+      <row><cell>Admin dashboard</cell><cell mono="1">Custom React dashboard reading directly from Postgres</cell></row>
+      <row><cell>Deployment</cell><cell mono="1">Docker Compose, on-premise company server</cell></row>
+      <row><cell>Widget transport</cell><cell mono="1">REST (HTTPS JSON), no WebSocket in v1</cell></row>
     </table>
-  </section>
+  </sheet>
 
   <!-- ============ 02 OVERALL APPROACH ============ -->
-  <section kicker="02 — METHODOLOGY" number="02">
-    <title>Overall Approach</title>
+  <sheet label="THETA CHATBOT · METHODOLOGY" kicker="02 — METHODOLOGY" title="Overall Approach" footnum="02">
     <h2>2.1 Why Retrieval-Augmented Generation (RAG)</h2>
-    <p>We are <strong>not</strong> fine-tuning a model on Theta Technolabs data, and we are <strong>not</strong> letting the LLM answer from its own general knowledge. Both would risk the bot inventing facts about our company (wrong pricing, wrong services, wrong contact details). Instead we use RAG: at answer-time, we retrieve the most relevant pieces of our own website content and paste them into the model's prompt as context, then instruct the model to answer strictly from that context.</p>
+    <p>We are <b>not</b> fine-tuning a model on Theta Technolabs data, and we are <b>not</b> letting the LLM answer from its own general knowledge. Both would risk the bot inventing facts about our company (wrong pricing, wrong services, wrong contact details). Instead we use RAG: at answer-time, we retrieve the most relevant pieces of our own website content and paste them into the model's prompt as context, then instruct the model to answer strictly from that context.</p>
 
-    <table class="spec">
-      <tr><th style="width:30%">Approach</th><th>Verdict</th></tr>
-      <tr><td>Fine-tuning an LLM on our content</td><td>Rejected — expensive to retrain every time the site changes, and doesn't reliably stop hallucination.</td></tr>
-      <tr><td>Plain prompt with entire site pasted in</td><td>Rejected — website content will exceed context limits as pages grow, and is wasteful/costly per request.</td></tr>
-      <tr><td><strong>RAG (retrieve → ground → generate)</strong></td><td><strong>Selected</strong> — small footprint, always answers from current content, easy to update without retraining.</td></tr>
+    <table>
+      <row header="1"><cell>Approach</cell><cell>Verdict</cell></row>
+      <row><cell>Fine-tuning an LLM on our content</cell><cell>Rejected — expensive to retrain every time the site changes, and doesn't reliably stop hallucination.</cell></row>
+      <row><cell>Plain prompt with entire site pasted in</cell><cell>Rejected — website content will exceed context limits as pages grow, and is wasteful/costly per request.</cell></row>
+      <row><cell><b>RAG (retrieve → ground → generate)</b></cell><cell><b>Selected</b> — small footprint, always answers from current content, easy to update without retraining.</cell></row>
     </table>
 
     <h2>2.2 How the knowledge base is structured</h2>
-    <p>The knowledge base is a set of <strong>chunks</strong> — short passages (roughly 150–300 words each) cut from our website pages, each stored with the text itself, a vector embedding of that text, and metadata describing where it came from.</p>
+    <p>The knowledge base is a set of <b>chunks</b> — short passages (roughly 150–300 words each) cut from our website pages, each stored with the text itself, a vector embedding of that text, and metadata describing where it came from.</p>
 
     <h2>2.3 How the knowledge base is built (hybrid pipeline)</h2>
     <steps>
-      <step number="1" title="One-time scrape">A crawler script walks thetatechnolabs.in (services, about, case studies, contact, blog) and pulls clean text per page, stripping nav/footer boilerplate.</step>
-      <step number="2" title="Chunking">Each page is split into overlapping ~200-word chunks along heading boundaries, so no single chunk loses context mid-sentence.</step>
-      <step number="3" title="Manual curation">Team reviews the scraped chunks in the admin panel — fixes wording, removes irrelevant boilerplate, adds anything missing from the live site (e.g. FAQs that aren't on the page).</step>
-      <step number="4" title="Embedding">Each approved chunk is passed through an embedding model and the resulting vector is stored alongside it in Postgres.</step>
-      <step number="5" title="Freeze as &quot;static&quot;">The knowledge base is now the fixed source of truth. It is only touched again through a deliberate re-scrape or manual edit — never automatically rewritten by user conversations.</step>
+      <step title="One-time scrape">A crawler script walks thetatechnolabs.in (services, about, case studies, contact, blog) and pulls clean text per page, stripping nav/footer boilerplate.</step>
+      <step title="Chunking">Each page is split into overlapping ~200-word chunks along heading boundaries, so no single chunk loses context mid-sentence.</step>
+      <step title="Manual curation">Team reviews the scraped chunks in the admin panel — fixes wording, removes irrelevant boilerplate, adds anything missing from the live site (e.g. FAQs that aren't on the page).</step>
+      <step title="Embedding">Each approved chunk is passed through an embedding model and the resulting vector is stored alongside it in Postgres.</step>
+      <step title="Freeze as &quot;static&quot;">The knowledge base is now the fixed source of truth. It is only touched again through a deliberate re-scrape or manual edit — never automatically rewritten by user conversations.</step>
     </steps>
-  </section>
-</document>
+  </sheet>
+</doc>
