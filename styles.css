@@ -842,6 +842,15 @@ table.spec td.mono, table.spec td .mono {
   margin-right: 2mm;
 }
 
+.adr { border: 0.6pt solid var(--doc-border); margin: 4mm 0 6mm 0; page-break-inside: avoid; }
+.adr-head { background: var(--doc-primary); color: #bfe3ef; font-family: "JetBrains Mono", monospace; font-size: 9.5pt; font-weight: bold; padding: 2.5mm 4mm; letter-spacing: 0.5px; }
+.adr-body { padding: 3mm 4mm; font-size: 9pt; }
+.adr-row { margin-bottom: 2.5mm; }
+.adr-row .k { font-family: "JetBrains Mono", monospace; font-size: 7.8pt; letter-spacing: 1px; color: var(--doc-secondary); font-weight: bold; display: block; margin-bottom: 0.8mm; }
+.adr-row ul { margin: 1mm 0 0 4.5mm; }
+.impact-pos { color: #1c7c4d; }
+.impact-neg { color: #b5791c; }
+
 /* TOC row formatting */
 .toc-row { display: block; padding: 2.5mm 0; border-bottom: 0.4pt dotted var(--doc-border); }
 .toc-row .tn { font-family: 'JetBrains Mono', monospace; color: var(--doc-secondary); font-weight: bold; display:inline-block; width: 12mm; }

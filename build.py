@@ -61,6 +61,16 @@ table.spec td .mono { font-family:"DejaVu Sans Mono",monospace; font-size:8.1pt;
   font-family:"DejaVu Sans Mono",monospace; font-size:8pt; font-weight:bold; text-align:center; line-height:7mm; }
 .step .t { font-weight:bold; color:#0d2b45; font-size:9.3pt; }
 .step .d { font-size:8.8pt; color:#3a4954; }
+
+.adr { border: 0.6pt solid #d8dfe4; margin: 4mm 0 6mm 0; page-break-inside: avoid; }
+.adr-head { background: #0d2b45; color: #bfe3ef; font-family: "DejaVu Sans Mono", monospace; font-size: 9.5pt; font-weight: bold; padding: 2.5mm 4mm; letter-spacing: 0.5px; }
+.adr-body { padding: 3mm 4mm; font-size: 9pt; }
+.adr-row { margin-bottom: 2.5mm; }
+.adr-row .k { font-family: "DejaVu Sans Mono", monospace; font-size: 7.8pt; letter-spacing: 1px; color: #1c5d8c; font-weight: bold; display: block; margin-bottom: 0.8mm; }
+.adr-row ul { margin: 1mm 0 0 4.5mm; }
+.impact-pos { color: #1c7c4d; }
+.impact-neg { color: #b5791c; }
+
 .toc-row { display:block; padding:2mm 0; border-bottom:0.4pt dotted #c7d2da; }
 .toc-row .tn { font-family:"DejaVu Sans Mono",monospace; color:#1c5d8c; font-weight:bold; display:inline-block; width:12mm; }
 .toc-row .tt { font-size:10.2pt; color:#0d2b45; font-weight:bold; }

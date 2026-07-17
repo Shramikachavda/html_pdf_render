@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+import os
+
+xml_content = """<?xml version="1.0" encoding="UTF-8"?>
 <doc title="Appendices">
   <!-- ============ SHEET 14 ============ -->
   <sheet label="THETA CHATBOT · APPENDICES" kicker="APPENDIX A" title="Architecture Decision Records (ADRs)" footnum="14">
