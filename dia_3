@@ -1,0 +1,74 @@
+flowchart TD
+
+%% ===================================
+%% Website
+%% ===================================
+A["🌐 Theta Website"]
+
+%% ===================================
+%% Change Detection
+%% ===================================
+B{"Website Content Updated?"}
+
+%% ===================================
+%% Extraction
+%% ===================================
+C["📥 Extract Updated Page"]
+
+D["🧹 Clean HTML<br/>Remove Navigation, Footer,<br/>Scripts & Unwanted Content"]
+
+E["✂️ Semantic Chunking"]
+
+F["🏷️ Metadata Generation<br/>Title • URL • Category"]
+
+G["🧠 Generate Embeddings"]
+
+%% ===================================
+%% Vector Update
+%% ===================================
+H["🔄 Update Existing Vector"]
+
+I["📚 Vector Database"]
+
+%% ===================================
+%% Ready
+%% ===================================
+J["✅ Knowledge Base Ready"]
+
+%% ===================================
+%% Flow
+%% ===================================
+A --> B
+
+B -- Yes --> C
+
+B -- No --> J
+
+C --> D
+
+D --> E
+
+E --> F
+
+F --> G
+
+G --> H
+
+H --> I
+
+I --> J
+
+%% ===================================
+%% Styling
+%% ===================================
+style A fill:#f4f7f9,stroke:#1c5d8c,stroke-width:2px,color:#0d2b45
+style B fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
+style C fill:#f4f7f9,stroke:#1c5d8c,stroke-width:2px,color:#0d2b45
+style D fill:#f4f7f9,stroke:#1c5d8c,stroke-width:2px,color:#0d2b45
+style E fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
+style F fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
+style G fill:#123a5c,stroke:#7fd0e6,stroke-width:2px,color:#ffffff
+style H fill:#0d2b45,stroke:#2f5674,stroke-width:2px,color:#cfe4ee
+style I fill:#0d2b45,stroke:#2f5674,stroke-width:2px,color:#cfe4ee
+style J fill:#123a5c,stroke:#7fd0e6,stroke-width:2px,color:#ffffff
+

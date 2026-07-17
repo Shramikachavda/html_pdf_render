@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="ARCHITECTURE &amp; WORKFLOW">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="ARCHITECTURE &amp; WORKFLOW" kicker="ARCHITECTURE" footnum="01" title="Theta Chat Bot — Technical Design Document">
+    <h2>Theta Chat Bot — Technical Design Document</h2>
+  </sheet>
+
+  <!-- ============ SHEET 02 ============ -->
+  <sheet label="ARCHITECTURE &amp; WORKFLOW" kicker="ARCHITECTURE" footnum="02" title="2. Overall Approach">
+    <h2>2. Overall Approach</h2>
+    <h3>2.1 Solution Overview</h3>
+    <p>The Theta Chat Bot is designed as an AI-powered Retrieval-Augmented Generation (RAG) system that delivers accurate, context-aware responses using information exclusively retrieved from the Theta Technolabs website.</p>
+    <p>Rather than storing predefined question-answer pairs or training a custom language model, the chatbot dynamically retrieves the most relevant website content and uses it as contextual input for the Large Language Model (LLM). This enables the chatbot to answer user queries naturally while remaining grounded in verified company information.</p>
+    <p>The chatbot follows a modular architecture consisting of five primary stages:</p>
+    <ul>
+      <li>&lt;b&gt;Knowledge Acquisition&lt;/b&gt; – Website content is collected and prepared for indexing.</li>
+      <li>&lt;b&gt;Knowledge Storage&lt;/b&gt; – Processed content is stored in a searchable vector database.</li>
+      <li>&lt;b&gt;Query Processing&lt;/b&gt; – User questions are analyzed and matched against the knowledge base.</li>
+      <li>&lt;b&gt;Response Generation&lt;/b&gt; – Retrieved context is combined with the user query and sent to the LLM to generate a final response.</li>
+      <li>&lt;b&gt;Response Delivery&lt;/b&gt; – The generated answer is returned to the user through the website chat interface.</li>
+    </ul>
+    <p>This architecture separates knowledge storage from language generation, allowing website content to be updated independently without retraining the AI model.</p>
+    <h3>2.2 Why Retrieval-Augmented Generation (RAG)?</h3>
+    <p>Several architectural approaches were evaluated before selecting the final solution. The following table compares the available options.</p>
+    <table>
+      <row header="1"><cell>Approach</cell><cell>Description</cell><cell>Advantages</cell><cell>Limitations</cell></row>
+      <row><cell>Rule-Based Chatbot</cell><cell>Predefined intents and responses</cell><cell>Simple, predictable</cell><cell>Difficult to maintain, poor scalability, limited conversational ability</cell></row>
+      <row><cell>FAQ Matching</cell><cell>Keyword-based search through predefined FAQs</cell><cell>Easy implementation</cell><cell>Cannot answer complex or unseen questions</cell></row>
+      <row><cell>Fine-Tuned LLM</cell><cell>Train a custom model using company data</cell><cell>High customization</cell><cell>Expensive, time-consuming, requires retraining whenever content changes</cell></row>
+      <row><cell>Retrieval-Augmented Generation (Selected)</cell><cell>Retrieves relevant website content and provides it to the LLM before generating a response</cell><cell>Accurate, scalable, easier to maintain, supports dynamic website updates</cell><cell>Requires vector database and retrieval pipeline</cell></row>
+    </table>
+    <p>&lt;b&gt;Why RAG is the Best Fit&lt;/b&gt;</p>
+    <p>The Theta website is the primary source of truth and will evolve over time as new services, case studies, blogs, or technologies are added. Fine-tuning a language model whenever website content changes would introduce unnecessary operational overhead and increased costs.</p>
+    <p>RAG eliminates this challenge by separating knowledge management from language generation. Website content can be re-indexed whenever updates occur, allowing the chatbot to access the latest information without retraining the underlying LLM.</p>
+    <p>This approach also reduces hallucinations by grounding responses in retrieved website content, improves maintainability, and provides flexibility to switch between different LLM providers without redesigning the system.</p>
+    <h3>2.3 System Workflow</h3>
+    <raw><img src="dia_1.svg" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+
+    <p>The chatbot follows the workflow illustrated below.</p>
+    <pre>
+    User Question
+          │
+          ▼
+    FastAPI Backend
+          │
+          ▼
+    Generate Query Embedding
+          │
+          ▼
+    Vector Database Search
+          │
+          ▼
+    Retrieve Relevant Website Chunks
+          │
+          ▼
+    Prompt Builder
+          │
+          ▼
+    Gemini / OpenAI
+          │
+          ▼
+    Generate Response
+          │
+          ▼
+    Return Answer to User
+    </pre>
+    <p>*(We'll replace this with a professional architecture diagram later.)*</p>
+    <h3>2.4 Key Design Decisions</h3>
+    <table>
+      <row header="1"><cell>Decision</cell><cell>Rationale</cell></row>
+      <row><cell>Website as the single source of truth</cell><cell>Ensures responses remain aligned with official company information.</cell></row>
+      <row><cell>RAG instead of fine-tuning</cell><cell>Simplifies updates and reduces operational costs.</cell></row>
+      <row><cell>FastAPI backend</cell><cell>High performance, asynchronous request handling, and excellent AI ecosystem support.</cell></row>
+      <row><cell>Gemini as the initial LLM</cell><cell>Cost-effective with strong reasoning capabilities for MVP deployment.</cell></row>
+      <row><cell>Modular architecture</cell><cell>Allows future replacement of the LLM, vector database, or frontend without redesigning the system.</cell></row>
+      <row><cell>Docker deployment</cell><cell>Simplifies deployment, portability, and on-premise hosting.</cell></row>
+      <row><cell>Optional PostgreSQL dashboard</cell><cell>Enables analytics and operational monitoring without affecting the core chatbot functionality.</cell></row>
+    </table>
+    <p>---</p>
+  </sheet>
+
+  <!-- ============ SHEET 03 ============ -->
+  <sheet label="ARCHITECTURE &amp; WORKFLOW" kicker="ARCHITECTURE" footnum="03" title="3. Knowledge Management Pipeline">
+    <h2>3. Knowledge Management Pipeline</h2>
+    <h3>3.1 Overview</h3>
+    <p>The success of the Theta Chat Bot depends on the quality, accuracy, and freshness of its knowledge source. To ensure reliable and consistent responses, the chatbot uses the Theta Technolabs website as its single source of truth. Every response generated by the chatbot is based exclusively on publicly available information published on the official website.</p>
+    <p>Instead of maintaining predefined question-answer pairs or fine-tuning a language model whenever website content changes, the system follows a Retrieval-Augmented Generation (RAG) architecture. Website content is transformed into a structured semantic knowledge base that can be efficiently searched during every user interaction.</p>
+    <p>The Knowledge Management Pipeline consists of the following stages:</p>
+    <ul>
+      <li>Content Acquisition</li>
+      <li>Content Extraction &amp; Cleaning</li>
+      <li>Content Chunking</li>
+      <li>Embedding Generation</li>
+      <li>Knowledge Storage</li>
+      <li>Knowledge Synchronization</li>
+    </ul>
+    <p>Each stage is independent and modular, allowing future improvements without affecting the rest of the system.</p>
+    <h3>3.2 Content Acquisition</h3>
+    <p>The first stage is responsible for collecting publicly available content from the Theta Technolabs website. The crawler indexes only pages that provide meaningful business information.</p>
+    <table>
+      <row header="1"><cell>Content Category</cell><cell>Included</cell></row>
+      <row><cell>Home Page</cell><cell>✅</cell></row>
+      <row><cell>About Us</cell><cell>✅</cell></row>
+      <row><cell>Services</cell><cell>✅</cell></row>
+      <row><cell>Technologies</cell><cell>✅</cell></row>
+      <row><cell>Industry Solutions</cell><cell>✅</cell></row>
+      <row><cell>Portfolio / Case Studies</cell><cell>✅</cell></row>
+      <row><cell>Blogs</cell><cell>✅</cell></row>
+      <row><cell>Careers</cell><cell>✅</cell></row>
+      <row><cell>Contact Information</cell><cell>✅</cell></row>
+      <row><cell>FAQ (If Available)</cell><cell>✅</cell></row>
+    </table>
+    <p>Pages such as privacy policies, cookie notices, legal disclaimers, or other pages that do not contribute to answering user queries may be excluded from indexing.</p>
+    <h3>3.3 Content Extraction &amp; Cleaning</h3>
+    <p>Before any information is stored within the knowledge base, the website content undergoes a preprocessing pipeline to ensure that only meaningful and relevant information is indexed.</p>
+    <p>The extraction and cleaning process includes:</p>
+    <ul>
+      <li>HTML parsing and structured text extraction</li>
+      <li>Removal of navigation menus</li>
+      <li>Removal of headers and footers</li>
+      <li>Removal of cookie banners and policy notices</li>
+      <li>Removal of JavaScript and CSS elements</li>
+      <li>Elimination of duplicate content</li>
+      <li>Normalization of whitespace and formatting</li>
+      <li>Preservation of headings and document hierarchy</li>
+      <li>Metadata extraction (Page Title, URL, Section Name)</li>
+      <li>Validation to discard empty or low-quality content</li>
+    </ul>
+    <p>Only clean, structured, and meaningful textual content proceeds to the embedding stage, ensuring high-quality semantic retrieval and reducing irrelevant search results.</p>
+    <h3>3.4 Content Chunking</h3>
+    <p>Since modern language models and vector databases perform better with smaller contextual units, each webpage is divided into multiple semantic chunks before embeddings are generated.</p>
+    <p>The chunking strategy follows these principles:</p>
+    <ul>
+      <li>Preserve paragraph boundaries whenever possible.</li>
+      <li>Avoid splitting sentences in the middle.</li>
+      <li>Keep headings associated with their respective content.</li>
+      <li>Maintain semantic continuity between chunks.</li>
+      <li>Store metadata for every chunk.</li>
+    </ul>
+    <p>Example:</p>
+    <table>
+      <row header="1"><cell>Chunk ID</cell><cell>Page</cell><cell>Section</cell><cell>Description</cell></row>
+      <row><cell>CH-001</cell><cell>AI Development Services</cell><cell>Artificial Intelligence</cell><cell>Service Overview</cell></row>
+      <row><cell>CH-002</cell><cell>AI Development Services</cell><cell>Machine Learning</cell><cell>Service Details</cell></row>
+      <row><cell>CH-003</cell><cell>Portfolio</cell><cell>Healthcare Solution</cell><cell>Project Description</cell></row>
+    </table>
+    <p>This improves retrieval precision by allowing the chatbot to retrieve only the most relevant section instead of an entire webpage.</p>
+    <h3>3.5 Embedding Generation</h3>
+    <p>After chunking, each content block is converted into a numerical vector representation known as an embedding.</p>
+    <p>Embeddings capture the semantic meaning of text rather than relying solely on keyword matching. This enables the chatbot to understand user intent even when different words or phrases are used.</p>
+    <p>For example:</p>
+    <ul>
+      <li>&lt;b&gt;User Question:&lt;/b&gt; "Do you build AI chatbots?"</li>
+      <li>&lt;b&gt;Website Content:&lt;/b&gt; "Theta Technolabs develops intelligent conversational AI solutions."</li>
+    </ul>
+    <p>Although the wording differs, the embedding model recognizes the semantic similarity and retrieves the correct content.</p>
+    <h3>3.6 Knowledge Storage</h3>
+    <p>The chatbot requires an efficient storage mechanism capable of performing semantic similarity searches while supporting future scalability.</p>
+    <p>Based on project requirements, two deployment architectures are proposed.</p>
+    <p>&lt;b&gt;Option A – Lightweight Architecture (Recommended for MVP)&lt;/b&gt;</p>
+    <p>Vector Database: Qdrant</p>
+    <p>For deployments where only chatbot functionality is required, Qdrant is the recommended choice. It is a lightweight, high-performance vector database specifically designed for semantic search.</p>
+    <p>*Advantages*</p>
+    <ul>
+      <li>Lightweight deployment</li>
+      <li>Optimized for vector similarity search</li>
+      <li>High retrieval performance</li>
+      <li>Docker-friendly</li>
+      <li>Low infrastructure overhead</li>
+      <li>Easy maintenance</li>
+    </ul>
+    <p>*Limitations*</p>
+    <ul>
+      <li>No built-in analytics</li>
+      <li>No conversation reporting</li>
+      <li>Requires an additional database if analytics are introduced later</li>
+    </ul>
+    <p>&lt;b&gt;Option B – Enterprise Architecture (Recommended with Admin Dashboard)&lt;/b&gt;</p>
+    <p>Database: PostgreSQL + pgvector</p>
+    <p>If an Admin Dashboard and operational analytics are required, PostgreSQL extended with the pgvector extension becomes the preferred architecture. Instead of maintaining separate systems, PostgreSQL stores both relational data and vector embeddings.</p>
+    <p>The database can manage:</p>
+    <ul>
+      <li>Website embeddings</li>
+      <li>Conversation history</li>
+      <li>User feedback</li>
+      <li>API usage statistics</li>
+      <li>Token consumption</li>
+      <li>Cost analytics</li>
+      <li>Response latency</li>
+      <li>Dashboard metrics</li>
+      <li>Configuration settings</li>
+      <li>Knowledge version history</li>
+    </ul>
+    <p>*Advantages*</p>
+    <ul>
+      <li>Single database architecture</li>
+      <li>Native SQL querying</li>
+      <li>Integrated analytics</li>
+      <li>Simplified backup and maintenance</li>
+      <li>Easier dashboard implementation</li>
+      <li>Suitable for enterprise deployments</li>
+    </ul>
+    <p>*Limitations*</p>
+    <ul>
+      <li>Higher resource usage than a dedicated vector database</li>
+      <li>Slightly more complex administration</li>
+    </ul>
+    <p>&lt;b&gt;Recommended Architecture&lt;/b&gt;</p>
+    <table>
+      <row header="1"><cell>Requirement</cell><cell>Recommended Solution</cell></row>
+      <row><cell>Lightweight chatbot with semantic search</cell><cell>Qdrant</cell></row>
+      <row><cell>Chatbot with Admin Dashboard and analytics</cell><cell>PostgreSQL + pgvector</cell></row>
+    </table>
+    <p>This approach allows the infrastructure to remain lightweight during the initial deployment while providing a seamless upgrade path if advanced operational features are introduced.</p>
+    <h3>3.7 Knowledge Synchronization</h3>
+    <p>The chatbot's knowledge base must remain synchronized with the Theta Technolabs website while avoiding unnecessary processing of unchanged content.</p>
+    <p>Since website content is updated only when new pages, blogs, services, or portfolio items are published, running scheduled synchronization jobs would repeatedly process unchanged data and increase infrastructure overhead.</p>
+    <p>To address this, the proposed solution adopts an Event-Driven Incremental Synchronization approach. Whenever website content is published, updated, or removed, the synchronization pipeline is triggered automatically. Instead of rebuilding the entire knowledge base, the system identifies only the affected pages and updates those records.</p>
+    <p>&lt;b&gt;Synchronization Approaches Considered&lt;/b&gt;</p>
+    <table>
+      <row header="1"><cell>Strategy</cell><cell>Description</cell><cell>Advantages</cell><cell>Limitations</cell></row>
+      <row><cell>Manual Refresh</cell><cell>Administrator manually re-indexes the entire website.</cell><cell>Simple implementation</cell><cell>Time-consuming and dependent on manual intervention.</cell></row>
+      <row><cell>Scheduled Synchronization</cell><cell>Automatically crawls the website at predefined intervals.</cell><cell>Fully automated</cell><cell>Processes unchanged content and increases unnecessary compute costs.</cell></row>
+      <row><cell>Event-Driven Incremental Synchronization (Recommended)</cell><cell>Triggered whenever website content is created, modified, or deleted. Only affected pages are reprocessed.</cell><cell>Efficient, scalable, faster updates, and reduced infrastructure cost.</cell><cell>Requires integration with the website publishing workflow or CMS.</cell></row>
+    </table>
+    <p>&lt;b&gt;Synchronization Workflow&lt;/b&gt;</p>
+    <p>Whenever website content changes, the following pipeline is executed:</p>
+    <p>1. Detect the newly created or modified webpage.</p>
+    <p>2. Retrieve the latest page content.</p>
+    <p>3. Parse and clean the HTML.</p>
+    <p>4. Remove navigation menus, headers, footers, scripts, banners, and duplicate elements.</p>
+    <p>5. Normalize the extracted text.</p>
+    <p>6. Divide the content into semantic chunks.</p>
+    <p>7. Generate embeddings only for the updated chunks.</p>
+    <p>8. Replace the existing vectors in the vector database.</p>
+    <p>9. Update metadata such as indexing timestamp, page version, and source URL.</p>
+    <p>All other website pages remain untouched.</p>
+    <p>This approach significantly reduces processing time, minimizes embedding generation costs, and ensures the chatbot always retrieves the most recent website information without reprocessing the complete knowledge base.</p>
+    <h3>3.8 Metadata Management</h3>
+    <p>Every indexed content chunk stores metadata to improve retrieval quality, enable source attribution, and support future analytics.</p>
+    <table>
+      <row header="1"><cell>Metadata Field</cell><cell>Description</cell></row>
+      <row><cell>Chunk ID</cell><cell>Unique identifier for each semantic chunk</cell></row>
+      <row><cell>Page URL</cell><cell>Original source page</cell></row>
+      <row><cell>Page Title</cell><cell>Human-readable page name</cell></row>
+      <row><cell>Section Heading</cell><cell>Contextual heading within the page</cell></row>
+      <row><cell>Content Category</cell><cell>Services, Blogs, Careers, Portfolio, etc.</cell></row>
+      <row><cell>Last Indexed Date</cell><cell>Timestamp of the latest indexing operation</cell></row>
+      <row><cell>Version</cell><cell>Knowledge version identifier</cell></row>
+      <row><cell>Vector ID</cell><cell>Reference to the stored embedding</cell></row>
+    </table>
+    <p>Metadata enables future capabilities such as source citations, document versioning, analytics, debugging, and knowledge auditing.</p>
+    <h3>3.9 Knowledge Lifecycle</h3>
+    <raw><img src="dia_3.svg" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+
+    <p>The complete knowledge processing lifecycle follows the sequence below:</p>
+    <pre>
+    Website Content
+       ↓
+    Content Acquisition
+       ↓
+    HTML Parsing &amp; Cleaning
+       ↓
+    Content Normalization
+       ↓
+    Semantic Chunking
+       ↓
+    Embedding Generation
+       ↓
+    Vector Storage (Qdrant / PostgreSQL + pgvector)
+       ↓
+    Knowledge Ready for Retrieval
+    </pre>
+    <h3>3.10 Key Design Decisions</h3>
+    <table>
+      <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
+      <row><cell>Official website as the single source of truth</cell><cell>Ensures responses remain accurate and aligned with company information.</cell></row>
+      <row><cell>Comprehensive content cleaning</cell><cell>Removes irrelevant website elements before indexing.</cell></row>
+      <row><cell>Semantic chunking</cell><cell>Improves retrieval precision and contextual relevance.</cell></row>
+      <row><cell>Event-Driven Incremental Synchronization</cell><cell>Updates only modified content, reducing processing overhead.</cell></row>
+      <row><cell>Qdrant for lightweight deployments</cell><cell>Optimized for fast semantic search with minimal infrastructure.</cell></row>
+      <row><cell>PostgreSQL + pgvector for enterprise deployments</cell><cell>Provides semantic search alongside analytics and dashboard capabilities within a single database.</cell></row>
+      <row><cell>Modular pipeline architecture</cell><cell>Enables future enhancements without requiring major architectural changes.</cell></row>
+    </table>
+    <p>---</p>
+  </sheet>
+
+  <!-- ============ SHEET 04 ============ -->
+  <sheet label="ARCHITECTURE &amp; WORKFLOW" kicker="ARCHITECTURE" footnum="04" title="4. Retrieval &amp; Response Generation Pipeline">
+    <h2>4. Retrieval &amp; Response Generation Pipeline</h2>
+    <h3>4.1 Overview</h3>
+    <p>The Retrieval &amp; Response Generation Pipeline is the core processing layer of the Theta Chat Bot. It is responsible for transforming a user's natural language query into an accurate, context-aware response by retrieving relevant website content and providing it to the Large Language Model (LLM).</p>
+    <p>Instead of relying solely on the language model's pre-trained knowledge, the system first searches the organization's indexed knowledge base. Only the retrieved content is supplied to the LLM, ensuring that responses remain grounded in official Theta Technolabs information while significantly reducing hallucinations.</p>
+    <p>The complete processing pipeline consists of the following stages:</p>
+    <ul>
+      <li>User Query Reception</li>
+      <li>Query Validation</li>
+      <li>Query Embedding Generation</li>
+      <li>Semantic Retrieval</li>
+      <li>Context Construction</li>
+      <li>Prompt Engineering</li>
+      <li>Response Generation</li>
+      <li>Response Validation</li>
+      <li>Response Delivery</li>
+    </ul>
+    <h3>4.2 User Query Reception</h3>
+    <p>A visitor submits a question through the chatbot interface embedded within the Theta Technolabs website.</p>
+    <p>Example: *"What AI Development services does Theta Technolabs provide?"*</p>
+    <p>The frontend sends the request securely to the FastAPI backend through a REST API. At this stage the backend performs basic validation including:</p>
+    <ul>
+      <li>Empty message validation</li>
+      <li>Maximum input length validation</li>
+      <li>Removal of unsupported characters</li>
+      <li>Basic security filtering</li>
+      <li>Rate limiting (future enhancement)</li>
+    </ul>
+    <p>Only valid requests proceed to the retrieval pipeline.</p>
+    <h3>4.3 Query Embedding Generation</h3>
+    <p>After validation, the user's question is converted into a semantic vector representation using the selected embedding model.</p>
+    <p>Unlike traditional keyword matching, embeddings capture the meaning and intent of the user's question.</p>
+    <p>For example:</p>
+    <ul>
+      <li>&lt;b&gt;User Question:&lt;/b&gt; "Can you build AI chatbots?"</li>
+      <li>&lt;b&gt;Website Content:&lt;/b&gt; "We provide Conversational AI Development Services."</li>
+    </ul>
+    <p>Although different wording is used, both sentences represent the same intent. The embedding model allows the system to recognize this similarity.</p>
+    <h3>4.4 Semantic Retrieval</h3>
+    <p>The generated query embedding is compared against all indexed website embeddings stored in the vector database. The retrieval engine calculates similarity scores between the user's question and every indexed content chunk. The Top-K most relevant chunks are selected.</p>
+    <p>Typical configuration:</p>
+    <table>
+      <row header="1"><cell>Parameter</cell><cell>Value</cell></row>
+      <row><cell>Retrieval Method</cell><cell>Semantic Search</cell></row>
+      <row><cell>Similarity Metric</cell><cell>Cosine Similarity</cell></row>
+      <row><cell>Retrieved Chunks</cell><cell>Top 5 (Configurable)</cell></row>
+      <row><cell>Minimum Similarity Threshold</cell><cell>Configurable</cell></row>
+    </table>
+    <p>Only highly relevant chunks are forwarded to the language model.</p>
+    <h3>4.5 Context Construction</h3>
+    <p>The retrieved content alone is not sufficient for producing high-quality responses. The backend constructs a structured context containing:</p>
+    <ul>
+      <li>Retrieved website content</li>
+      <li>Source page information</li>
+      <li>User question</li>
+      <li>Session conversation history (if enabled)</li>
+      <li>System instructions</li>
+    </ul>
+    <p>This structured context ensures the language model receives only relevant information.</p>
+    <h3>4.6 Prompt Engineering</h3>
+    <p>A carefully designed system prompt controls the behavior of the language model. The prompt instructs the LLM to:</p>
+    <ul>
+      <li>Answer only using the provided website content.</li>
+      <li>Avoid generating unsupported information.</li>
+      <li>Clearly state when sufficient information is unavailable.</li>
+      <li>Maintain a professional and friendly tone.</li>
+      <li>Keep responses concise and relevant.</li>
+      <li>Avoid speculation or assumptions.</li>
+      <li>Prefer official terminology used by Theta Technolabs.</li>
+    </ul>
+    <p>A typical prompt structure consists of:</p>
+    <p>1. System Instructions</p>
+    <p>2. Retrieved Context</p>
+    <p>3. Conversation Context (Optional)</p>
+    <p>4. User Question</p>
+    <p>This approach ensures consistency across all responses.</p>
+    <h3>4.7 Response Generation</h3>
+    <p>The constructed prompt is submitted to the configured Large Language Model. Initial deployment will use Google Gemini due to its balance of performance and operational cost.</p>
+    <p>The architecture remains provider-independent, allowing future migration to OpenAI with minimal backend changes if higher reasoning capability or different pricing models become desirable.</p>
+    <p>The LLM generates a response using only the retrieved context supplied by the backend.</p>
+    <h3>4.8 Conversation Memory</h3>
+    <p>Two conversation modes are considered.</p>
+    <p>&lt;b&gt;Option A – Stateless Conversation&lt;/b&gt;</p>
+    <p>Each user query is processed independently.</p>
+    <p>*Advantages*</p>
+    <ul>
+      <li>Simple implementation</li>
+      <li>Lower token consumption</li>
+      <li>Better scalability</li>
+      <li>No conversation storage</li>
+    </ul>
+    <p>*Limitations*</p>
+    <ul>
+      <li>Cannot understand follow-up questions.</li>
+    </ul>
+    <p>&lt;b&gt;Option B – Session-Based Conversation&lt;/b&gt;</p>
+    <p>The chatbot temporarily remembers previous messages within the current browser session.</p>
+    <p>*Advantages*</p>
+    <ul>
+      <li>Better conversational experience</li>
+      <li>Supports follow-up questions</li>
+      <li>Improved contextual understanding</li>
+    </ul>
+    <p>*Limitations*</p>
+    <ul>
+      <li>Slightly higher token usage</li>
+      <li>Requires temporary session management</li>
+    </ul>
+    <p>&lt;b&gt;Recommended Approach&lt;/b&gt;</p>
+    <p>The proposed implementation recommends Session-Based Conversation Memory for the active browser session only. Conversation history is discarded once the session expires, ensuring a balance between user experience and resource efficiency.</p>
+    <h3>4.9 Response Validation</h3>
+    <p>Before returning the generated response to the user, the backend performs a final validation. The response is evaluated based on:</p>
+    <ul>
+      <li>Retrieval confidence</li>
+      <li>Context relevance</li>
+      <li>Response completeness</li>
+      <li>Supported knowledge domain</li>
+    </ul>
+    <p>Depending on the confidence level, different actions are taken.</p>
+    <table>
+      <row header="1"><cell>Confidence Level</cell><cell>System Behavior</cell></row>
+      <row><cell>High</cell><cell>Return the answer normally.</cell></row>
+      <row><cell>Medium</cell><cell>Return the answer with the related website page reference.</cell></row>
+      <row><cell>Low</cell><cell>Inform the user that sufficient information could not be found and recommend contacting Theta Technolabs.</cell></row>
+      <row><cell>Out of Scope</cell><cell>Politely explain that the chatbot only supports Theta Technolabs-related queries and guide the user to the Contact or Inquiry page.</cell></row>
+    </table>
+    <p>This strategy improves reliability while preventing misleading responses.</p>
+    <h3>4.10 Response Delivery</h3>
+    <p>Once validated, the response is returned to the frontend in JSON format. The chatbot interface displays:</p>
+    <ul>
+      <li>AI-generated answer</li>
+      <li>Optional source page reference</li>
+      <li>Helpful / Not Helpful feedback buttons (future enhancement)</li>
+      <li>Contact or Inquiry action when required</li>
+    </ul>
+    <p>This provides users with a consistent and intuitive conversational experience.</p>
+    <h3>4.11 Complete Processing Flow</h3>
+    <p>The complete request lifecycle follows the sequence below.</p>
+    <pre>
+    User submits question
+       ↓
+    FastAPI validates request
+       ↓
+    Generate query embedding
+       ↓
+    Semantic similarity search
+       ↓
+    Retrieve Top-K website content
+       ↓
+    Build prompt
+       ↓
+    Send prompt to Gemini/OpenAI
+       ↓
+    Generate response
+       ↓
+    Validate response
+       ↓
+    Return answer to user
+    </pre>
+    <h3>4.12 Key Design Decisions</h3>
+    <table>
+      <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
+      <row><cell>Semantic search over keyword search</cell><cell>Better understanding of natural language queries.</cell></row>
+      <row><cell>Prompt engineering</cell><cell>Ensures consistent and grounded responses.</cell></row>
+      <row><cell>Session-based memory</cell><cell>Supports natural conversations without permanent storage.</cell></row>
+      <row><cell>Confidence-based validation</cell><cell>Prevents unsupported or misleading answers.</cell></row>
+      <row><cell>Provider-independent LLM layer</cell><cell>Enables future migration between Gemini and OpenAI with minimal effort.</cell></row>
+      <row><cell>Source-aware responses</cell><cell>Improves transparency and user trust.</cell></row>
+    </table>
+  </sheet>
+</doc>

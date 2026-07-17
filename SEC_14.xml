@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="FUTURE ENHANCEMENTS">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="01" title="15. Future Roadmap">
+    <h2>15. Future Roadmap</h2>
+  </sheet>
+
+  <!-- ============ SHEET 02 ============ -->
+  <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="02" title="15.1 Overview">
+    <h2>15.1 Overview</h2>
+    <p>The Theta Chat Bot has been designed using a modular and extensible architecture that supports future enhancements with minimal changes to the existing system. While the initial implementation focuses on delivering accurate website-based responses using a Retrieval-Augmented Generation (RAG) architecture, the proposed design enables the chatbot to evolve incrementally as business requirements grow.</p>
+    <p>The roadmap below outlines the planned evolution of the chatbot while maintaining scalability, maintainability, and deployment flexibility.</p>
+    <p>---</p>
+  </sheet>
+
+  <!-- ============ SHEET 03 ============ -->
+  <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="03" title="15.2 Phase 1 – Initial Production Release (MVP)">
+    <h2>15.2 Phase 1 – Initial Production Release (MVP)</h2>
+    <p>The first phase focuses on delivering a production-ready chatbot integrated with the Theta Technolabs website.</p>
+    <h3>Features</h3>
+    <ul>
+      <li>Website-based knowledge retrieval</li>
+      <li>Retrieval-Augmented Generation (RAG)</li>
+      <li>Google Gemini integration</li>
+      <li>LLM evaluation and testing (Google Gemini with OpenAI as an alternative if required)</li>
+      <li>Sentence Transformers for local embeddings</li>
+      <li>FastAPI backend</li>
+      <li>Webflow chatbot integration</li>
+      <li>PostgreSQL integration for conversation storage and analytics</li>
+      <li>pgvector for vector search (if PostgreSQL is selected as the vector database)</li>
+      <li>Docker-based deployment</li>
+      <li>Session-based conversation memory</li>
+      <li>Source-aware responses</li>
+      <li>Confidence-based fallback handling</li>
+    </ul>
+    <p>&lt;b&gt;Objective:&lt;/b&gt; Deliver a production-ready chatbot capable of providing accurate, context-aware responses using the official Theta Technolabs knowledge base while establishing the foundation for future monitoring and analytics.</p>
+    <p>---</p>
+  </sheet>
+
+  <!-- ============ SHEET 04 ============ -->
+  <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="04" title="15.3 Phase 2 – Monitoring &amp; Analytics">
+    <h2>15.3 Phase 2 – Monitoring &amp; Analytics</h2>
+    <p>Following the initial deployment, the focus shifts toward improving operational visibility, monitoring, and performance analysis.</p>
+    <h3>Features</h3>
+    <ul>
+      <li>Administrative dashboard</li>
+      <li>Conversation history</li>
+      <li>User feedback collection</li>
+      <li>Request and response logging</li>
+      <li>Performance monitoring</li>
+      <li>Usage analytics</li>
+      <li>Knowledge synchronization history</li>
+      <li>AI-powered conversation summaries for dashboard insights</li>
+    </ul>
+    <p>&lt;b&gt;Objective:&lt;/b&gt; Improve operational monitoring and provide actionable insights into chatbot usage, conversation trends, and overall system performance.</p>
+    <p>---</p>
+  </sheet>
+
+  <!-- ============ SHEET 05 ============ -->
+  <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="05" title="15.4 Phase 3 – User Experience Enhancements">
+    <h2>15.4 Phase 3 – User Experience Enhancements</h2>
+    <p>This phase focuses on enhancing the overall user experience and making interactions more engaging and accessible.</p>
+    <h3>Features</h3>
+    <ul>
+      <li>Suggested follow-up questions</li>
+      <li>Rich response cards</li>
+      <li>Multi-language support</li>
+      <li>Voice interaction</li>
+      <li>File upload support</li>
+      <li>Accessibility improvements</li>
+      <li>Enhanced conversation memory</li>
+    </ul>
+    <p>&lt;b&gt;Objective:&lt;/b&gt; Improve usability, accessibility, and the overall conversational experience for website visitors.</p>
+    <p>---</p>
+  </sheet>
+
+  <!-- ============ SHEET 06 ============ -->
+  <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="06" title="15.5 Long-Term Vision">
+    <h2>15.5 Long-Term Vision</h2>
+    <p>The long-term vision is to continuously enhance the Theta Chat Bot by improving response quality, user experience, and operational efficiency while preserving its modular architecture. Future enhancements will focus on increasing system performance, simplifying maintenance, and supporting evolving business requirements without requiring significant architectural changes.</p>
+    <h3>Potential Future Enhancements</h3>
+    <ul>
+      <li>Multi-website support</li>
+      <li>Improved Retrieval-Augmented Generation (RAG) techniques</li>
+      <li>Enhanced semantic search accuracy</li>
+      <li>Advanced conversation analytics and reporting</li>
+      <li>AI-powered conversation summaries</li>
+      <li>Improved response quality evaluation</li>
+      <li>Automated knowledge synchronization</li>
+      <li>Performance optimization and scalability improvements</li>
+    </ul>
+    <p>The modular architecture proposed in this project provides the flexibility to incorporate these enhancements incrementally while maintaining system stability and maintainability.</p>
+    <p>---</p>
+  </sheet>
+
+  <!-- ============ SHEET 07 ============ -->
+  <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="07" title="15.6 Roadmap Summary">
+    <h2>15.6 Roadmap Summary</h2>
+    <table>
+      <row header="1"><cell>Phase</cell><cell>Primary Objective</cell></row>
+      <row><cell><b>Phase 1</b></cell><cell>Deploy a production-ready RAG chatbot and establish the core AI platform</cell></row>
+      <row><cell><b>Phase 2</b></cell><cell>Introduce monitoring, dashboards, and operational analytics</cell></row>
+      <row><cell><b>Phase 3</b></cell><cell>Enhance user experience and accessibility</cell></row>
+      <row><cell><b>Long-Term Vision</b></cell><cell>Expand the chatbot through continuous improvements and support for future business requirements</cell></row>
+    </table>
+    <p>The phased roadmap enables incremental development while minimizing implementation risk. Each phase builds upon the existing modular architecture, allowing the Theta Chat Bot to evolve into a scalable, maintainable, and intelligent customer support solution without requiring a complete system redesign.</p>
+  </sheet>
+</doc>

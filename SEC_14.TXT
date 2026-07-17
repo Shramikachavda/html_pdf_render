@@ -1,0 +1,100 @@
+# 15. Future Roadmap
+
+## 15.1 Overview
+
+The Theta Chat Bot has been designed using a modular and extensible architecture that supports future enhancements with minimal changes to the existing system. While the initial implementation focuses on delivering accurate website-based responses using a Retrieval-Augmented Generation (RAG) architecture, the proposed design enables the chatbot to evolve incrementally as business requirements grow.
+
+The roadmap below outlines the planned evolution of the chatbot while maintaining scalability, maintainability, and deployment flexibility.
+
+---
+
+## 15.2 Phase 1 – Initial Production Release (MVP)
+
+The first phase focuses on delivering a production-ready chatbot integrated with the Theta Technolabs website.
+
+### Features
+
+- Website-based knowledge retrieval
+- Retrieval-Augmented Generation (RAG)
+- Google Gemini integration
+- LLM evaluation and testing (Google Gemini with OpenAI as an alternative if required)
+- Sentence Transformers for local embeddings
+- FastAPI backend
+- Webflow chatbot integration
+- PostgreSQL integration for conversation storage and analytics
+- pgvector for vector search (if PostgreSQL is selected as the vector database)
+- Docker-based deployment
+- Session-based conversation memory
+- Source-aware responses
+- Confidence-based fallback handling
+
+**Objective:** Deliver a production-ready chatbot capable of providing accurate, context-aware responses using the official Theta Technolabs knowledge base while establishing the foundation for future monitoring and analytics.
+
+---
+
+## 15.3 Phase 2 – Monitoring & Analytics
+
+Following the initial deployment, the focus shifts toward improving operational visibility, monitoring, and performance analysis.
+
+### Features
+
+- Administrative dashboard
+- Conversation history
+- User feedback collection
+- Request and response logging
+- Performance monitoring
+- Usage analytics
+- Knowledge synchronization history
+- AI-powered conversation summaries for dashboard insights
+
+**Objective:** Improve operational monitoring and provide actionable insights into chatbot usage, conversation trends, and overall system performance.
+
+---
+
+## 15.4 Phase 3 – User Experience Enhancements
+
+This phase focuses on enhancing the overall user experience and making interactions more engaging and accessible.
+
+### Features
+
+- Suggested follow-up questions
+- Rich response cards
+- Multi-language support
+- Voice interaction
+- File upload support
+- Accessibility improvements
+- Enhanced conversation memory
+
+**Objective:** Improve usability, accessibility, and the overall conversational experience for website visitors.
+
+---
+
+## 15.5 Long-Term Vision
+
+The long-term vision is to continuously enhance the Theta Chat Bot by improving response quality, user experience, and operational efficiency while preserving its modular architecture. Future enhancements will focus on increasing system performance, simplifying maintenance, and supporting evolving business requirements without requiring significant architectural changes.
+
+### Potential Future Enhancements
+
+- Multi-website support
+- Improved Retrieval-Augmented Generation (RAG) techniques
+- Enhanced semantic search accuracy
+- Advanced conversation analytics and reporting
+- AI-powered conversation summaries
+- Improved response quality evaluation
+- Automated knowledge synchronization
+- Performance optimization and scalability improvements
+
+The modular architecture proposed in this project provides the flexibility to incorporate these enhancements incrementally while maintaining system stability and maintainability.
+
+---
+
+## 15.6 Roadmap Summary
+
+| Phase | Primary Objective |
+|--------|-------------------|
+| **Phase 1** | Deploy a production-ready RAG chatbot and establish the core AI platform |
+| **Phase 2** | Introduce monitoring, dashboards, and operational analytics |
+| **Phase 3** | Enhance user experience and accessibility |
+| **Long-Term Vision** | Expand the chatbot through continuous improvements and support for future business requirements |
+
+The phased roadmap enables incremental development while minimizing implementation risk. Each phase builds upon the existing modular architecture, allowing the Theta Chat Bot to evolve into a scalable, maintainable, and intelligent customer support solution without requiring a complete system redesign.

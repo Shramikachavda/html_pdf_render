@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="SYSTEM ARCHITECTURE">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="SYSTEM ARCHITECTURE" kicker="ARCHITECTURE" footnum="01" title="5. System Architecture">
+    <h2>5. System Architecture</h2>
+    <h3>5.1 Architecture Overview</h3>
+    <p>The Theta Chat Bot follows a modular, service-oriented architecture designed around the principles of scalability, maintainability, and loose coupling. Each major component has a clearly defined responsibility, allowing individual services to be upgraded or replaced without impacting the rest of the system.</p>
+    <p>The architecture separates the user interface, application logic, artificial intelligence layer, knowledge storage, and operational services into independent layers. This design ensures the chatbot remains easy to maintain while supporting future enhancements such as analytics dashboards, multilingual support, CRM integration, or migration to different Large Language Models (LLMs).</p>
+    <p>The overall architecture consists of the following layers:</p>
+    <p>Presentation Layer</p>
+    <p>API Layer</p>
+    <p>Business Logic Layer</p>
+    <p>AI &amp; Retrieval Layer</p>
+    <p>Data Layer</p>
+    <p>Infrastructure Layer</p>
+    <h3>5.2 Presentation Layer</h3>
+    <p>The Presentation Layer is the user-facing interface through which visitors interact with the chatbot.</p>
+    <p>The existing Theta Technolabs website is developed using a no-code website builder (such as Webflow). Instead of rebuilding the frontend, a lightweight custom JavaScript chatbot widget will be embedded into the website.</p>
+    <p>Responsibilities</p>
+    <p>Display chat interface</p>
+    <p>Capture user questions</p>
+    <p>Display AI responses</p>
+    <p>Show typing indicators</p>
+    <p>Display source references (optional)</p>
+    <p>Display fallback actions</p>
+    <p>Manage session identifiers</p>
+    <p>Communicate securely with backend APIs</p>
+    <p>Since the chatbot is embedded into the existing website, no additional frontend framework is required.</p>
+    <h3>5.3 API Layer</h3>
+    <p>The API Layer acts as the communication bridge between the frontend and backend services.</p>
+    <p>All requests from the chatbot widget are transmitted through secure REST APIs exposed by the FastAPI backend.</p>
+    <p>Responsibilities</p>
+    <p>Receive user messages</p>
+    <p>Validate requests</p>
+    <p>Generate session identifiers</p>
+    <p>Handle authentication (future)</p>
+    <p>Route requests to the AI pipeline</p>
+    <p>Return structured JSON responses</p>
+    <p>Example API Flow</p>
+    <p>Website</p>
+    <p>↓</p>
+    <p>Chat Widget</p>
+    <p>↓</p>
+    <p>REST API</p>
+    <p>↓</p>
+    <p>FastAPI</p>
+    <h3>5.4 Business Logic Layer</h3>
+    <p>The Business Logic Layer coordinates the complete chatbot workflow.</p>
+    <p>It acts as the orchestration layer between the frontend, retrieval engine, vector database, and language model.</p>
+    <p>Responsibilities</p>
+    <p>Query validation</p>
+    <p>Session management</p>
+    <p>Prompt construction</p>
+    <p>Context management</p>
+    <p>Response validation</p>
+    <p>Error handling</p>
+    <p>Logging</p>
+    <p>Analytics integration (optional)</p>
+    <p>This layer ensures that all chatbot requests follow a consistent processing pipeline.</p>
+    <h3>5.5 AI &amp; Retrieval Layer</h3>
+    <p>The AI Layer is responsible for transforming natural language questions into accurate responses.</p>
+    <p>Rather than sending user questions directly to the language model, the system first retrieves the most relevant website content using semantic search.</p>
+    <p>The AI pipeline consists of:</p>
+    <p>Embedding Generation</p>
+    <p>Semantic Retrieval</p>
+    <p>Context Construction</p>
+    <p>Prompt Engineering</p>
+    <p>LLM Response Generation</p>
+    <p>Confidence Validation</p>
+    <p>This Retrieval-Augmented Generation (RAG) approach significantly improves response accuracy while reducing hallucinations.</p>
+    <h3>5.6 Large Language Model (LLM)</h3>
+    <p>The architecture is designed to remain independent of any specific AI provider.</p>
+    <p>Primary Provider</p>
+    <p>Google Gemini</p>
+    <p>Reason:</p>
+    <p>Lower operational cost</p>
+    <p>Strong reasoning capability</p>
+    <p>Large context window</p>
+    <p>Suitable for MVP deployment</p>
+    <p>Future Option</p>
+    <p>OpenAI</p>
+    <p>If future testing indicates that higher reasoning quality or advanced features are required, the LLM layer can be switched to OpenAI without requiring architectural changes.</p>
+    <p>The abstraction layer ensures that the backend communicates through a common interface regardless of the selected provider.</p>
+    <h3>5.7 Data Layer</h3>
+    <p>The Data Layer stores the knowledge base and, optionally, operational analytics.</p>
+    <p>Two deployment architectures are proposed.</p>
+    <p>Architecture A — Lightweight Deployment</p>
+    <p>Components:</p>
+    <p>Qdrant Vector Database</p>
+    <p>Purpose:</p>
+    <p>Store semantic embeddings</p>
+    <p>Perform similarity search</p>
+    <p>Return relevant website content</p>
+    <p>Recommended when only chatbot functionality is required.</p>
+    <p>Architecture B — Enterprise Deployment</p>
+    <p>Components:</p>
+    <p>PostgreSQL</p>
+    <p>pgvector</p>
+    <p>Purpose:</p>
+    <p>Store semantic embeddings</p>
+    <p>Store chatbot analytics</p>
+    <p>Conversation logs</p>
+    <p>User feedback</p>
+    <p>API usage</p>
+    <p>Token consumption</p>
+    <p>Dashboard metrics</p>
+    <p>Configuration data</p>
+    <p>Recommended when an Admin Dashboard and operational reporting are required.</p>
+    <h3>5.8 Infrastructure Layer</h3>
+    <p>The entire solution will be containerized using Docker to ensure consistent deployment across development, testing, and production environments.</p>
+    <p>Each major service runs inside an isolated container.</p>
+    <p>Possible containers include:</p>
+    <p>FastAPI Application</p>
+    <p>Nginx Reverse Proxy</p>
+    <p>Qdrant (Lightweight Option)</p>
+    <p>PostgreSQL + pgvector (Enterprise Option)</p>
+    <p>pgAdmin (Enterprise Option)</p>
+    <p>Containerization provides:</p>
+    <p>Simplified deployment</p>
+    <p>Easy maintenance</p>
+    <p>Environment consistency</p>
+    <p>Portability</p>
+    <p>On-Premise compatibility</p>
+    <h3>5.9 Deployment Strategy</h3>
+    <p>The proposed deployment model is an on-premise Docker environment hosted within the company's infrastructure.</p>
+    <p>Advantages include:</p>
+    <p>Complete control over infrastructure</p>
+    <p>Internal data management</p>
+    <p>Easier compliance with company policies</p>
+    <p>Lower long-term operational costs</p>
+    <p>Simplified backup and maintenance</p>
+    <p>If future scalability requirements increase, the same Docker architecture can be deployed on cloud platforms with minimal modifications.</p>
+    <h3>5.10 Component Communication</h3>
+    <raw><img src="dia_2.svg" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+
+    <p>The communication flow between components follows this sequence:</p>
+    <p>User submits a question through the chatbot.</p>
+    <p>The chatbot widget sends the request to the FastAPI backend.</p>
+    <p>FastAPI validates the request.</p>
+    <p>The embedding model converts the query into a vector.</p>
+    <p>The vector database performs semantic similarity search.</p>
+    <p>Relevant website content is retrieved.</p>
+    <p>The prompt is constructed.</p>
+    <p>The prompt is sent to the configured LLM.</p>
+    <p>The generated response is validated.</p>
+    <p>The response is returned to the frontend.</p>
+    <p>If enabled, analytics and feedback are stored in PostgreSQL.</p>
+    <h3>5.11 Scalability Considerations</h3>
+    <p>The proposed architecture supports future enhancements without requiring major redesign.</p>
+    <p>Possible future extensions include:</p>
+    <p>Admin Dashboard</p>
+    <p>CRM Integration</p>
+    <p>Multilingual Support</p>
+    <p>Voice-based Chatbot</p>
+    <p>Multi-Website Knowledge Base</p>
+    <p>Document Upload Support</p>
+    <p>Hybrid Search (Semantic + Keyword)</p>
+    <p>Response Caching</p>
+    <p>Redis Integration</p>
+    <p>Multiple LLM Providers</p>
+    <p>The modular architecture ensures that new capabilities can be introduced independently while maintaining compatibility with the existing system.</p>
+    <h3>5.12 Key Design Decisions</h3>
+    <p>Decision</p>
+    <p>Justification</p>
+    <p>Modular layered architecture</p>
+    <p>Simplifies maintenance and future enhancements.</p>
+    <p>Existing website integration</p>
+    <p>Eliminates the need to rebuild the frontend.</p>
+    <p>FastAPI as the orchestration layer</p>
+    <p>Provides high-performance asynchronous API handling.</p>
+    <p>RAG architecture</p>
+    <p>Grounds responses in official website content.</p>
+    <p>Docker-based deployment</p>
+    <p>Ensures portability and deployment consistency.</p>
+    <p>On-premise deployment</p>
+    <p>Keeps infrastructure under company control while reducing long-term operational costs.</p>
+    <p>Provider-independent AI layer</p>
+    <p>Enables migration between Gemini and OpenAI without changing the overall architecture.</p>
+    <p>Dual database strategy</p>
+    <p>Supports both lightweight and enterprise deployments based on business requirements.</p>
+  </sheet>
+</doc>

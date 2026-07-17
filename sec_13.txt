@@ -1,0 +1,133 @@
+14. Risk Assessment & Mitigation
+14.1 Overview
+Every software solution introduces technical and operational risks that should be identified during the design phase. Evaluating these risks early enables the team to define appropriate mitigation strategies and reduces the likelihood of unexpected issues during deployment or production.
+The following table summarizes the primary risks identified for the Theta Chat Bot project.
+
+14.2 Risk Register
+Risk
+Impact
+Probability
+Mitigation Strategy
+Website content becomes outdated
+High
+Medium
+Implement event-driven incremental synchronization whenever content is published or updated.
+AI generates unsupported information (hallucination)
+High
+Medium
+Use Retrieval-Augmented Generation (RAG) and restrict responses to retrieved website content.
+API provider downtime
+High
+Low
+Display a user-friendly fallback message and monitor provider availability. Future support for multiple LLM providers can improve resilience.
+Increased API costs
+Medium
+Medium
+Monitor token usage, analyze operational costs, and optimize prompts and retrieval strategies.
+Knowledge retrieval returns low-confidence results
+Medium
+Medium
+Apply confidence thresholds and direct users to the Contact or Inquiry page when sufficient information is unavailable.
+High website traffic
+Medium
+Low
+Scale the FastAPI backend horizontally and optimize database performance.
+Vector database corruption or failure
+High
+Low
+Maintain regular database backups and validate restoration procedures.
+
+
+
+
+
+
+
+
+Unexpected application failures
+High
+Low
+Implement structured logging, health monitoring, and automated alerting.
+
+
+
+
+
+
+
+
+
+
+14.3 Technical Risks
+Several technical risks are associated with AI-powered chatbot systems.
+Retrieval Accuracy
+If the retrieved website content does not closely match the user's question, response quality may decrease.
+Mitigation:
+Semantic embeddings.
+Optimized chunking strategy.
+Similarity threshold tuning.
+Continuous evaluation using analytics.
+
+Knowledge Freshness
+Outdated website content may result in inaccurate responses.
+Mitigation:
+Event-driven incremental synchronization.
+Metadata versioning.
+Synchronization history tracking.
+
+AI Provider Dependency
+Reliance on a single LLM provider may introduce operational risks.
+Mitigation:
+Provider-independent AI abstraction.
+Support for future integration with additional providers.
+
+14.4 Operational Risks
+Operational risks relate to deployment, infrastructure, and ongoing maintenance.
+Potential concerns include:
+Server downtime.
+Database connectivity issues.
+Docker container failures.
+Misconfigured environment variables.
+Failed knowledge synchronization.
+Mitigation measures include:
+Health monitoring.
+Container restart policies.
+Backup procedures.
+Deployment validation checklists.
+
+14.5 Business Risks
+Business-related risks should also be considered.
+Examples include:
+Users expecting answers beyond the chatbot's supported domain.
+Changes to business services without corresponding website updates.
+Increased operational costs due to higher AI usage.
+Mitigation:
+Clearly define the chatbot's scope.
+Keep the website as the single source of truth.
+Monitor usage trends and API costs through the Operational Dashboard.
+
+14.6 Risk Review Process
+Risks should be reviewed periodically during development and after production deployment.
+The review process should include:
+Analysis of operational metrics.
+User feedback.
+Failed or unanswered queries.
+AI response quality.
+Knowledge base coverage.
+Continuous review allows the chatbot to evolve while maintaining reliability and accuracy.
+
+14.7 Key Design Decisions
+Decision
+Justification
+Early risk identification
+Reduces implementation and operational uncertainty.
+RAG architecture
+Minimizes hallucinations by grounding responses in approved content.
+Event-driven synchronization
+Ensures knowledge remains current without unnecessary processing.
+Operational monitoring
+Enables early detection of technical issues.
+Provider-independent architecture
+Reduces dependency on a single AI provider and improves future flexibility.
+
+

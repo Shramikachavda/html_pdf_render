@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="RISKS &amp; LIMITATIONS">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="RISKS &amp; LIMITATIONS" kicker="RISK MANAGEMENT" footnum="01" title="14. Risk Assessment &amp; Mitigation">
+    <h2>14. Risk Assessment &amp; Mitigation</h2>
+    <h3>14.1 Overview</h3>
+    <p>Every software solution introduces technical and operational risks that should be identified during the design phase. Evaluating these risks early enables the team to define appropriate mitigation strategies and reduces the likelihood of unexpected issues during deployment or production.</p>
+    <p>The following table summarizes the primary risks identified for the Theta Chat Bot project.</p>
+    <h3>14.2 Risk Register</h3>
+    <p>Risk</p>
+    <p>Impact</p>
+    <p>Probability</p>
+    <p>Mitigation Strategy</p>
+    <p>Website content becomes outdated</p>
+    <p>High</p>
+    <p>Medium</p>
+    <p>Implement event-driven incremental synchronization whenever content is published or updated.</p>
+    <p>AI generates unsupported information (hallucination)</p>
+    <p>High</p>
+    <p>Medium</p>
+    <p>Use Retrieval-Augmented Generation (RAG) and restrict responses to retrieved website content.</p>
+    <p>API provider downtime</p>
+    <p>High</p>
+    <p>Low</p>
+    <p>Display a user-friendly fallback message and monitor provider availability. Future support for multiple LLM providers can improve resilience.</p>
+    <p>Increased API costs</p>
+    <p>Medium</p>
+    <p>Medium</p>
+    <p>Monitor token usage, analyze operational costs, and optimize prompts and retrieval strategies.</p>
+    <p>Knowledge retrieval returns low-confidence results</p>
+    <p>Medium</p>
+    <p>Medium</p>
+    <p>Apply confidence thresholds and direct users to the Contact or Inquiry page when sufficient information is unavailable.</p>
+    <p>High website traffic</p>
+    <p>Medium</p>
+    <p>Low</p>
+    <p>Scale the FastAPI backend horizontally and optimize database performance.</p>
+    <p>Vector database corruption or failure</p>
+    <p>High</p>
+    <p>Low</p>
+    <p>Maintain regular database backups and validate restoration procedures.</p>
+    <p>Unexpected application failures</p>
+    <p>High</p>
+    <p>Low</p>
+    <p>Implement structured logging, health monitoring, and automated alerting.</p>
+    <h3>14.3 Technical Risks</h3>
+    <p>Several technical risks are associated with AI-powered chatbot systems.</p>
+    <p>Retrieval Accuracy</p>
+    <p>If the retrieved website content does not closely match the user's question, response quality may decrease.</p>
+    <p>Mitigation:</p>
+    <p>Semantic embeddings.</p>
+    <p>Optimized chunking strategy.</p>
+    <p>Similarity threshold tuning.</p>
+    <p>Continuous evaluation using analytics.</p>
+    <p>Knowledge Freshness</p>
+    <p>Outdated website content may result in inaccurate responses.</p>
+    <p>Mitigation:</p>
+    <p>Event-driven incremental synchronization.</p>
+    <p>Metadata versioning.</p>
+    <p>Synchronization history tracking.</p>
+    <p>AI Provider Dependency</p>
+    <p>Reliance on a single LLM provider may introduce operational risks.</p>
+    <p>Mitigation:</p>
+    <p>Provider-independent AI abstraction.</p>
+    <p>Support for future integration with additional providers.</p>
+    <h3>14.4 Operational Risks</h3>
+    <p>Operational risks relate to deployment, infrastructure, and ongoing maintenance.</p>
+    <p>Potential concerns include:</p>
+    <p>Server downtime.</p>
+    <p>Database connectivity issues.</p>
+    <p>Docker container failures.</p>
+    <p>Misconfigured environment variables.</p>
+    <p>Failed knowledge synchronization.</p>
+    <p>Mitigation measures include:</p>
+    <p>Health monitoring.</p>
+    <p>Container restart policies.</p>
+    <p>Backup procedures.</p>
+    <p>Deployment validation checklists.</p>
+    <h3>14.5 Business Risks</h3>
+    <p>Business-related risks should also be considered.</p>
+    <p>Examples include:</p>
+    <p>Users expecting answers beyond the chatbot's supported domain.</p>
+    <p>Changes to business services without corresponding website updates.</p>
+    <p>Increased operational costs due to higher AI usage.</p>
+    <p>Mitigation:</p>
+    <p>Clearly define the chatbot's scope.</p>
+    <p>Keep the website as the single source of truth.</p>
+    <p>Monitor usage trends and API costs through the Operational Dashboard.</p>
+    <h3>14.6 Risk Review Process</h3>
+    <p>Risks should be reviewed periodically during development and after production deployment.</p>
+    <p>The review process should include:</p>
+    <p>Analysis of operational metrics.</p>
+    <p>User feedback.</p>
+    <p>Failed or unanswered queries.</p>
+    <p>AI response quality.</p>
+    <p>Knowledge base coverage.</p>
+    <p>Continuous review allows the chatbot to evolve while maintaining reliability and accuracy.</p>
+    <h3>14.7 Key Design Decisions</h3>
+    <p>Decision</p>
+    <p>Justification</p>
+    <p>Early risk identification</p>
+    <p>Reduces implementation and operational uncertainty.</p>
+    <p>RAG architecture</p>
+    <p>Minimizes hallucinations by grounding responses in approved content.</p>
+    <p>Event-driven synchronization</p>
+    <p>Ensures knowledge remains current without unnecessary processing.</p>
+    <p>Operational monitoring</p>
+    <p>Enables early detection of technical issues.</p>
+    <p>Provider-independent architecture</p>
+    <p>Reduces dependency on a single AI provider and improves future flexibility.</p>
+  </sheet>
+</doc>

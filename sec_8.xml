@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="FRONTEND INTEGRATION">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="FRONTEND INTEGRATION" kicker="FRONTEND" footnum="01" title="8. Frontend Integration &amp; User Experience">
+    <h2>8. Frontend Integration &amp; User Experience</h2>
+    <h3>8.1 Overview</h3>
+    <raw><img src="mermaid-diagram (6).png" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+
+    <p>The Theta Chat Bot will be integrated into the existing Theta Technolabs website without requiring any major modifications to the current frontend architecture. Since the website is developed using a no-code platform (such as Webflow), the chatbot will be embedded using a lightweight JavaScript widget that communicates with the FastAPI backend through secure REST APIs.</p>
+    <p>This approach minimizes development effort while ensuring that the chatbot provides a seamless and consistent user experience across all website pages.</p>
+    <p>The frontend is responsible for:</p>
+    <p>Displaying the chatbot interface</p>
+    <p>Capturing user queries</p>
+    <p>Managing the current browser session</p>
+    <p>Sending requests to the backend</p>
+    <p>Displaying AI-generated responses</p>
+    <p>Providing source references (when available)</p>
+    <p>Handling loading, error, and fallback states</p>
+    <p>The frontend contains no AI logic. All retrieval, prompt construction, and response generation are handled by the backend.</p>
+    <h3>8.2 Frontend Architecture</h3>
+    <p>The chatbot frontend consists of three primary components:</p>
+    <p>Chat Launcher</p>
+    <p>A floating action button displayed on every page of the website.</p>
+    <p>Responsibilities:</p>
+    <p>Open chatbot window</p>
+    <p>Close chatbot window</p>
+    <p>Preserve current session state</p>
+    <p>Chat Window</p>
+    <p>The main conversation interface.</p>
+    <p>Responsibilities:</p>
+    <p>Display conversation history</p>
+    <p>Accept user input</p>
+    <p>Display typing indicators</p>
+    <p>Render AI responses</p>
+    <p>Show source references</p>
+    <p>Display quick action buttons</p>
+    <p>Display fallback options</p>
+    <p>API Communication Layer</p>
+    <p>Responsible for communication with the backend.</p>
+    <p>Responsibilities:</p>
+    <p>Send REST API requests</p>
+    <p>Receive JSON responses</p>
+    <p>Handle network failures</p>
+    <p>Retry failed requests (future enhancement)</p>
+    <h3>8.3 Frontend Request Flow</h3>
+    <p>Every user interaction follows the same communication flow.</p>
+    <p>User opens chatbot</p>
+    <p>↓</p>
+    <p>Types message</p>
+    <p>↓</p>
+    <p>JavaScript Widget</p>
+    <p>↓</p>
+    <p>POST Request</p>
+    <p>↓</p>
+    <p>FastAPI Backend</p>
+    <p>↓</p>
+    <p>JSON Response</p>
+    <p>↓</p>
+    <p>Display Response</p>
+    <p>This lightweight communication model keeps the frontend simple while allowing the backend to manage all business logic.</p>
+    <h3>8.4 User Journey</h3>
+    <p>The following sequence describes a typical user interaction.</p>
+    <p>Step 1</p>
+    <p>Visitor opens the Theta Technolabs website.</p>
+    <p>↓</p>
+    <p>Step 2</p>
+    <p>The chatbot launcher appears at the bottom-right corner of the screen.</p>
+    <p>↓</p>
+    <p>Step 3</p>
+    <p>The visitor clicks the chatbot icon.</p>
+    <p>↓</p>
+    <p>Step 4</p>
+    <p>The chatbot displays a welcome message.</p>
+    <p>Example:</p>
+    <p>"Hello! 👋 I'm the Theta AI Assistant. How can I help you today?"</p>
+    <p>↓</p>
+    <p>Step 5</p>
+    <p>The visitor enters a question.</p>
+    <p>↓</p>
+    <p>Step 6</p>
+    <p>The frontend sends the request to the backend.</p>
+    <p>↓</p>
+    <p>Step 7</p>
+    <p>The chatbot displays a typing indicator while the backend processes the request.</p>
+    <p>↓</p>
+    <p>Step 8</p>
+    <p>The AI-generated response is displayed.</p>
+    <p>↓</p>
+    <p>Step 9</p>
+    <p>If available, the chatbot displays a reference to the related website page.</p>
+    <p>↓</p>
+    <p>Step 10</p>
+    <p>The user can continue the conversation or close the chatbot.</p>
+    <h3>8.5 User Interface States</h3>
+    <p>To provide a smooth user experience, the chatbot supports multiple interface states.</p>
+    <p>State</p>
+    <p>Description</p>
+    <p>Welcome</p>
+    <p>Initial greeting when chatbot opens</p>
+    <p>Idle</p>
+    <p>Waiting for user input</p>
+    <p>Typing</p>
+    <p>User entering a message</p>
+    <p>Loading</p>
+    <p>Backend is processing the request</p>
+    <p>Response</p>
+    <p>AI-generated answer displayed</p>
+    <p>Error</p>
+    <p>Temporary server or network issue</p>
+    <p>No Result</p>
+    <p>Information not found in the knowledge base</p>
+    <p>Out of Scope</p>
+    <p>Question is outside the chatbot's supported domain</p>
+    <p>Each state provides clear visual feedback to improve usability.</p>
+    <h3>8.6 Suggested Questions</h3>
+    <p>To encourage user engagement, the chatbot can display suggested questions when first opened.</p>
+    <p>Examples:</p>
+    <p>What services does Theta Technolabs provide?</p>
+    <p>Which technologies do you specialize in?</p>
+    <p>Can you build AI-powered applications?</p>
+    <p>Show your recent projects.</p>
+    <p>How can I contact your team?</p>
+    <p>Do you provide mobile app development services?</p>
+    <p>These suggestions help users understand the chatbot's capabilities and reduce uncertainty.</p>
+    <h3>8.7 Response Presentation</h3>
+    <p>Every chatbot response should follow a consistent format.</p>
+    <p>The response may include:</p>
+    <p>AI-generated answer</p>
+    <p>Related service or page reference</p>
+    <p>Relevant website link (if available)</p>
+    <p>Contact recommendation (when required)</p>
+    <p>Example:</p>
+    <p>AI Response</p>
+    <p>Theta Technolabs provides Artificial Intelligence Development, Machine Learning, Computer Vision, and Conversational AI solutions.</p>
+    <p>Related Page:</p>
+    <p>AI Development Services</p>
+    <p>View Details →</p>
+    <p>This structure improves transparency and encourages users to explore the website further.</p>
+    <h3>8.8 Fallback User Experience</h3>
+    <p>If the chatbot cannot confidently answer a question, it should provide a helpful fallback experience instead of generating uncertain information.</p>
+    <p>Scenario 1 – Low Confidence</p>
+    <p>Message:</p>
+    <p>"I couldn't find enough verified information to answer your question accurately. You may find more details on our website or contact our team for further assistance."</p>
+    <p>Available Actions:</p>
+    <p>View Related Services</p>
+    <p>Contact Us</p>
+    <p>Submit Inquiry</p>
+    <p>Scenario 2 – Out-of-Scope Query</p>
+    <p>Message:</p>
+    <p>"I'm designed to answer questions related to Theta Technolabs, including our services, technologies, portfolio, careers, and company information. I can't assist with unrelated topics."</p>
+    <p>Available Actions:</p>
+    <p>Visit Services</p>
+    <p>Contact Sales</p>
+    <p>Submit Inquiry</p>
+    <p>This approach maintains transparency while guiding users toward the appropriate next step.</p>
+    <h3>8.9 Responsive Design</h3>
+    <p>The chatbot interface should provide a consistent experience across all supported devices.</p>
+    <p>Supported platforms include:</p>
+    <p>Desktop browsers</p>
+    <p>Tablets</p>
+    <p>Mobile devices</p>
+    <p>Key considerations:</p>
+    <p>Responsive layout</p>
+    <p>Scrollable conversation history</p>
+    <p>Touch-friendly controls</p>
+    <p>Optimized input field</p>
+    <p>Adaptive chatbot window size</p>
+    <h3>8.10 Accessibility Considerations</h3>
+    <p>The chatbot should follow general accessibility best practices to ensure usability for a wider audience.</p>
+    <p>Recommended considerations:</p>
+    <p>Keyboard navigation support</p>
+    <p>Screen reader compatibility</p>
+    <p>Sufficient color contrast</p>
+    <p>Readable typography</p>
+    <p>Visible focus indicators</p>
+    <p>Accessible button labels</p>
+    <p>Implementing these practices improves the overall user experience and aligns with modern web accessibility standards.</p>
+    <h3>8.11 Future User Experience Enhancements</h3>
+    <p>The modular frontend architecture allows future improvements without changing the backend.</p>
+    <p>Potential enhancements include:</p>
+    <p>Voice-based interaction</p>
+    <p>File upload support</p>
+    <p>Multi-language interface</p>
+    <p>Dark mode</p>
+    <p>Rich cards and service recommendations</p>
+    <p>Appointment booking</p>
+    <p>Live agent handoff</p>
+    <p>CRM integration</p>
+    <p>Conversation export</p>
+    <h3>8.12 Key Design Decisions</h3>
+    <p>Decision</p>
+    <p>Justification</p>
+    <p>Embedded JavaScript widget</p>
+    <p>Enables seamless integration with the existing website without redevelopment.</p>
+    <p>Backend-driven AI processing</p>
+    <p>Keeps the frontend lightweight and secure by avoiding AI logic in the browser.</p>
+    <p>Session-based conversation</p>
+    <p>Improves conversational continuity while remaining anonymous.</p>
+    <p>Suggested questions</p>
+    <p>Helps users discover chatbot capabilities quickly.</p>
+    <p>Confidence-based fallback</p>
+    <p>Prevents misleading responses and improves user trust.</p>
+    <p>Responsive design</p>
+    <p>Ensures consistent experience across desktop and mobile devices.</p>
+    <p>Accessibility support</p>
+    <p>Improves usability for all users and aligns with modern web standards.</p>
+  </sheet>
+</doc>

@@ -1,0 +1,110 @@
+flowchart LR
+
+%% =========================
+%% User Layer
+%% =========================
+subgraph USER["🌍 User Layer"]
+    U["👤 Website Visitor"]
+end
+
+%% =========================
+%% Presentation Layer
+%% =========================
+subgraph FRONTEND["💻 Presentation Layer"]
+    WEB["🌐 Theta Website<br/>(Webflow / Existing Website)"]
+    CHAT["💬 AI Chat Widget"]
+end
+
+%% =========================
+%% Application Layer
+%% =========================
+subgraph BACKEND["⚙️ Application Layer"]
+    API["FastAPI REST API"]
+
+    ORCH["Request Orchestrator"]
+
+    RAG["RAG Engine"]
+
+    PROMPT["Prompt Builder"]
+
+    RESPONSE["Response Formatter"]
+end
+
+%% =========================
+%% AI Layer
+%% =========================
+subgraph AI["🤖 AI Layer"]
+    GEMINI["Google Gemini LLM"]
+end
+
+%% =========================
+%% Knowledge Layer
+%% =========================
+subgraph KNOWLEDGE["📚 Knowledge Layer"]
+
+    VECTOR["Vector Database"]
+
+    subgraph OPTIONS["Deployment Options"]
+        QDRANT["Qdrant<br/>(Lightweight)"]
+        PG["PostgreSQL + pgvector<br/>(Enterprise)"]
+    end
+end
+
+%% =========================
+%% Optional Analytics
+%% =========================
+subgraph ANALYTICS["📊 Optional Analytics"]
+    DASH["Operational Dashboard"]
+end
+
+%% =========================
+%% Website Content
+%% =========================
+subgraph CONTENT["🌐 Knowledge Source"]
+    SITE["Theta Website Content"]
+end
+
+%% =========================
+%% User Flow
+%% =========================
+U --> WEB
+
+WEB --> CHAT
+
+CHAT --> API
+
+API --> ORCH
+
+ORCH --> RAG
+
+RAG --> VECTOR
+
+VECTOR --> PROMPT
+
+PROMPT --> GEMINI
+
+GEMINI --> RESPONSE
+
+RESPONSE --> CHAT
+
+CHAT --> U
+
+%% Knowledge Sync
+SITE -. Incremental Content Sync .-> VECTOR
+
+%% Database Options
+VECTOR -. Lightweight .-> QDRANT
+
+VECTOR -. Enterprise .-> PG
+
+PG --> DASH
+
+%% Colors
+style USER fill:#f4f7f9,stroke:#1c5d8c,stroke-width:2px,color:#0d2b45
+style FRONTEND fill:#f4f7f9,stroke:#1c5d8c,stroke-width:2px,color:#0d2b45
+style BACKEND fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
+style AI fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
+style KNOWLEDGE fill:#0d2b45,stroke:#2f5674,stroke-width:2px,color:#cfe4ee
+style ANALYTICS fill:#123a5c,stroke:#7fd0e6,stroke-width:2px,color:#ffffff
+style CONTENT fill:#123a5c,stroke:#7fd0e6,stroke-width:2px,color:#ffffff
+

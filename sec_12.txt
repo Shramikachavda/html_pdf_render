@@ -1,0 +1,47 @@
+12. Monitoring & Logging
+
+12.1 Overview
+Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time. 
+The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.
+
+12.2 Monitoring Objectives
+The monitoring system is designed to:
+- Ensure high application availability.
+- Detect operational issues early.
+- Monitor chatbot performance.
+- Measure AI response quality.
+- Track operational costs.
+- Support troubleshooting and maintenance.
+
+12.3 Application Health
+Monitoring application health involves tracking several key metrics.
+Metric | Purpose
+--- | ---
+API Availability | Verify backend uptime
+Response Time | Measure request latency
+Error Rate | Detect application failures
+Active Sessions | Monitor current usage
+Request Volume | Measure traffic patterns
+
+12.4 AI Performance
+AI performance is tracked to evaluate cost and quality. Metrics include: total AI requests, average generation time, token consumption, estimated API cost, retrieval confidence, and LLM provider utilization.
+
+12.5 Knowledge Base Monitoring
+Metric | Description
+--- | ---
+Total Indexed Pages | Pages currently indexed
+Total Content Chunks | Semantic chunks in the KB
+Last Synchronization | Most recent successful update
+Failed Synchronizations | Sync errors
+Knowledge Version | Current indexed version
+
+12.6 Logging Strategy
+Logs capture API requests, AI requests, synchronization events, warnings, and errors — using standard levels (INFO, WARNING, ERROR, CRITICAL) to keep noise low while enabling fast troubleshooting. API keys, tokens, and other credentials must never be written to logs.
+
+12.7 Key Design Decisions
+Decision | Justification
+--- | ---
+Continuous health monitoring | Ensures reliable availability
+Structured logging | Simplifies troubleshooting
+AI performance monitoring | Supports cost and quality optimization
+Knowledge sync monitoring | Ensures responses stay current

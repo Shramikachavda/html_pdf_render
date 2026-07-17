@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="DATA &amp; DEPLOYMENT">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="DATA &amp; DEPLOYMENT" kicker="INFRASTRUCTURE" footnum="01" title="9. Operational Dashboard &amp; Analytics">
+    <h2>9. Operational Dashboard &amp; Analytics</h2>
+    <h3>9.1 Overview</h3>
+    <raw><img src="mermaid-diagram (7).png" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+
+    <p>While the chatbot can operate as a standalone lightweight application, organizations often require visibility into system usage, AI performance, operational costs, and user interactions. To address these needs, an optional Operational Dashboard is proposed.</p>
+    <p>The dashboard provides centralized monitoring and analytics, enabling administrators to understand how the chatbot is performing, identify knowledge gaps, monitor API usage, and make informed decisions about future improvements.</p>
+    <p>The dashboard is optional and is recommended for production deployments where long-term monitoring and business insights are required.</p>
+    <h3>9.2 Dashboard Architecture</h3>
+    <p>When the dashboard is enabled, PostgreSQL with the pgvector extension is recommended as the primary database.</p>
+    <p>The database stores both vector embeddings and operational data, allowing semantic search and analytics to coexist within a single platform.</p>
+    <p>Operational data may include:</p>
+    <p>Conversation metadata</p>
+    <p>User feedback</p>
+    <p>API requests</p>
+    <p>Token usage</p>
+    <p>Response time</p>
+    <p>Error logs</p>
+    <p>Knowledge synchronization history</p>
+    <p>Dashboard configuration</p>
+    <p>This architecture reduces infrastructure complexity by avoiding multiple databases for related operational data.</p>
+    <h3>9.3 Dashboard Modules</h3>
+    <p>The Operational Dashboard is organized into multiple functional modules.</p>
+    <p>A. Conversation Analytics</p>
+    <p>This section provides insights into chatbot usage.</p>
+    <p>Example metrics:</p>
+    <p>Total conversations</p>
+    <p>Total messages</p>
+    <p>Daily conversations</p>
+    <p>Weekly conversations</p>
+    <p>Monthly conversations</p>
+    <p>Average conversation length</p>
+    <p>Average response time</p>
+    <p>Active sessions</p>
+    <p>These metrics help evaluate chatbot adoption and user engagement.</p>
+    <p>B. Knowledge Analytics</p>
+    <p>This module measures how effectively the knowledge base is serving user queries.</p>
+    <p>Example metrics:</p>
+    <p>Most frequently accessed pages</p>
+    <p>Most searched services</p>
+    <p>Popular technologies</p>
+    <p>Frequently asked questions</p>
+    <p>Low-confidence responses</p>
+    <p>Unanswered queries</p>
+    <p>Out-of-scope requests</p>
+    <p>Knowledge coverage trends</p>
+    <p>These insights help identify areas where website content may need improvement.</p>
+    <p>C. AI Usage Analytics</p>
+    <p>This module monitors LLM usage and operational cost.</p>
+    <p>Example metrics:</p>
+    <p>Total API requests</p>
+    <p>Input tokens</p>
+    <p>Output tokens</p>
+    <p>Total token consumption</p>
+    <p>Estimated API cost</p>
+    <p>Cost by day</p>
+    <p>Cost by month</p>
+    <p>Average processing time</p>
+    <p>LLM provider (Gemini/OpenAI)</p>
+    <p>Monitoring these metrics helps optimize AI usage and control operational expenses.</p>
+    <p>D. User Feedback Analytics</p>
+    <p>If a feedback mechanism is enabled, administrators can analyze user satisfaction.</p>
+    <p>Example metrics:</p>
+    <p>Helpful responses</p>
+    <p>Not Helpful responses</p>
+    <p>Feedback ratio</p>
+    <p>User comments</p>
+    <p>Feedback trends</p>
+    <p>Most frequently disliked responses</p>
+    <p>This information supports continuous improvement of chatbot quality.</p>
+    <p>E. System Health Monitoring</p>
+    <p>This module provides operational visibility into the application.</p>
+    <p>Example metrics:</p>
+    <p>API availability</p>
+    <p>Error rate</p>
+    <p>Failed requests</p>
+    <p>Average latency</p>
+    <p>Knowledge synchronization status</p>
+    <p>Docker container health</p>
+    <p>Database connectivity</p>
+    <p>Storage utilization</p>
+    <p>These metrics help administrators detect issues before they impact users.</p>
+    <h3>9.4 Dashboard Database Design</h3>
+    <p>When PostgreSQL is used, the following logical tables are recommended.</p>
+    <p>Table</p>
+    <p>Purpose</p>
+    <p>conversations</p>
+    <p>Session-level conversation information</p>
+    <p>messages</p>
+    <p>Individual chatbot and user messages</p>
+    <p>feedback</p>
+    <p>User feedback records</p>
+    <p>api_usage</p>
+    <p>API request statistics and token usage</p>
+    <p>sync_history</p>
+    <p>Knowledge synchronization history</p>
+    <p>dashboard_settings</p>
+    <p>Dashboard configuration</p>
+    <p>error_logs</p>
+    <p>Application and API errors</p>
+    <p>Additional tables can be introduced as future requirements evolve.</p>
+    <h3>9.5 Example Dashboard KPIs</h3>
+    <p>The dashboard homepage can present a high-level overview of system performance.</p>
+    <p>KPI</p>
+    <p>Description</p>
+    <p>Total Conversations</p>
+    <p>Total number of chatbot conversations</p>
+    <p>Messages Today</p>
+    <p>Number of messages processed today</p>
+    <p>Average Response Time</p>
+    <p>Mean response latency</p>
+    <p>Knowledge Coverage</p>
+    <p>Percentage of queries answered using indexed content</p>
+    <p>API Cost</p>
+    <p>Estimated LLM usage cost</p>
+    <p>Positive Feedback</p>
+    <p>Percentage of helpful responses</p>
+    <p>Failed Requests</p>
+    <p>Number of failed API requests</p>
+    <p>Last Synchronization</p>
+    <p>Timestamp of the latest knowledge update</p>
+    <p>These KPIs allow administrators to assess chatbot performance at a glance.</p>
+    <h3>9.6 Dashboard Benefits</h3>
+    <p>The Operational Dashboard provides several business and technical benefits.</p>
+    <p>Business Benefits:</p>
+    <p>Measure chatbot adoption</p>
+    <p>Understand user interests</p>
+    <p>Identify popular services</p>
+    <p>Improve customer engagement</p>
+    <p>Support business decision-making</p>
+    <p>Technical Benefits:</p>
+    <p>Monitor AI performance</p>
+    <p>Detect knowledge gaps</p>
+    <p>Optimize operational costs</p>
+    <p>Track synchronization status</p>
+    <p>Improve system reliability</p>
+    <h3>9.7 Future Dashboard Enhancements</h3>
+    <p>The modular dashboard architecture allows future expansion without redesign.</p>
+    <p>Potential enhancements include:</p>
+    <p>Real-time analytics</p>
+    <p>Interactive charts</p>
+    <p>Geographic usage reports</p>
+    <p>Device and browser statistics</p>
+    <p>CRM integration</p>
+    <p>Lead generation analytics</p>
+    <p>Export to Excel or PDF</p>
+    <p>Email reports</p>
+    <p>Role-based access control</p>
+    <p>AI-powered operational summaries</p>
+    <h3>9.8 Dashboard Availability</h3>
+    <p>The dashboard is considered an optional enterprise feature.</p>
+    <p>Deployment</p>
+    <p>Dashboard</p>
+    <p>Lightweight (Qdrant)</p>
+    <p>Not Included</p>
+    <p>Enterprise (PostgreSQL + pgvector)</p>
+    <p>Included</p>
+    <p>Organizations that require only chatbot functionality can deploy the lightweight architecture without operational analytics. As business requirements evolve, the enterprise architecture can be adopted without changing the overall chatbot design.</p>
+    <h3>9.9 Key Design Decisions</h3>
+    <p>Decision</p>
+    <p>Justification</p>
+    <p>PostgreSQL + pgvector for enterprise deployments</p>
+    <p>Supports both semantic search and operational analytics within a single database platform.</p>
+    <p>Modular dashboard architecture</p>
+    <p>Allows independent enhancement of analytics features.</p>
+    <p>Separate analytics modules</p>
+    <p>Simplifies monitoring by organizing metrics into functional categories.</p>
+    <p>KPI-based monitoring</p>
+    <p>Provides quick visibility into chatbot health and business performance.</p>
+    <p>Optional deployment</p>
+    <p>Keeps the MVP lightweight while enabling enterprise-grade observability when required.</p>
+  </sheet>
+
+  <!-- ============ SHEET 02 ============ -->
+  <sheet label="DATA &amp; DEPLOYMENT" kicker="INFRASTRUCTURE" footnum="02" title="10. Security &amp; Privacy">
+    <h2>10. Security &amp; Privacy</h2>
+    <h3>10.1 Overview</h3>
+    <p>Although the Theta Chat Bot is publicly accessible and does not require user authentication, security remains a critical aspect of the overall system design. The chatbot communicates with external AI services, processes user input, and retrieves information from the company's knowledge base. Therefore, appropriate security controls must be implemented to ensure system reliability, protect sensitive configurations, and prevent misuse.</p>
+    <p>The proposed security strategy follows a defense-in-depth approach, where multiple layers of protection work together to reduce potential risks.</p>
+    <h3>10.2 Security Objectives</h3>
+    <p>The primary security objectives of the chatbot are:</p>
+    <p>Protect backend services from unauthorized access.</p>
+    <p>Secure communication between all system components.</p>
+    <p>Prevent abuse of public APIs.</p>
+    <p>Protect AI provider API credentials.</p>
+    <p>Maintain the integrity of the knowledge base.</p>
+    <p>Ensure reliable and uninterrupted chatbot operation.</p>
+    <p>Since the chatbot answers questions only about Theta Technolabs, it is intentionally restricted to information available in the approved knowledge base.</p>
+    <h3>10.3 Communication Security</h3>
+    <p>All communication between the website, backend, vector database, and external AI provider should use encrypted channels.</p>
+    <p>Recommended practices include:</p>
+    <p>HTTPS for all frontend-to-backend communication.</p>
+    <p>TLS encryption for external API requests.</p>
+    <p>Secure communication between internal services where applicable.</p>
+    <p>Automatic redirection from HTTP to HTTPS.</p>
+    <p>Encrypted communication protects user requests from interception and helps maintain data integrity.</p>
+    <h3>10.4 API Security</h3>
+    <p>Because the chatbot APIs are publicly accessible, they should include multiple validation mechanisms.</p>
+    <p>Recommended controls:</p>
+    <p>Request validation</p>
+    <p>Input sanitization</p>
+    <p>Maximum message length limits</p>
+    <p>Request timeout configuration</p>
+    <p>Rate limiting (recommended for production)</p>
+    <p>Cross-Origin Resource Sharing (CORS) configuration</p>
+    <p>API versioning</p>
+    <p>These controls help reduce misuse while ensuring consistent API behavior.</p>
+    <h3>10.5 API Key Management</h3>
+    <p>The chatbot communicates with external AI providers such as Google Gemini and, potentially, OpenAI.</p>
+    <p>API credentials must never be exposed to the frontend.</p>
+    <p>Recommended practices:</p>
+    <p>Store API keys in environment variables.</p>
+    <p>Never hardcode credentials in source code.</p>
+    <p>Rotate API keys periodically.</p>
+    <p>Restrict API key permissions where supported.</p>
+    <p>Maintain separate credentials for development, testing, and production environments.</p>
+    <p>All AI requests should originate from the backend to ensure credentials remain protected.</p>
+    <h3>10.6 Knowledge Base Protection</h3>
+    <p>The chatbot should retrieve information only from the approved Theta Technolabs knowledge base.</p>
+    <p>To maintain data integrity:</p>
+    <p>Only indexed website content should be used.</p>
+    <p>Unauthorized data sources should not be queried.</p>
+    <p>Content updates should follow the synchronization pipeline.</p>
+    <p>Metadata should be preserved for traceability.</p>
+    <p>Version information should be maintained for indexed content.</p>
+    <p>These practices help ensure that chatbot responses remain accurate and aligned with official company information.</p>
+    <h3>10.7 Privacy Considerations</h3>
+    <p>The chatbot is designed to answer general questions about Theta Technolabs and does not require users to register or provide personal information.</p>
+    <p>By default:</p>
+    <p>No login is required.</p>
+    <p>No personally identifiable information (PII) is collected intentionally.</p>
+    <p>Temporary session identifiers are used only to maintain conversational context during the active browser session.</p>
+    <p>Session data should expire automatically after a configurable period of inactivity.</p>
+    <p>If future business requirements introduce features such as inquiry forms or CRM integration, privacy requirements should be reviewed and updated accordingly.</p>
+    <h3>10.8 Logging &amp; Audit Trail</h3>
+    <p>Application logging is important for troubleshooting, monitoring, and operational analysis.</p>
+    <p>The system should record:</p>
+    <p>API requests</p>
+    <p>Processing time</p>
+    <p>Error events</p>
+    <p>Synchronization events</p>
+    <p>AI provider response status</p>
+    <p>System warnings</p>
+    <p>Sensitive information such as API keys, authentication tokens, or confidential configuration values must never be written to application logs.</p>
+    <h3>10.9 Security Risks &amp; Mitigation</h3>
+    <p>Potential Risk</p>
+    <p>Mitigation Strategy</p>
+    <p>Prompt injection attempts</p>
+    <p>Restrict responses to retrieved knowledge base content and enforce system prompt rules.</p>
+    <p>API abuse</p>
+    <p>Implement rate limiting and request validation.</p>
+    <p>Unauthorized API access</p>
+    <p>Expose only required public endpoints and validate all requests.</p>
+    <p>API key exposure</p>
+    <p>Store credentials securely on the server using environment variables.</p>
+    <p>Invalid or malicious input</p>
+    <p>Sanitize and validate all user input before processing.</p>
+    <p>Hallucinated responses</p>
+    <p>Use Retrieval-Augmented Generation (RAG) with confidence-based response validation.</p>
+    <p>Service outage</p>
+    <p>Return a user-friendly fallback message and log the incident for investigation.</p>
+    <h3>10.10 Future Security Enhancements</h3>
+    <p>As the chatbot evolves, additional security features may be introduced.</p>
+    <p>Potential enhancements include:</p>
+    <p>Web Application Firewall (WAF)</p>
+    <p>CAPTCHA for abuse prevention</p>
+    <p>Advanced rate limiting policies</p>
+    <p>Role-based access control for the operational dashboard</p>
+    <p>Audit log management</p>
+    <p>Secrets management using a vault solution</p>
+    <p>Single Sign-On (SSO) for administrators</p>
+    <p>Security monitoring and alerting</p>
+    <p>These enhancements can be adopted incrementally as operational requirements grow.</p>
+    <h3>10.11 Key Design Decisions</h3>
+    <p>Decision</p>
+    <p>Justification</p>
+    <p>HTTPS for all communications</p>
+    <p>Protects data in transit and ensures secure communication.</p>
+    <p>Backend-only AI communication</p>
+    <p>Prevents exposure of AI provider credentials to the client.</p>
+    <p>Environment-based configuration</p>
+    <p>Improves security and simplifies deployment across environments.</p>
+    <p>RAG-based response generation</p>
+    <p>Reduces hallucinations by grounding responses in approved website content.</p>
+    <p>Temporary session identifiers</p>
+    <p>Supports conversational continuity without requiring user authentication.</p>
+    <p>Optional enterprise security enhancements</p>
+    <p>Allows the security model to evolve alongside future business requirements.</p>
+  </sheet>
+
+  <!-- ============ SHEET 03 ============ -->
+  <sheet label="DATA &amp; DEPLOYMENT" kicker="INFRASTRUCTURE" footnum="03" title="11. Deployment Strategy">
+    <h2>11. Deployment Strategy</h2>
+    <h3>11.1 Overview</h3>
+    <p>The chatbot is containerized using Docker for consistent, portable deployment across development, testing, and production. Initial deployment is on-premise, hosted within company infrastructure — giving full control, predictable costs, and easier compliance. The architecture remains cloud-ready for future migration to AWS, Azure, or GCP with minimal changes.</p>
+    <h3>11.2 Environments</h3>
+    <p>EnvironmentPurposeDevelopmentFeature development and local testingTesting / UATValidation before production releaseProductionLive deployment for website visitors</p>
+    <h3>11.3 Containerized Components</h3>
+    <p>ContainerResponsibilityNginxReverse proxy, SSL termination, routingFastAPIREST APIs and chatbot business logicQdrant (Lightweight)Vector storage and semantic searchPostgreSQL + pgvector (Enterprise)Vector storage, analytics, operational datapgAdmin (Optional)PostgreSQL administrationMonitoring Stack (Future)Metrics collection and visualization</p>
+    <h3>11.4 Deployment Options</h3>
+    <p>Option A – Lightweight: FastAPI + Qdrant + Nginx + Docker. Minimal resources, fast setup, low maintenance.</p>
+    <p>Option B – Enterprise: Adds PostgreSQL + pgvector + pgAdmin for conversation analytics, token/cost tracking, feedback analysis, and an operational dashboard.</p>
+    <h3>11.5 Configuration &amp; Backup</h3>
+    <p>All configuration (API keys, DB strings, LLM provider, ports, logging, session timeout) is externalized via environment variables — never hardcoded. Backups run on a schedule for PostgreSQL/Qdrant data, config files, and source code, with periodic restore testing. Since the knowledge base is derived from the live website, embeddings can be regenerated if lost.</p>
+    <h3>11.6 Deployment Workflow</h3>
+    <p>Pull latest code → update config → build Docker images → start containers → verify DB and AI provider connectivity → run health checks → sync knowledge base → validate functionality → release.</p>
+    <h3>11.7 Key Design Decisions</h3>
+    <p>DecisionJustificationDocker-based deploymentConsistency and portability across environmentsOn-premise hostingInfrastructure control and long-term cost efficiencyEnvironment-based configKeeps secrets out of the codebaseDual deployment architectureSupports lightweight and enterprise needs without redesign</p>
+  </sheet>
+</doc>

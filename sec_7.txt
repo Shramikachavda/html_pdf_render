@@ -1,0 +1,225 @@
+7. API Design & Communication Flow
+7.1 Overview
+The Theta Chat Bot follows a RESTful API architecture, where the chatbot widget communicates with the FastAPI backend through secure HTTPS endpoints.
+The backend acts as the central orchestration layer responsible for validating requests, retrieving relevant knowledge, communicating with the Large Language Model (LLM), and returning structured responses to the frontend.
+All communication between components is performed using JSON payloads, making the APIs lightweight, language-independent, and easy to integrate with existing or future frontend applications.
+
+7.2 API Communication Architecture
+The communication between system components follows the sequence below:
+Website Chat Widget
+↓
+REST API Request
+↓
+FastAPI Backend
+↓
+Retrieval Engine
+↓
+Vector Database (Qdrant / PostgreSQL + pgvector)
+↓
+Prompt Builder
+↓
+Gemini API
+↓
+FastAPI Backend
+↓
+JSON Response
+↓
+Website Chat Widget
+Each component has a clearly defined responsibility, ensuring loose coupling and easier maintenance.
+
+7.3 API Endpoints
+The following endpoints are proposed for the initial version of the chatbot.
+Endpoint
+Method
+Purpose
+/api/v1/chat
+POST
+Process user queries and generate chatbot responses
+/api/v1/session
+POST
+Create or resume a user session
+/api/v1/feedback
+POST
+Submit user feedback on chatbot responses
+/api/v1/health
+GET
+Health check for monitoring and deployment validation
+/api/v1/version
+GET
+Retrieve application version information
+/api/v1/config (Optional)
+GET
+Retrieve chatbot configuration and feature flags
+
+Future administrative endpoints may include analytics, knowledge synchronization, and dashboard APIs.
+
+7.4 Request Flow
+When a visitor submits a message, the frontend sends a POST request to the chatbot API.
+Example Request
+POST /api/v1/chat
+
+{
+  "session_id": "c9a3d9b7",
+  "message": "What AI services does Theta Technolabs provide?",
+  "timestamp": "2026-07-15T14:30:00Z"
+}
+
+Request Parameters
+Field
+Type
+Description
+session_id
+String
+Unique identifier for the current browser session
+message
+String
+User's natural language question
+timestamp
+DateTime
+Request creation time
+
+
+7.5 Backend Processing Flow
+Upon receiving the request, the backend performs the following operations:
+Validate the request payload.
+Verify session information.
+Sanitize user input.
+Generate the query embedding.
+Search the vector database.
+Retrieve the Top-K relevant content chunks.
+Build the final prompt.
+Send the prompt to the configured LLM.
+Validate the generated response.
+Return the final response to the frontend.
+Each step is executed sequentially to ensure consistent and reliable responses.
+
+7.6 Response Structure
+The backend returns a standardized JSON response.
+Example Response
+{
+  "status": "success",
+  "session_id": "c9a3d9b7",
+  "response": "Theta Technolabs provides AI Development, Machine Learning, Computer Vision, and Conversational AI solutions.",
+  "source": [
+    {
+      "title": "AI Development Services",
+      "url": "https://www.thetatechnolabs.in/services/artificial-intelligence"
+    }
+  ],
+  "confidence": "High",
+  "processing_time_ms": 842
+}
+
+
+7.7 Response Fields
+Field
+Description
+status
+Request execution status
+session_id
+Current conversation session
+response
+AI-generated answer
+source
+Website pages used to generate the response
+confidence
+Confidence level assigned to the response
+processing_time_ms
+Total backend processing time
+
+Including source references increases transparency and allows users to verify the information directly on the official website.
+
+7.8 Error Handling
+The API returns standardized error responses whenever a request cannot be completed successfully.
+Example Error Response
+{
+  "status": "error",
+  "error_code": "KB_404",
+  "message": "Relevant information could not be found within the current knowledge base."
+}
+
+
+Common Error Codes
+Error Code
+Description
+INVALID_REQUEST
+Invalid or incomplete request payload
+SESSION_EXPIRED
+Session is no longer valid
+KB_404
+No relevant knowledge found
+LLM_TIMEOUT
+Language model request timed out
+API_LIMIT
+API rate limit exceeded
+INTERNAL_ERROR
+Unexpected server error
+
+Providing standardized error codes simplifies debugging and future monitoring.
+
+7.9 HTTP Status Codes
+Status Code
+Description
+200 OK
+Request processed successfully
+400 Bad Request
+Invalid request
+401 Unauthorized (Future)
+Authentication required
+404 Not Found
+Endpoint or resource not found
+429 Too Many Requests
+Rate limit exceeded
+500 Internal Server Error
+Unexpected backend error
+503 Service Unavailable
+LLM or database temporarily unavailable
+
+
+7.10 Session Management
+Although the chatbot is publicly accessible and does not require user authentication, temporary browser sessions are maintained to support conversational context.
+Each visitor receives a unique session identifier when opening the chatbot.
+The session identifier enables:
+Context-aware follow-up questions
+Temporary conversation memory
+Improved response quality
+Analytics (optional)
+No personally identifiable information (PII) is required to create or maintain a session.
+
+7.11 Security Considerations
+To protect the chatbot APIs from misuse, the backend implements multiple validation and security mechanisms.
+These include:
+HTTPS communication
+Input validation
+Request sanitization
+Maximum message length validation
+API rate limiting (future enhancement)
+CORS configuration
+Environment-based API key management
+Secure server-side communication with LLM providers
+Sensitive API credentials are never exposed to the frontend.
+
+7.12 API Versioning
+All public endpoints are versioned using URI-based versioning.
+Example:
+/api/v1/chat
+
+Versioning allows future API enhancements without breaking compatibility with existing frontend integrations.
+
+7.13 Key Design Decisions
+Decision
+Justification
+RESTful API architecture
+Simple, widely supported, and easy to integrate.
+JSON payloads
+Lightweight, language-independent communication.
+Session-based context
+Improves conversational continuity without requiring user authentication.
+Source references in responses
+Increases transparency and user trust.
+Standardized error responses
+Simplifies debugging and monitoring.
+API versioning
+Supports future enhancements while maintaining backward compatibility.
+
+

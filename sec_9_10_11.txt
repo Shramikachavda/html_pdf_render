@@ -1,0 +1,329 @@
+9. Operational Dashboard & Analytics
+9.1 Overview
+While the chatbot can operate as a standalone lightweight application, organizations often require visibility into system usage, AI performance, operational costs, and user interactions. To address these needs, an optional Operational Dashboard is proposed.
+The dashboard provides centralized monitoring and analytics, enabling administrators to understand how the chatbot is performing, identify knowledge gaps, monitor API usage, and make informed decisions about future improvements.
+The dashboard is optional and is recommended for production deployments where long-term monitoring and business insights are required.
+
+9.2 Dashboard Architecture
+When the dashboard is enabled, PostgreSQL with the pgvector extension is recommended as the primary database.
+The database stores both vector embeddings and operational data, allowing semantic search and analytics to coexist within a single platform.
+Operational data may include:
+Conversation metadata
+User feedback
+API requests
+Token usage
+Response time
+Error logs
+Knowledge synchronization history
+Dashboard configuration
+This architecture reduces infrastructure complexity by avoiding multiple databases for related operational data.
+
+9.3 Dashboard Modules
+The Operational Dashboard is organized into multiple functional modules.
+A. Conversation Analytics
+This section provides insights into chatbot usage.
+Example metrics:
+Total conversations
+Total messages
+Daily conversations
+Weekly conversations
+Monthly conversations
+Average conversation length
+Average response time
+Active sessions
+These metrics help evaluate chatbot adoption and user engagement.
+
+B. Knowledge Analytics
+This module measures how effectively the knowledge base is serving user queries.
+Example metrics:
+Most frequently accessed pages
+Most searched services
+Popular technologies
+Frequently asked questions
+Low-confidence responses
+Unanswered queries
+Out-of-scope requests
+Knowledge coverage trends
+These insights help identify areas where website content may need improvement.
+
+C. AI Usage Analytics
+This module monitors LLM usage and operational cost.
+Example metrics:
+Total API requests
+Input tokens
+Output tokens
+Total token consumption
+Estimated API cost
+Cost by day
+Cost by month
+Average processing time
+LLM provider (Gemini/OpenAI)
+Monitoring these metrics helps optimize AI usage and control operational expenses.
+
+D. User Feedback Analytics
+If a feedback mechanism is enabled, administrators can analyze user satisfaction.
+Example metrics:
+Helpful responses
+Not Helpful responses
+Feedback ratio
+User comments
+Feedback trends
+Most frequently disliked responses
+This information supports continuous improvement of chatbot quality.
+
+E. System Health Monitoring
+This module provides operational visibility into the application.
+Example metrics:
+API availability
+Error rate
+Failed requests
+Average latency
+Knowledge synchronization status
+Docker container health
+Database connectivity
+Storage utilization
+These metrics help administrators detect issues before they impact users.
+
+9.4 Dashboard Database Design
+When PostgreSQL is used, the following logical tables are recommended.
+Table
+Purpose
+conversations
+Session-level conversation information
+messages
+Individual chatbot and user messages
+feedback
+User feedback records
+api_usage
+API request statistics and token usage
+sync_history
+Knowledge synchronization history
+dashboard_settings
+Dashboard configuration
+error_logs
+Application and API errors
+
+Additional tables can be introduced as future requirements evolve.
+
+9.5 Example Dashboard KPIs
+The dashboard homepage can present a high-level overview of system performance.
+KPI
+Description
+Total Conversations
+Total number of chatbot conversations
+Messages Today
+Number of messages processed today
+Average Response Time
+Mean response latency
+Knowledge Coverage
+Percentage of queries answered using indexed content
+API Cost
+Estimated LLM usage cost
+Positive Feedback
+Percentage of helpful responses
+Failed Requests
+Number of failed API requests
+Last Synchronization
+Timestamp of the latest knowledge update
+
+These KPIs allow administrators to assess chatbot performance at a glance.
+
+9.6 Dashboard Benefits
+The Operational Dashboard provides several business and technical benefits.
+Business Benefits:
+Measure chatbot adoption
+Understand user interests
+Identify popular services
+Improve customer engagement
+Support business decision-making
+Technical Benefits:
+Monitor AI performance
+Detect knowledge gaps
+Optimize operational costs
+Track synchronization status
+Improve system reliability
+
+9.7 Future Dashboard Enhancements
+The modular dashboard architecture allows future expansion without redesign.
+Potential enhancements include:
+Real-time analytics
+Interactive charts
+Geographic usage reports
+Device and browser statistics
+CRM integration
+Lead generation analytics
+Export to Excel or PDF
+Email reports
+Role-based access control
+AI-powered operational summaries
+
+9.8 Dashboard Availability
+The dashboard is considered an optional enterprise feature.
+Deployment
+Dashboard
+Lightweight (Qdrant)
+Not Included
+Enterprise (PostgreSQL + pgvector)
+Included
+
+Organizations that require only chatbot functionality can deploy the lightweight architecture without operational analytics. As business requirements evolve, the enterprise architecture can be adopted without changing the overall chatbot design.
+
+9.9 Key Design Decisions
+Decision
+Justification
+PostgreSQL + pgvector for enterprise deployments
+Supports both semantic search and operational analytics within a single database platform.
+Modular dashboard architecture
+Allows independent enhancement of analytics features.
+Separate analytics modules
+Simplifies monitoring by organizing metrics into functional categories.
+KPI-based monitoring
+Provides quick visibility into chatbot health and business performance.
+Optional deployment
+Keeps the MVP lightweight while enabling enterprise-grade observability when required.
+
+
+10. Security & Privacy
+10.1 Overview
+Although the Theta Chat Bot is publicly accessible and does not require user authentication, security remains a critical aspect of the overall system design. The chatbot communicates with external AI services, processes user input, and retrieves information from the company's knowledge base. Therefore, appropriate security controls must be implemented to ensure system reliability, protect sensitive configurations, and prevent misuse.
+The proposed security strategy follows a defense-in-depth approach, where multiple layers of protection work together to reduce potential risks.
+
+10.2 Security Objectives
+The primary security objectives of the chatbot are:
+Protect backend services from unauthorized access.
+Secure communication between all system components.
+Prevent abuse of public APIs.
+Protect AI provider API credentials.
+Maintain the integrity of the knowledge base.
+Ensure reliable and uninterrupted chatbot operation.
+Since the chatbot answers questions only about Theta Technolabs, it is intentionally restricted to information available in the approved knowledge base.
+
+10.3 Communication Security
+All communication between the website, backend, vector database, and external AI provider should use encrypted channels.
+Recommended practices include:
+HTTPS for all frontend-to-backend communication.
+TLS encryption for external API requests.
+Secure communication between internal services where applicable.
+Automatic redirection from HTTP to HTTPS.
+Encrypted communication protects user requests from interception and helps maintain data integrity.
+
+10.4 API Security
+Because the chatbot APIs are publicly accessible, they should include multiple validation mechanisms.
+Recommended controls:
+Request validation
+Input sanitization
+Maximum message length limits
+Request timeout configuration
+Rate limiting (recommended for production)
+Cross-Origin Resource Sharing (CORS) configuration
+API versioning
+These controls help reduce misuse while ensuring consistent API behavior.
+
+10.5 API Key Management
+The chatbot communicates with external AI providers such as Google Gemini and, potentially, OpenAI.
+API credentials must never be exposed to the frontend.
+Recommended practices:
+Store API keys in environment variables.
+Never hardcode credentials in source code.
+Rotate API keys periodically.
+Restrict API key permissions where supported.
+Maintain separate credentials for development, testing, and production environments.
+All AI requests should originate from the backend to ensure credentials remain protected.
+
+10.6 Knowledge Base Protection
+The chatbot should retrieve information only from the approved Theta Technolabs knowledge base.
+To maintain data integrity:
+Only indexed website content should be used.
+Unauthorized data sources should not be queried.
+Content updates should follow the synchronization pipeline.
+Metadata should be preserved for traceability.
+Version information should be maintained for indexed content.
+These practices help ensure that chatbot responses remain accurate and aligned with official company information.
+
+10.7 Privacy Considerations
+The chatbot is designed to answer general questions about Theta Technolabs and does not require users to register or provide personal information.
+By default:
+No login is required.
+No personally identifiable information (PII) is collected intentionally.
+Temporary session identifiers are used only to maintain conversational context during the active browser session.
+Session data should expire automatically after a configurable period of inactivity.
+If future business requirements introduce features such as inquiry forms or CRM integration, privacy requirements should be reviewed and updated accordingly.
+
+10.8 Logging & Audit Trail
+Application logging is important for troubleshooting, monitoring, and operational analysis.
+The system should record:
+API requests
+Processing time
+Error events
+Synchronization events
+AI provider response status
+System warnings
+Sensitive information such as API keys, authentication tokens, or confidential configuration values must never be written to application logs.
+
+10.9 Security Risks & Mitigation
+Potential Risk
+Mitigation Strategy
+Prompt injection attempts
+Restrict responses to retrieved knowledge base content and enforce system prompt rules.
+API abuse
+Implement rate limiting and request validation.
+Unauthorized API access
+Expose only required public endpoints and validate all requests.
+API key exposure
+Store credentials securely on the server using environment variables.
+Invalid or malicious input
+Sanitize and validate all user input before processing.
+Hallucinated responses
+Use Retrieval-Augmented Generation (RAG) with confidence-based response validation.
+Service outage
+Return a user-friendly fallback message and log the incident for investigation.
+
+
+10.10 Future Security Enhancements
+As the chatbot evolves, additional security features may be introduced.
+Potential enhancements include:
+Web Application Firewall (WAF)
+CAPTCHA for abuse prevention
+Advanced rate limiting policies
+Role-based access control for the operational dashboard
+Audit log management
+Secrets management using a vault solution
+Single Sign-On (SSO) for administrators
+Security monitoring and alerting
+These enhancements can be adopted incrementally as operational requirements grow.
+
+10.11 Key Design Decisions
+Decision
+Justification
+HTTPS for all communications
+Protects data in transit and ensures secure communication.
+Backend-only AI communication
+Prevents exposure of AI provider credentials to the client.
+Environment-based configuration
+Improves security and simplifies deployment across environments.
+RAG-based response generation
+Reduces hallucinations by grounding responses in approved website content.
+Temporary session identifiers
+Supports conversational continuity without requiring user authentication.
+Optional enterprise security enhancements
+Allows the security model to evolve alongside future business requirements.
+
+
+11. Deployment Strategy
+11.1 Overview
+The chatbot is containerized using Docker for consistent, portable deployment across development, testing, and production. Initial deployment is on-premise, hosted within company infrastructure — giving full control, predictable costs, and easier compliance. The architecture remains cloud-ready for future migration to AWS, Azure, or GCP with minimal changes.
+11.2 Environments
+EnvironmentPurposeDevelopmentFeature development and local testingTesting / UATValidation before production releaseProductionLive deployment for website visitors
+11.3 Containerized Components
+ContainerResponsibilityNginxReverse proxy, SSL termination, routingFastAPIREST APIs and chatbot business logicQdrant (Lightweight)Vector storage and semantic searchPostgreSQL + pgvector (Enterprise)Vector storage, analytics, operational datapgAdmin (Optional)PostgreSQL administrationMonitoring Stack (Future)Metrics collection and visualization
+11.4 Deployment Options
+
+Option A – Lightweight: FastAPI + Qdrant + Nginx + Docker. Minimal resources, fast setup, low maintenance.
+Option B – Enterprise: Adds PostgreSQL + pgvector + pgAdmin for conversation analytics, token/cost tracking, feedback analysis, and an operational dashboard.
+
+11.5 Configuration & Backup
+All configuration (API keys, DB strings, LLM provider, ports, logging, session timeout) is externalized via environment variables — never hardcoded. Backups run on a schedule for PostgreSQL/Qdrant data, config files, and source code, with periodic restore testing. Since the knowledge base is derived from the live website, embeddings can be regenerated if lost.
+11.6 Deployment Workflow
+Pull latest code → update config → build Docker images → start containers → verify DB and AI provider connectivity → run health checks → sync knowledge base → validate functionality → release.
+11.7 Key Design Decisions
+DecisionJustificationDocker-based deploymentConsistency and portability across environmentsOn-premise hostingInfrastructure control and long-term cost efficiencyEnvironment-based configKeeps secrets out of the codebaseDual deployment architectureSupports lightweight and enterprise needs without redesign

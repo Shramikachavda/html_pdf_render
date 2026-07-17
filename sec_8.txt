@@ -1,0 +1,219 @@
+8. Frontend Integration & User Experience
+8.1 Overview
+The Theta Chat Bot will be integrated into the existing Theta Technolabs website without requiring any major modifications to the current frontend architecture. Since the website is developed using a no-code platform (such as Webflow), the chatbot will be embedded using a lightweight JavaScript widget that communicates with the FastAPI backend through secure REST APIs.
+This approach minimizes development effort while ensuring that the chatbot provides a seamless and consistent user experience across all website pages.
+The frontend is responsible for:
+Displaying the chatbot interface
+Capturing user queries
+Managing the current browser session
+Sending requests to the backend
+Displaying AI-generated responses
+Providing source references (when available)
+Handling loading, error, and fallback states
+The frontend contains no AI logic. All retrieval, prompt construction, and response generation are handled by the backend.
+
+8.2 Frontend Architecture
+The chatbot frontend consists of three primary components:
+Chat Launcher
+A floating action button displayed on every page of the website.
+Responsibilities:
+Open chatbot window
+Close chatbot window
+Preserve current session state
+
+Chat Window
+The main conversation interface.
+Responsibilities:
+Display conversation history
+Accept user input
+Display typing indicators
+Render AI responses
+Show source references
+Display quick action buttons
+Display fallback options
+
+API Communication Layer
+Responsible for communication with the backend.
+Responsibilities:
+Send REST API requests
+Receive JSON responses
+Handle network failures
+Retry failed requests (future enhancement)
+
+8.3 Frontend Request Flow
+Every user interaction follows the same communication flow.
+User opens chatbot
+↓
+Types message
+↓
+JavaScript Widget
+↓
+POST Request
+↓
+FastAPI Backend
+↓
+JSON Response
+↓
+Display Response
+This lightweight communication model keeps the frontend simple while allowing the backend to manage all business logic.
+
+8.4 User Journey
+The following sequence describes a typical user interaction.
+Step 1
+Visitor opens the Theta Technolabs website.
+↓
+Step 2
+The chatbot launcher appears at the bottom-right corner of the screen.
+↓
+Step 3
+The visitor clicks the chatbot icon.
+↓
+Step 4
+The chatbot displays a welcome message.
+Example:
+"Hello! 👋 I'm the Theta AI Assistant. How can I help you today?"
+↓
+Step 5
+The visitor enters a question.
+↓
+Step 6
+The frontend sends the request to the backend.
+↓
+Step 7
+The chatbot displays a typing indicator while the backend processes the request.
+↓
+Step 8
+The AI-generated response is displayed.
+↓
+Step 9
+If available, the chatbot displays a reference to the related website page.
+↓
+Step 10
+The user can continue the conversation or close the chatbot.
+
+8.5 User Interface States
+To provide a smooth user experience, the chatbot supports multiple interface states.
+State
+Description
+Welcome
+Initial greeting when chatbot opens
+Idle
+Waiting for user input
+Typing
+User entering a message
+Loading
+Backend is processing the request
+Response
+AI-generated answer displayed
+Error
+Temporary server or network issue
+No Result
+Information not found in the knowledge base
+Out of Scope
+Question is outside the chatbot's supported domain
+
+Each state provides clear visual feedback to improve usability.
+
+8.6 Suggested Questions
+To encourage user engagement, the chatbot can display suggested questions when first opened.
+Examples:
+What services does Theta Technolabs provide?
+Which technologies do you specialize in?
+Can you build AI-powered applications?
+Show your recent projects.
+How can I contact your team?
+Do you provide mobile app development services?
+These suggestions help users understand the chatbot's capabilities and reduce uncertainty.
+
+8.7 Response Presentation
+Every chatbot response should follow a consistent format.
+The response may include:
+AI-generated answer
+Related service or page reference
+Relevant website link (if available)
+Contact recommendation (when required)
+Example:
+
+AI Response
+Theta Technolabs provides Artificial Intelligence Development, Machine Learning, Computer Vision, and Conversational AI solutions.
+Related Page:
+AI Development Services
+View Details →
+
+This structure improves transparency and encourages users to explore the website further.
+
+8.8 Fallback User Experience
+If the chatbot cannot confidently answer a question, it should provide a helpful fallback experience instead of generating uncertain information.
+Scenario 1 – Low Confidence
+Message:
+"I couldn't find enough verified information to answer your question accurately. You may find more details on our website or contact our team for further assistance."
+Available Actions:
+View Related Services
+Contact Us
+Submit Inquiry
+
+Scenario 2 – Out-of-Scope Query
+Message:
+"I'm designed to answer questions related to Theta Technolabs, including our services, technologies, portfolio, careers, and company information. I can't assist with unrelated topics."
+Available Actions:
+Visit Services
+Contact Sales
+Submit Inquiry
+This approach maintains transparency while guiding users toward the appropriate next step.
+
+8.9 Responsive Design
+The chatbot interface should provide a consistent experience across all supported devices.
+Supported platforms include:
+Desktop browsers
+Tablets
+Mobile devices
+Key considerations:
+Responsive layout
+Scrollable conversation history
+Touch-friendly controls
+Optimized input field
+Adaptive chatbot window size
+
+8.10 Accessibility Considerations
+The chatbot should follow general accessibility best practices to ensure usability for a wider audience.
+Recommended considerations:
+Keyboard navigation support
+Screen reader compatibility
+Sufficient color contrast
+Readable typography
+Visible focus indicators
+Accessible button labels
+Implementing these practices improves the overall user experience and aligns with modern web accessibility standards.
+
+8.11 Future User Experience Enhancements
+The modular frontend architecture allows future improvements without changing the backend.
+Potential enhancements include:
+Voice-based interaction
+File upload support
+Multi-language interface
+Dark mode
+Rich cards and service recommendations
+Appointment booking
+Live agent handoff
+CRM integration
+Conversation export
+
+8.12 Key Design Decisions
+Decision
+Justification
+Embedded JavaScript widget
+Enables seamless integration with the existing website without redevelopment.
+Backend-driven AI processing
+Keeps the frontend lightweight and secure by avoiding AI logic in the browser.
+Session-based conversation
+Improves conversational continuity while remaining anonymous.
+Suggested questions
+Helps users discover chatbot capabilities quickly.
+Confidence-based fallback
+Prevents misleading responses and improves user trust.
+Responsive design
+Ensures consistent experience across desktop and mobile devices.
+Accessibility support
+Improves usability for all users and aligns with modern web standards.
+
+

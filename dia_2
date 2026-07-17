@@ -1,0 +1,169 @@
+flowchart LR
+
+%% ===========================
+%% User Layer
+%% ===========================
+subgraph USER["🌐 User Layer"]
+    U["👤 Website Visitor"]
+end
+
+%% ===========================
+%% Frontend Layer
+%% ===========================
+subgraph FRONTEND["💻 Frontend"]
+    W["Theta Website<br/>(Webflow / Existing Website)"]
+    C["💬 AI Chat Widget"]
+end
+
+%% ===========================
+%% Backend Layer
+%% ===========================
+subgraph BACKEND["⚙️ FastAPI Backend"]
+    API["REST API"]
+
+    ORCH["Request Orchestrator"]
+
+    RET["Retrieval Engine"]
+
+    PROMPT["Prompt Builder"]
+
+    SESSION["Session Manager"]
+
+    RESP["Response Formatter"]
+end
+
+%% ===========================
+%% Knowledge Processing
+%% ===========================
+subgraph RAG["🧠 RAG Pipeline"]
+    EMB["Embedding Search"]
+
+    VECTOR["Vector Database"]
+
+    GEMINI["Google Gemini"]
+
+    ANSWER["AI Response"]
+end
+
+%% ===========================
+%% Database Options
+%% ===========================
+subgraph STORAGE["📦 Storage Options"]
+
+subgraph LIGHT["Option A - Lightweight"]
+
+QD["Qdrant"]
+
+end
+
+subgraph ENTERPRISE["Option B - Enterprise"]
+
+PG["PostgreSQL + pgvector"]
+
+DASH["Operational Dashboard"]
+
+end
+
+end
+
+%% ===========================
+%% Website Sync
+%% ===========================
+subgraph SYNC["🔄 Knowledge Synchronization"]
+
+SITE["Theta Website Content"]
+
+CRAWL["Content Extractor"]
+
+CLEAN["HTML Cleaning"]
+
+CHUNK["Semantic Chunking"]
+
+EMBED["Embedding Generator"]
+
+end
+
+%% ===========================
+%% Infrastructure
+%% ===========================
+subgraph INFRA["🐳 Docker / On-Premise Server"]
+
+NGINX["Nginx"]
+
+FASTAPI["FastAPI Container"]
+
+DB["Database Container"]
+
+end
+
+%% ===========================
+%% User Flow
+%% ===========================
+U --> W
+
+W --> C
+
+C --> API
+
+API --> ORCH
+
+ORCH --> SESSION
+
+ORCH --> RET
+
+RET --> EMB
+
+EMB --> VECTOR
+
+VECTOR --> PROMPT
+
+PROMPT --> GEMINI
+
+GEMINI --> ANSWER
+
+ANSWER --> RESP
+
+RESP --> C
+
+C --> U
+
+%% ===========================
+%% Storage Connections
+%% ===========================
+VECTOR -. Option A .-> QD
+
+VECTOR -. Option B .-> PG
+
+PG --> DASH
+
+%% ===========================
+%% Sync Pipeline
+%% ===========================
+SITE --> CRAWL
+
+CRAWL --> CLEAN
+
+CLEAN --> CHUNK
+
+CHUNK --> EMBED
+
+EMBED --> VECTOR
+
+%% ===========================
+%% Deployment
+%% ===========================
+NGINX --> FASTAPI
+
+FASTAPI --> DB
+
+%% ===========================
+%% Colors
+%% ===========================
+style USER fill:#f4f7f9,stroke:#1c5d8c,stroke-width:2px,color:#0d2b45
+style FRONTEND fill:#f4f7f9,stroke:#1c5d8c,stroke-width:2px,color:#0d2b45
+style BACKEND fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
+style RAG fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
+style STORAGE fill:#0d2b45,stroke:#2f5674,stroke-width:2px,color:#cfe4ee
+style SYNC fill:#123a5c,stroke:#7fd0e6,stroke-width:2px,color:#ffffff
+style INFRA fill:#0d2b45,stroke:#2f5674,stroke-width:2px,color:#cfe4ee
+

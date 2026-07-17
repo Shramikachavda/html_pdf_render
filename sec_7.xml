@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="API DESIGN">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="API DESIGN" kicker="API" footnum="01" title="7. API Design &amp; Communication Flow">
+    <h2>7. API Design &amp; Communication Flow</h2>
+    <h3>7.1 Overview</h3>
+    <raw><img src="mermaid-diagram (5).png" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+
+    <p>The Theta Chat Bot follows a RESTful API architecture, where the chatbot widget communicates with the FastAPI backend through secure HTTPS endpoints.</p>
+    <p>The backend acts as the central orchestration layer responsible for validating requests, retrieving relevant knowledge, communicating with the Large Language Model (LLM), and returning structured responses to the frontend.</p>
+    <p>All communication between components is performed using JSON payloads, making the APIs lightweight, language-independent, and easy to integrate with existing or future frontend applications.</p>
+    <h3>7.2 API Communication Architecture</h3>
+    <p>The communication between system components follows the sequence below:</p>
+    <p>Website Chat Widget</p>
+    <p>↓</p>
+    <p>REST API Request</p>
+    <p>↓</p>
+    <p>FastAPI Backend</p>
+    <p>↓</p>
+    <p>Retrieval Engine</p>
+    <p>↓</p>
+    <p>Vector Database (Qdrant / PostgreSQL + pgvector)</p>
+    <p>↓</p>
+    <p>Prompt Builder</p>
+    <p>↓</p>
+    <p>Gemini API</p>
+    <p>↓</p>
+    <p>FastAPI Backend</p>
+    <p>↓</p>
+    <p>JSON Response</p>
+    <p>↓</p>
+    <p>Website Chat Widget</p>
+    <p>Each component has a clearly defined responsibility, ensuring loose coupling and easier maintenance.</p>
+    <h3>7.3 API Endpoints</h3>
+    <p>The following endpoints are proposed for the initial version of the chatbot.</p>
+    <p>Endpoint</p>
+    <p>Method</p>
+    <p>Purpose</p>
+    <p>/api/v1/chat</p>
+    <p>POST</p>
+    <p>Process user queries and generate chatbot responses</p>
+    <p>/api/v1/session</p>
+    <p>POST</p>
+    <p>Create or resume a user session</p>
+    <p>/api/v1/feedback</p>
+    <p>POST</p>
+    <p>Submit user feedback on chatbot responses</p>
+    <p>/api/v1/health</p>
+    <p>GET</p>
+    <p>Health check for monitoring and deployment validation</p>
+    <p>/api/v1/version</p>
+    <p>GET</p>
+    <p>Retrieve application version information</p>
+    <p>/api/v1/config (Optional)</p>
+    <p>GET</p>
+    <p>Retrieve chatbot configuration and feature flags</p>
+    <p>Future administrative endpoints may include analytics, knowledge synchronization, and dashboard APIs.</p>
+    <h3>7.4 Request Flow</h3>
+    <p>When a visitor submits a message, the frontend sends a POST request to the chatbot API.</p>
+    <p>Example Request</p>
+    <p>POST /api/v1/chat</p>
+    <p>{</p>
+    <p>  "session_id": "c9a3d9b7",</p>
+    <p>  "message": "What AI services does Theta Technolabs provide?",</p>
+    <p>  "timestamp": "2026-07-15T14:30:00Z"</p>
+    <p>}</p>
+    <p>Request Parameters</p>
+    <p>Field</p>
+    <p>Type</p>
+    <p>Description</p>
+    <p>session_id</p>
+    <p>String</p>
+    <p>Unique identifier for the current browser session</p>
+    <p>message</p>
+    <p>String</p>
+    <p>User's natural language question</p>
+    <p>timestamp</p>
+    <p>DateTime</p>
+    <p>Request creation time</p>
+    <h3>7.5 Backend Processing Flow</h3>
+    <p>Upon receiving the request, the backend performs the following operations:</p>
+    <p>Validate the request payload.</p>
+    <p>Verify session information.</p>
+    <p>Sanitize user input.</p>
+    <p>Generate the query embedding.</p>
+    <p>Search the vector database.</p>
+    <p>Retrieve the Top-K relevant content chunks.</p>
+    <p>Build the final prompt.</p>
+    <p>Send the prompt to the configured LLM.</p>
+    <p>Validate the generated response.</p>
+    <p>Return the final response to the frontend.</p>
+    <p>Each step is executed sequentially to ensure consistent and reliable responses.</p>
+    <h3>7.6 Response Structure</h3>
+    <p>The backend returns a standardized JSON response.</p>
+    <p>Example Response</p>
+    <p>{</p>
+    <p>  "status": "success",</p>
+    <p>  "session_id": "c9a3d9b7",</p>
+    <p>  "response": "Theta Technolabs provides AI Development, Machine Learning, Computer Vision, and Conversational AI solutions.",</p>
+    <p>  "source": [</p>
+    <p>    {</p>
+    <p>      "title": "AI Development Services",</p>
+    <p>      "url": "https://www.thetatechnolabs.in/services/artificial-intelligence"</p>
+    <p>    }</p>
+    <p>  ],</p>
+    <p>  "confidence": "High",</p>
+    <p>  "processing_time_ms": 842</p>
+    <p>}</p>
+    <h3>7.7 Response Fields</h3>
+    <p>Field</p>
+    <p>Description</p>
+    <p>status</p>
+    <p>Request execution status</p>
+    <p>session_id</p>
+    <p>Current conversation session</p>
+    <p>response</p>
+    <p>AI-generated answer</p>
+    <p>source</p>
+    <p>Website pages used to generate the response</p>
+    <p>confidence</p>
+    <p>Confidence level assigned to the response</p>
+    <p>processing_time_ms</p>
+    <p>Total backend processing time</p>
+    <p>Including source references increases transparency and allows users to verify the information directly on the official website.</p>
+    <h3>7.8 Error Handling</h3>
+    <p>The API returns standardized error responses whenever a request cannot be completed successfully.</p>
+    <p>Example Error Response</p>
+    <p>{</p>
+    <p>  "status": "error",</p>
+    <p>  "error_code": "KB_404",</p>
+    <p>  "message": "Relevant information could not be found within the current knowledge base."</p>
+    <p>}</p>
+    <p>Common Error Codes</p>
+    <p>Error Code</p>
+    <p>Description</p>
+    <p>INVALID_REQUEST</p>
+    <p>Invalid or incomplete request payload</p>
+    <p>SESSION_EXPIRED</p>
+    <p>Session is no longer valid</p>
+    <p>KB_404</p>
+    <p>No relevant knowledge found</p>
+    <p>LLM_TIMEOUT</p>
+    <p>Language model request timed out</p>
+    <p>API_LIMIT</p>
+    <p>API rate limit exceeded</p>
+    <p>INTERNAL_ERROR</p>
+    <p>Unexpected server error</p>
+    <p>Providing standardized error codes simplifies debugging and future monitoring.</p>
+    <h3>7.9 HTTP Status Codes</h3>
+    <p>Status Code</p>
+    <p>Description</p>
+    <p>200 OK</p>
+    <p>Request processed successfully</p>
+    <p>400 Bad Request</p>
+    <p>Invalid request</p>
+    <p>401 Unauthorized (Future)</p>
+    <p>Authentication required</p>
+    <p>404 Not Found</p>
+    <p>Endpoint or resource not found</p>
+    <p>429 Too Many Requests</p>
+    <p>Rate limit exceeded</p>
+    <p>500 Internal Server Error</p>
+    <p>Unexpected backend error</p>
+    <p>503 Service Unavailable</p>
+    <p>LLM or database temporarily unavailable</p>
+    <h3>7.10 Session Management</h3>
+    <p>Although the chatbot is publicly accessible and does not require user authentication, temporary browser sessions are maintained to support conversational context.</p>
+    <p>Each visitor receives a unique session identifier when opening the chatbot.</p>
+    <p>The session identifier enables:</p>
+    <p>Context-aware follow-up questions</p>
+    <p>Temporary conversation memory</p>
+    <p>Improved response quality</p>
+    <p>Analytics (optional)</p>
+    <p>No personally identifiable information (PII) is required to create or maintain a session.</p>
+    <h3>7.11 Security Considerations</h3>
+    <p>To protect the chatbot APIs from misuse, the backend implements multiple validation and security mechanisms.</p>
+    <p>These include:</p>
+    <p>HTTPS communication</p>
+    <p>Input validation</p>
+    <p>Request sanitization</p>
+    <p>Maximum message length validation</p>
+    <p>API rate limiting (future enhancement)</p>
+    <p>CORS configuration</p>
+    <p>Environment-based API key management</p>
+    <p>Secure server-side communication with LLM providers</p>
+    <p>Sensitive API credentials are never exposed to the frontend.</p>
+    <h3>7.12 API Versioning</h3>
+    <p>All public endpoints are versioned using URI-based versioning.</p>
+    <p>Example:</p>
+    <p>/api/v1/chat</p>
+    <p>Versioning allows future API enhancements without breaking compatibility with existing frontend integrations.</p>
+    <h3>7.13 Key Design Decisions</h3>
+    <p>Decision</p>
+    <p>Justification</p>
+    <p>RESTful API architecture</p>
+    <p>Simple, widely supported, and easy to integrate.</p>
+    <p>JSON payloads</p>
+    <p>Lightweight, language-independent communication.</p>
+    <p>Session-based context</p>
+    <p>Improves conversational continuity without requiring user authentication.</p>
+    <p>Source references in responses</p>
+    <p>Increases transparency and user trust.</p>
+    <p>Standardized error responses</p>
+    <p>Simplifies debugging and monitoring.</p>
+    <p>API versioning</p>
+    <p>Supports future enhancements while maintaining backward compatibility.</p>
+  </sheet>
+</doc>

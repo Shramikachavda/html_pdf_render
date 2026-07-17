@@ -207,14 +207,19 @@ def render_cover(cover_el, doc_title):
     kicker = esc(cover_el.get("kicker", ""))
     title = esc(cover_el.get("title", doc_title))
     subtitle = esc(cover_el.get("subtitle", ""))
+    image = cover_el.get("image")
     fields = cover_el.findall("field")
     rows = "".join(
         f"<tr><td>{esc(f.get('name',''))}</td><td>{inline_html(f)}</td></tr>" for f in fields
     )
     table_html = f'<table class="revtable"><tr><th>Field</th><th>Value</th></tr>{rows}</table>' if fields else ""
+    
+    img_html = f'<div style="text-align:center; margin-bottom: 20mm;"><img src="{image}" style="max-width:200px;" /></div>' if image else ""
+    
     return f"""
 <div class="sheet cover">
   <div class="cover-inner">
+    {img_html}
     <div class="kicker2">{kicker}</div>
     <h1>{title}</h1>
     <div class="subtitle">{subtitle}</div>

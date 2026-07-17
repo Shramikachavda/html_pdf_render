@@ -296,6 +296,7 @@ function renderCover(coverEl, docTitle) {
   const kicker = esc(coverEl.getAttribute('kicker') || '');
   const title = esc(coverEl.getAttribute('title') || docTitle);
   const subtitle = esc(coverEl.getAttribute('subtitle') || '');
+  const image = esc(coverEl.getAttribute('image') || '');
   
   let rows = '';
   coverEl.querySelectorAll('field').forEach(f => {
@@ -305,10 +306,12 @@ function renderCover(coverEl, docTitle) {
   });
   
   const tableHTML = rows ? `<table class="revtable"><tr><th>Field</th><th>Value</th></tr>${rows}</table>` : '';
+  const imgHTML = image ? `<div style="text-align:center; margin-bottom: 20mm;"><img src="${image}" style="max-width:200px;" /></div>` : '';
   
   return `
     <div class="sheet cover">
       <div class="cover-inner">
+        ${imgHTML}
         <div class="kicker2">${kicker}</div>
         <h1>${title}</h1>
         <div class="subtitle">${subtitle}</div>

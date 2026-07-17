@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="CONCLUSION">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="CONCLUSION" kicker="SUMMARY" footnum="01" title="12. Monitoring &amp; Logging">
+    <h2>12. Monitoring &amp; Logging</h2>
+    <h3>12.1 Overview</h3>
+    <p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p>
+    <p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p>
+    <h3>12.2 Monitoring Objectives</h3>
+    <p>The monitoring system is designed to:</p>
+    <ul>
+      <li>Ensure high application availability.</li>
+      <li>Detect operational issues early.</li>
+      <li>Monitor chatbot performance.</li>
+      <li>Measure AI response quality.</li>
+      <li>Track operational costs.</li>
+      <li>Support troubleshooting and maintenance.</li>
+    </ul>
+    <h3>12.3 Application Health</h3>
+    <p>Monitoring application health involves tracking several key metrics.</p>
+    <p>Metric | Purpose</p>
+    <p>--- | ---</p>
+    <p>API Availability | Verify backend uptime</p>
+    <p>Response Time | Measure request latency</p>
+    <p>Error Rate | Detect application failures</p>
+    <p>Active Sessions | Monitor current usage</p>
+    <p>Request Volume | Measure traffic patterns</p>
+    <h3>12.4 AI Performance</h3>
+    <p>AI performance is tracked to evaluate cost and quality. Metrics include: total AI requests, average generation time, token consumption, estimated API cost, retrieval confidence, and LLM provider utilization.</p>
+    <h3>12.5 Knowledge Base Monitoring</h3>
+    <p>Metric | Description</p>
+    <p>--- | ---</p>
+    <p>Total Indexed Pages | Pages currently indexed</p>
+    <p>Total Content Chunks | Semantic chunks in the KB</p>
+    <p>Last Synchronization | Most recent successful update</p>
+    <p>Failed Synchronizations | Sync errors</p>
+    <p>Knowledge Version | Current indexed version</p>
+    <h3>12.6 Logging Strategy</h3>
+    <p>Logs capture API requests, AI requests, synchronization events, warnings, and errors — using standard levels (INFO, WARNING, ERROR, CRITICAL) to keep noise low while enabling fast troubleshooting. API keys, tokens, and other credentials must never be written to logs.</p>
+    <h3>12.7 Key Design Decisions</h3>
+    <p>Decision | Justification</p>
+    <p>--- | ---</p>
+    <p>Continuous health monitoring | Ensures reliable availability</p>
+    <p>Structured logging | Simplifies troubleshooting</p>
+    <p>AI performance monitoring | Supports cost and quality optimization</p>
+    <p>Knowledge sync monitoring | Ensures responses stay current</p>
+  </sheet>
+</doc>
