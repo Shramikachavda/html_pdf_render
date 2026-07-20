@@ -90,6 +90,131 @@ let activeColor = 'blue';
 // flag to prevent infinite loops when updating inputs from parsed XML
 let isUpdatingInputs = false;
 
+// Global state for uploaded diagrams
+const uploadedDiagrams = {};
+
+window.triggerDiagramUpload = function(id) {
+  const input = document.getElementById(`file-diagram-${id}`);
+  if (input) input.click();
+};
+
+window.handleDiagramUpload = function(event, id) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    uploadedDiagrams[id] = evt.target.result;
+    renderDocument();
+  };
+  reader.readAsDataURL(file);
+};
+
+// Global state for diagram heights, widths, zooms, and panning offsets
+const diagramHeights = {};
+const diagramWidths = {};
+const diagramZooms = {};
+const diagramPanX = {};
+const diagramPanY = {};
+
+window.adjustDiagramHeight = function(event, id) {
+  const val = event.target.value;
+  diagramHeights[id] = val;
+  const container = event.target.closest('.diagram-container');
+  if (container) {
+    const img = container.querySelector('.diagram-image');
+    if (img) img.style.maxHeight = `${val}mm`;
+    const valText = container.querySelector('.control-val');
+    if (valText) valText.textContent = `${val}mm`;
+  }
+};
+
+window.adjustDiagramWidth = function(event, id) {
+  const val = event.target.value;
+  diagramWidths[id] = val;
+  const container = event.target.closest('.diagram-container');
+  if (container) {
+    const wrapper = container.querySelector('.diagram-wrapper');
+    if (wrapper) wrapper.style.width = `${val}%`;
+    const valText = container.querySelector('.width-val');
+    if (valText) valText.textContent = `${val}%`;
+  }
+};
+
+window.adjustDiagramZoom = function(event, id) {
+  const val = parseFloat(event.target.value);
+  diagramZooms[id] = val;
+  const container = event.target.closest('.diagram-container');
+  if (container) {
+    const img = container.querySelector('.diagram-image');
+    const px = diagramPanX[id] || 0;
+    const py = diagramPanY[id] || 0;
+    if (img) img.style.transform = `scale(${val}) translate(${px}px, ${py}px)`;
+    const valText = event.target.nextElementSibling;
+    if (valText) valText.textContent = `${Math.round(val * 100)}%`;
+  }
+};
+
+let activeDragId = null;
+let dragStartX = 0;
+let dragStartY = 0;
+let initialPanX = 0;
+let initialPanY = 0;
+
+window.startDiagramDrag = function(event, id) {
+  if (event.target.classList.contains('diagram-overlay') || event.target.closest('.diagram-controls')) {
+    return;
+  }
+  
+  event.preventDefault();
+  activeDragId = id;
+  dragStartX = event.clientX;
+  dragStartY = event.clientY;
+  initialPanX = diagramPanX[id] || 0;
+  initialPanY = diagramPanY[id] || 0;
+  
+  const wrapper = event.currentTarget;
+  wrapper.style.cursor = 'grabbing';
+  
+  window.addEventListener('mousemove', handleDiagramDrag);
+  window.addEventListener('mouseup', stopDiagramDrag);
+};
+
+function handleDiagramDrag(event) {
+  if (!activeDragId) return;
+  
+  const id = activeDragId;
+  const zoom = diagramZooms[id] || 1.0;
+  const deltaX = event.clientX - dragStartX;
+  const deltaY = event.clientY - dragStartY;
+  
+  const newPanX = initialPanX + (deltaX / zoom);
+  const newPanY = initialPanY + (deltaY / zoom);
+  
+  diagramPanX[id] = newPanX;
+  diagramPanY[id] = newPanY;
+  
+  const container = document.getElementById(`container-diagram-${id}`);
+  if (container) {
+    const img = container.querySelector('.diagram-image');
+    if (img) img.style.transform = `scale(${zoom}) translate(${newPanX}px, ${newPanY}px)`;
+  }
+}
+
+function stopDiagramDrag(event) {
+  if (!activeDragId) return;
+  
+  const container = document.getElementById(`container-diagram-${activeDragId}`);
+  if (container) {
+    const wrapper = container.querySelector('.diagram-wrapper');
+    if (wrapper) wrapper.style.cursor = 'grab';
+  }
+  
+  activeDragId = null;
+  window.removeEventListener('mousemove', handleDiagramDrag);
+  window.removeEventListener('mouseup', stopDiagramDrag);
+}
+
 // Inline tag maps matching build.py
 const INLINE_TAG_MAP = {
   "b": "strong",
@@ -215,6 +340,48 @@ function renderList(el, tag) {
   return `<${tag}>${items}</${tag}>`;
 }
 
+// Compile ADR element
+function renderADR(el) {
+  const title = esc(el.getAttribute('title') || '');
+  
+  const decisionEl = el.querySelector('decision');
+  const decisionText = decisionEl ? compileInlineHTML(decisionEl) : '';
+  
+  const altsEl = el.querySelector('alternatives');
+  let altsHtml = '';
+  if (altsEl) {
+    const items = Array.from(altsEl.querySelectorAll('item'))
+      .map(item => `<li>${compileInlineHTML(item)}</li>`)
+      .join('');
+    altsHtml = `<ul>${items}</ul>`;
+  }
+  
+  const ratEl = el.querySelector('rationale');
+  const ratText = ratEl ? compileInlineHTML(ratEl) : '';
+  
+  const impEl = el.querySelector('impact');
+  let impHtml = '';
+  if (impEl) {
+    const pos = esc(impEl.getAttribute('pos') || '');
+    const neg = esc(impEl.getAttribute('neg') || '');
+    const posHtml = pos ? `<span class="impact-pos">Positive:</span> ${pos}<br/>` : '';
+    const negHtml = neg ? `<span class="impact-neg">Trade-off:</span> ${neg}` : '';
+    impHtml = `${posHtml}${negHtml}`;
+  }
+  
+  return `
+    <div class="adr">
+      <div class="adr-head">${title}</div>
+      <div class="adr-body">
+        <div class="adr-row"><span class="k">DECISION</span>${decisionText}</div>
+        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span>${altsHtml}</div>
+        <div class="adr-row"><span class="k">RATIONALE</span>${ratText}</div>
+        <div class="adr-row"><span class="k">IMPACT</span>${impHtml}</div>
+      </div>
+    </div>
+  `;
+}
+
 // Dispatch block-level element compilation matching build.py
 function renderBlock(el) {
   if (el.nodeType !== Node.ELEMENT_NODE) return '';
@@ -254,7 +421,71 @@ function renderBlock(el) {
     const infoIconSVG = `<span class="why-meta"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline; margin-right:4px; vertical-align:middle; color:var(--doc-secondary);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><strong>Why this is asked:</strong></span>`;
     return `<p class="why-text">${infoIconSVG} ${compileInlineHTML(el)}</p>`;
   }
-  if (t === "svg" || t === "raw") {
+  if (t === "diagram") {
+    const id = el.getAttribute('id') || `diagram-${Math.random().toString(36).substr(2, 9)}`;
+    const caption = el.getAttribute('caption') || '';
+    
+    // Parse height from attribute (e.g. "60mm" -> 60)
+    const xmlHeightAttr = el.getAttribute('height') || '60';
+    const xmlHeightVal = parseInt(xmlHeightAttr.replace(/[^0-9]/g, ''), 10) || 60;
+    const currentHeightVal = diagramHeights[id] !== undefined ? diagramHeights[id] : xmlHeightVal;
+
+    // Parse width from attribute (e.g. "100%" -> 100)
+    const xmlWidthAttr = el.getAttribute('width') || '100';
+    const xmlWidthVal = parseInt(xmlWidthAttr.replace(/[^0-9]/g, ''), 10) || 100;
+    const currentWidthVal = diagramWidths[id] !== undefined ? diagramWidths[id] : xmlWidthVal;
+    
+    const currentZoom = diagramZooms[id] || 1.0;
+    const currentPanX = diagramPanX[id] || 0;
+    const currentPanY = diagramPanY[id] || 0;
+    const imageSrc = uploadedDiagrams[id];
+    
+    return `
+      <div class="diagram-container" id="container-diagram-${id}">
+        ${imageSrc ? `
+          <div class="diagram-wrapper" onmousedown="startDiagramDrag(event, '${id}')" style="width:${currentWidthVal}%; cursor: grab;">
+            <img src="${imageSrc}" class="diagram-image" style="max-height:${currentHeightVal}mm; object-fit:contain; transform: scale(${currentZoom}) translate(${currentPanX}px, ${currentPanY}px); transform-origin: center; transition: none;" />
+            <div class="diagram-overlay" onclick="triggerDiagramUpload('${id}')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              Change Diagram
+            </div>
+            <!-- Interactive controls (height + width + zoom sliders) -->
+            <div class="diagram-controls no-print" onmousedown="event.stopPropagation()">
+              <span class="control-label">H:</span>
+              <input type="range" min="20" max="150" value="${currentHeightVal}" oninput="adjustDiagramHeight(event, '${id}')" style="width: 50px;" />
+              <span class="control-val">${currentHeightVal}mm</span>
+              
+              <span class="control-separator">|</span>
+
+              <span class="control-label">W:</span>
+              <input type="range" min="30" max="100" value="${currentWidthVal}" oninput="adjustDiagramWidth(event, '${id}')" style="width: 50px;" />
+              <span class="control-val width-val">${currentWidthVal}%</span>
+              
+              <span class="control-separator">|</span>
+              
+              <span class="control-label">Z:</span>
+              <input type="range" min="1.0" max="3.0" step="0.05" value="${currentZoom}" oninput="adjustDiagramZoom(event, '${id}')" style="width: 50px;" />
+              <span class="control-val">${Math.round(currentZoom * 100)}%</span>
+            </div>
+          </div>
+        ` : `
+          <div class="diagram-placeholder" onclick="triggerDiagramUpload('${id}')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--doc-secondary); margin-bottom:8px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            <span>Click to upload diagram (ID: <strong>${id}</strong>)</span>
+          </div>
+        `}
+        <input type="file" id="file-diagram-${id}" style="display:none;" onchange="handleDiagramUpload(event, '${id}')" accept="image/*" />
+        ${caption ? `<div class="diagram-caption">${esc(caption)}</div>` : ''}
+      </div>
+    `;
+  }
+  if (t === "adr") {
+    return renderADR(el);
+  }
+  if (t === "svg") {
+    return new XMLSerializer().serializeToString(el);
+  }
+  if (t === "raw") {
     return el.textContent.trim();
   }
   return "";

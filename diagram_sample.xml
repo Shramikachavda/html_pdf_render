@@ -1,0 +1,44 @@
+<doc title="DocuCraft Multi-Diagram Demo">
+
+  <!-- ============ COVER PAGE ============ -->
+  <cover kicker="TECHNICAL DEMONSTRATION" title="Multi-Diagram Showcase" subtitle="A copy-pasteable sample showing independent diagram slots combined with standard sheets, tables, and callouts.">
+    <field name="Author">DocuCraft Team</field>
+    <field name="Purpose">Demonstration of independent uploads</field>
+    <field name="Compatible with">build.py &amp; Live Browser Preview</field>
+  </cover>
+
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="DEMO · OVERVIEW" kicker="01 — GETTING STARTED" title="Working with Diagram Elements" footnum="01">
+    <p>This document contains two separate diagram tags. You can upload different images to each slot in the live editor preview, and they will render independently inside the document flow.</p>
+
+    <h2>Primary Architecture</h2>
+    <p>Below is a diagram slot mapping components, vectors, and server connections.</p>
+    
+    <!-- First Diagram Slot -->
+    <diagram id="system-architecture" caption="Figure 1: Client-Server Vector Matching System Architecture" height="60mm" />
+
+    <callout label="PRO TIP">
+      Click directly inside the placeholder above to upload an architecture image. When you export to HTML, the image data is embedded directly into the file as a base64 string, so the file remains self-contained.
+    </callout>
+  </sheet>
+
+  <!-- ============ SHEET 02 ============ -->
+  <sheet label="DEMO · DATAFLOW" kicker="02 — FLOWCHART" title="Data Handling Flowchart" footnum="02">
+    <p>You can define another diagram tag with a different <code>id</code> attribute. Uploading an image to this second slot will not overwrite or conflict with the first diagram.</p>
+
+    <h2>Data Pipeline Flow</h2>
+    <p>Below is the data pipeline and retrieval matching logic flowchart.</p>
+
+    <!-- Second Diagram Slot -->
+    <diagram id="data-pipeline-flow" caption="Figure 2: Grounding and Response Verification Pipeline" height="50mm" />
+
+    <h2>Technical Breakdown</h2>
+    <table>
+      <row header="1"><cell>Step</cell><cell>Action</cell></row>
+      <row><cell>01</cell><cell>Crawler pulls static text blocks from target websites</cell></row>
+      <row><cell>02</cell><cell>Embedder vectors chunks and stores them in Postgres</cell></row>
+      <row><cell>03</cell><cell>User questions are vector matched in real-time</cell></row>
+    </table>
+  </sheet>
+
+</doc>

@@ -5,147 +5,105 @@
     <h2>A.1 Overview</h2>
     <p>Architecture Decision Records document the key technical decisions made during the design of the Theta Chat Bot. Each ADR names the decision, the alternatives considered, the rationale for the selected approach, and its expected impact — positive outcomes and trade-offs alike. This gives future developers a historical record of <i>why</i> each choice was made, not just <i>what</i> was chosen.</p>
 
-    <raw>
-    <div class="adr">
-      <div class="adr-head">ADR-001 — Retrieval-Augmented Generation (RAG)</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Adopt RAG instead of relying solely on a Large Language Model.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span>
-          <ul><li>Direct LLM responses without retrieval</li><li>Manually maintained FAQ database</li><li>Fine-tuned language model</li></ul>
-        </div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Grounds responses in official website content, reduces hallucinations, eliminates frequent retraining, and stays synchronized with website updates.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> higher accuracy, better maintainability, improved trust.<br/>
-          <span class="impact-neg">Trade-off:</span> adds a retrieval step before generation.
-        </div>
-      </div>
-    </div>
+    <adr title="ADR-001 — Retrieval-Augmented Generation (RAG)">
+      <decision>Adopt RAG instead of relying solely on a Large Language Model.</decision>
+      <alternatives>
+        <item>Direct LLM responses without retrieval</item>
+        <item>Manually maintained FAQ database</item>
+        <item>Fine-tuned language model</item>
+      </alternatives>
+      <rationale>Grounds responses in official website content, reduces hallucinations, eliminates frequent retraining, and stays synchronized with website updates.</rationale>
+      <impact pos="higher accuracy, better maintainability, improved trust." neg="adds a retrieval step before generation." />
+    </adr>
 
-    <div class="adr">
-      <div class="adr-head">ADR-002 — FastAPI as Backend Framework</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Use FastAPI as the backend framework.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span>
-          <ul><li>Flask</li><li>Django</li><li>Express.js</li></ul>
-        </div>
-        <div class="adr-row"><span class="k">RATIONALE</span>High-performance async framework, strong Python AI ecosystem integration, automatic OpenAPI docs.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> better performance, faster development, easier maintenance.<br/>
-          <span class="impact-neg">Trade-off:</span> requires familiarity with async programming.
-        </div>
-      </div>
-    </div>
+    <adr title="ADR-002 — FastAPI as Backend Framework">
+      <decision>Use FastAPI as the backend framework.</decision>
+      <alternatives>
+        <item>Flask</item>
+        <item>Django</item>
+        <item>Express.js</item>
+      </alternatives>
+      <rationale>High-performance async framework, strong Python AI ecosystem integration, automatic OpenAPI docs.</rationale>
+      <impact pos="better performance, faster development, easier maintenance." neg="requires familiarity with async programming." />
+    </adr>
 
-    <div class="adr">
-      <div class="adr-head">ADR-003 — Google Gemini as Primary LLM</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Use Google Gemini for the initial implementation.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span>
-          <ul><li>OpenAI</li><li>Anthropic Claude</li></ul>
-        </div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Competitive reasoning, cost-effective for expected workload, large context window, straightforward integration.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> lower operational cost, good response quality.<br/>
-          <span class="impact-neg">Trade-off:</span> requires periodic evaluation to confirm quality holds as usage grows.
-        </div>
-      </div>
-    </div>
+    <adr title="ADR-003 — Google Gemini as Primary LLM">
+      <decision>Use Google Gemini for the initial implementation.</decision>
+      <alternatives>
+        <item>OpenAI</item>
+        <item>Anthropic Claude</item>
+      </alternatives>
+      <rationale>Competitive reasoning, cost-effective for expected workload, large context window, straightforward integration.</rationale>
+      <impact pos="lower operational cost, good response quality." neg="requires periodic evaluation to confirm quality holds as usage grows." />
+    </adr>
 
-    <div class="adr">
-      <div class="adr-head">ADR-004 — Provider-Independent AI Layer</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Design the backend so the LLM provider can be swapped without touching business logic.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span><ul><li>Hardcoded provider integration</li></ul></div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Avoids vendor lock-in and simplifies future migration or multi-provider support.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> greater flexibility, easier upgrades.<br/>
-          <span class="impact-neg">Trade-off:</span> slightly more abstraction in the backend.
-        </div>
-      </div>
-    </div>
-    </raw>
+    <adr title="ADR-004 — Provider-Independent AI Layer">
+      <decision>Design the backend so the LLM provider can be swapped without touching business logic.</decision>
+      <alternatives>
+        <item>Hardcoded provider integration</item>
+      </alternatives>
+      <rationale>Avoids vendor lock-in and simplifies future migration or multi-provider support.</rationale>
+      <impact pos="greater flexibility, easier upgrades." neg="slightly more abstraction in the backend." />
+    </adr>
   </sheet>
 
   <!-- ============ SHEET 15 ============ -->
   <sheet label="THETA CHATBOT · APPENDICES" kicker="APPENDIX A (CONTINUED)" title="Architecture Decision Records" footnum="15">
-    <raw>
-    <div class="adr">
-      <div class="adr-head">ADR-005 — Vector Database Strategy</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Support two deployment options — Qdrant, or PostgreSQL + pgvector.</div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Organizations have different operational needs: Qdrant suits lightweight deployments, PostgreSQL + pgvector suits enterprise deployments needing analytics.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> flexible deployment, no unnecessary infrastructure.<br/>
-          <span class="impact-neg">Trade-off:</span> two supported models require extra documentation.
-        </div>
-      </div>
-    </div>
+    <adr title="ADR-005 — Vector Database Strategy">
+      <decision>Support two deployment options — Qdrant, or PostgreSQL + pgvector.</decision>
+      <rationale>Organizations have different operational needs: Qdrant suits lightweight deployments, PostgreSQL + pgvector suits enterprise deployments needing analytics.</rationale>
+      <impact pos="flexible deployment, no unnecessary infrastructure." neg="two supported models require extra documentation." />
+    </adr>
 
-    <div class="adr">
-      <div class="adr-head">ADR-006 — Event-Driven Incremental Synchronization</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Update only modified website content instead of rebuilding the full knowledge base.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span><ul><li>Manual refresh</li><li>Scheduled synchronization</li></ul></div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Faster updates, reduced embedding generation, lower API costs, improved scalability.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> efficient sync, lower overhead.<br/>
-          <span class="impact-neg">Trade-off:</span> requires integration with the website publishing workflow.
-        </div>
-      </div>
-    </div>
+    <adr title="ADR-006 — Event-Driven Incremental Synchronization">
+      <decision>Update only modified website content instead of rebuilding the full knowledge base.</decision>
+      <alternatives>
+        <item>Manual refresh</item>
+        <item>Scheduled synchronization</item>
+      </alternatives>
+      <rationale>Faster updates, reduced embedding generation, lower API costs, improved scalability.</rationale>
+      <impact pos="efficient sync, lower overhead." neg="requires integration with the website publishing workflow." />
+    </adr>
 
-    <div class="adr">
-      <div class="adr-head">ADR-007 — Docker-Based Deployment</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Containerize all application components.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span><ul><li>Native deployment</li><li>Virtual machines</li></ul></div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Environment consistency, simplified deployment, portability across on-premise and cloud.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> predictable deployments, easier maintenance.<br/>
-          <span class="impact-neg">Trade-off:</span> requires container management knowledge.
-        </div>
-      </div>
-    </div>
+    <adr title="ADR-007 — Docker-Based Deployment">
+      <decision>Containerize all application components.</decision>
+      <alternatives>
+        <item>Native deployment</item>
+        <item>Virtual machines</item>
+      </alternatives>
+      <rationale>Environment consistency, simplified deployment, portability across on-premise and cloud.</rationale>
+      <impact pos="predictable deployments, easier maintenance." neg="requires container management knowledge." />
+    </adr>
 
-    <div class="adr">
-      <div class="adr-head">ADR-008 — On-Premise Deployment</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Deploy within the company's own infrastructure.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span><ul><li>Public cloud deployment</li></ul></div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Infrastructure control, predictable costs, easier integration with existing systems.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> operational control, long-term cost efficiency.<br/>
-          <span class="impact-neg">Trade-off:</span> organization owns server maintenance.
-        </div>
-      </div>
-    </div>
+    <adr title="ADR-008 — On-Premise Deployment">
+      <decision>Deploy within the company's own infrastructure.</decision>
+      <alternatives>
+        <item>Public cloud deployment</item>
+      </alternatives>
+      <rationale>Infrastructure control, predictable costs, easier integration with existing systems.</rationale>
+      <impact pos="operational control, long-term cost efficiency." neg="organization owns server maintenance." />
+    </adr>
 
-    <div class="adr">
-      <div class="adr-head">ADR-009 — Session-Based Conversation Memory</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Maintain conversational context only during the active browser session.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span><ul><li>Stateless conversations</li><li>Permanent conversation history</li></ul></div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Better UX and follow-up support, no authentication required, reduced privacy exposure.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> natural conversations, limited data retention.<br/>
-          <span class="impact-neg">Trade-off:</span> context lost once the session expires.
-        </div>
-      </div>
-    </div>
+    <adr title="ADR-009 — Session-Based Conversation Memory">
+      <decision>Maintain conversational context only during the active browser session.</decision>
+      <alternatives>
+        <item>Stateless conversations</item>
+        <item>Permanent conversation history</item>
+      </alternatives>
+      <rationale>Better UX and follow-up support, no authentication required, reduced privacy exposure.</rationale>
+      <impact pos="natural conversations, limited data retention." neg="context lost once the session expires." />
+    </adr>
 
-    <div class="adr">
-      <div class="adr-head">ADR-010 — Official Website as Single Source of Truth</div>
-      <div class="adr-body">
-        <div class="adr-row"><span class="k">DECISION</span>Restrict chatbot responses to information on the official Theta Technolabs website.</div>
-        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span><ul><li>External websites</li><li>Internet search</li><li>General LLM knowledge</li></ul></div>
-        <div class="adr-row"><span class="k">RATIONALE</span>Ensures consistency with company information, reduces misinformation, simplifies governance.</div>
-        <div class="adr-row"><span class="k">IMPACT</span>
-          <span class="impact-pos">Positive:</span> high trust in responses, easier knowledge management.<br/>
-          <span class="impact-neg">Trade-off:</span> cannot answer questions beyond the website's scope.
-        </div>
-      </div>
-    </div>
-    </raw>
+    <adr title="ADR-010 — Official Website as Single Source of Truth">
+      <decision>Restrict chatbot responses to information on the official Theta Technolabs website.</decision>
+      <alternatives>
+        <item>External websites</item>
+        <item>Internet search</item>
+        <item>General LLM knowledge</item>
+      </alternatives>
+      <rationale>Ensures consistency with company information, reduces misinformation, simplifies governance.</rationale>
+      <impact pos="high trust in responses, easier knowledge management." neg="cannot answer questions beyond the website's scope." />
+    </adr>
   </sheet>
 
   <!-- ============ SHEET 16 ============ -->

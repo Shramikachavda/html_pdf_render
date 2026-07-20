@@ -3,13 +3,13 @@
   <!-- ============ SHEET 01 ============ -->
   <sheet label="API DESIGN" kicker="API" footnum="01" title="7. API Design &amp; Communication Flow">
     <h2>7. API Design &amp; Communication Flow</h2>
-    <h3>7.1 Overview</h3>
+    <h2>7.1 Overview</h2>
     <raw><img src="mermaid-diagram (5).png" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
 
     <p>The Theta Chat Bot follows a RESTful API architecture, where the chatbot widget communicates with the FastAPI backend through secure HTTPS endpoints.</p>
     <p>The backend acts as the central orchestration layer responsible for validating requests, retrieving relevant knowledge, communicating with the Large Language Model (LLM), and returning structured responses to the frontend.</p>
     <p>All communication between components is performed using JSON payloads, making the APIs lightweight, language-independent, and easy to integrate with existing or future frontend applications.</p>
-    <h3>7.2 API Communication Architecture</h3>
+    <h2>7.2 API Communication Architecture</h2>
     <p>The communication between system components follows the sequence below:</p>
     <p>Website Chat Widget</p>
     <p>↓</p>
@@ -31,7 +31,7 @@
     <p>↓</p>
     <p>Website Chat Widget</p>
     <p>Each component has a clearly defined responsibility, ensuring loose coupling and easier maintenance.</p>
-    <h3>7.3 API Endpoints</h3>
+    <h2>7.3 API Endpoints</h2>
     <p>The following endpoints are proposed for the initial version of the chatbot.</p>
     <p>Endpoint</p>
     <p>Method</p>
@@ -55,7 +55,7 @@
     <p>GET</p>
     <p>Retrieve chatbot configuration and feature flags</p>
     <p>Future administrative endpoints may include analytics, knowledge synchronization, and dashboard APIs.</p>
-    <h3>7.4 Request Flow</h3>
+    <h2>7.4 Request Flow</h2>
     <p>When a visitor submits a message, the frontend sends a POST request to the chatbot API.</p>
     <p>Example Request</p>
     <p>POST /api/v1/chat</p>
@@ -77,7 +77,7 @@
     <p>timestamp</p>
     <p>DateTime</p>
     <p>Request creation time</p>
-    <h3>7.5 Backend Processing Flow</h3>
+    <h2>7.5 Backend Processing Flow</h2>
     <p>Upon receiving the request, the backend performs the following operations:</p>
     <p>Validate the request payload.</p>
     <p>Verify session information.</p>
@@ -90,7 +90,7 @@
     <p>Validate the generated response.</p>
     <p>Return the final response to the frontend.</p>
     <p>Each step is executed sequentially to ensure consistent and reliable responses.</p>
-    <h3>7.6 Response Structure</h3>
+    <h2>7.6 Response Structure</h2>
     <p>The backend returns a standardized JSON response.</p>
     <p>Example Response</p>
     <p>{</p>
@@ -106,7 +106,7 @@
     <p>  "confidence": "High",</p>
     <p>  "processing_time_ms": 842</p>
     <p>}</p>
-    <h3>7.7 Response Fields</h3>
+    <h2>7.7 Response Fields</h2>
     <p>Field</p>
     <p>Description</p>
     <p>status</p>
@@ -122,7 +122,7 @@
     <p>processing_time_ms</p>
     <p>Total backend processing time</p>
     <p>Including source references increases transparency and allows users to verify the information directly on the official website.</p>
-    <h3>7.8 Error Handling</h3>
+    <h2>7.8 Error Handling</h2>
     <p>The API returns standardized error responses whenever a request cannot be completed successfully.</p>
     <p>Example Error Response</p>
     <p>{</p>
@@ -146,7 +146,7 @@
     <p>INTERNAL_ERROR</p>
     <p>Unexpected server error</p>
     <p>Providing standardized error codes simplifies debugging and future monitoring.</p>
-    <h3>7.9 HTTP Status Codes</h3>
+    <h2>7.9 HTTP Status Codes</h2>
     <p>Status Code</p>
     <p>Description</p>
     <p>200 OK</p>
@@ -163,7 +163,7 @@
     <p>Unexpected backend error</p>
     <p>503 Service Unavailable</p>
     <p>LLM or database temporarily unavailable</p>
-    <h3>7.10 Session Management</h3>
+    <h2>7.10 Session Management</h2>
     <p>Although the chatbot is publicly accessible and does not require user authentication, temporary browser sessions are maintained to support conversational context.</p>
     <p>Each visitor receives a unique session identifier when opening the chatbot.</p>
     <p>The session identifier enables:</p>
@@ -172,7 +172,7 @@
     <p>Improved response quality</p>
     <p>Analytics (optional)</p>
     <p>No personally identifiable information (PII) is required to create or maintain a session.</p>
-    <h3>7.11 Security Considerations</h3>
+    <h2>7.11 Security Considerations</h2>
     <p>To protect the chatbot APIs from misuse, the backend implements multiple validation and security mechanisms.</p>
     <p>These include:</p>
     <p>HTTPS communication</p>
@@ -184,12 +184,12 @@
     <p>Environment-based API key management</p>
     <p>Secure server-side communication with LLM providers</p>
     <p>Sensitive API credentials are never exposed to the frontend.</p>
-    <h3>7.12 API Versioning</h3>
+    <h2>7.12 API Versioning</h2>
     <p>All public endpoints are versioned using URI-based versioning.</p>
     <p>Example:</p>
     <p>/api/v1/chat</p>
     <p>Versioning allows future API enhancements without breaking compatibility with existing frontend integrations.</p>
-    <h3>7.13 Key Design Decisions</h3>
+    <h2>7.13 Key Design Decisions</h2>
     <p>Decision</p>
     <p>Justification</p>
     <p>RESTful API architecture</p>

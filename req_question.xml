@@ -40,6 +40,9 @@
     <h2>6. Infrastructure</h2>
     <p><b>Does the existing server have sufficient CPU, RAM, and storage to host the chatbot and its supporting services?</b></p>
     <why>This helps determine whether the existing infrastructure is capable of hosting the chatbot and its supporting services. If the available resources are insufficient, cloud deployment or additional infrastructure planning may be required to ensure reliable performance and future scalability.</why>
+
+    <!-- Interactive Diagram Upload Slot -->
+    <diagram id="infra-layout" caption="Infrastructure Layout &amp; Hosting Setup Diagram" height="55mm" />
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->

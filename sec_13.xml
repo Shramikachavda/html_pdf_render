@@ -3,10 +3,10 @@
   <!-- ============ SHEET 01 ============ -->
   <sheet label="RISKS &amp; LIMITATIONS" kicker="RISK MANAGEMENT" footnum="01" title="14. Risk Assessment &amp; Mitigation">
     <h2>14. Risk Assessment &amp; Mitigation</h2>
-    <h3>14.1 Overview</h3>
+    <h2>14.1 Overview</h2>
     <p>Every software solution introduces technical and operational risks that should be identified during the design phase. Evaluating these risks early enables the team to define appropriate mitigation strategies and reduces the likelihood of unexpected issues during deployment or production.</p>
     <p>The following table summarizes the primary risks identified for the Theta Chat Bot project.</p>
-    <h3>14.2 Risk Register</h3>
+    <h2>14.2 Risk Register</h2>
     <p>Risk</p>
     <p>Impact</p>
     <p>Probability</p>
@@ -43,7 +43,7 @@
     <p>High</p>
     <p>Low</p>
     <p>Implement structured logging, health monitoring, and automated alerting.</p>
-    <h3>14.3 Technical Risks</h3>
+    <h2>14.3 Technical Risks</h2>
     <p>Several technical risks are associated with AI-powered chatbot systems.</p>
     <p>Retrieval Accuracy</p>
     <p>If the retrieved website content does not closely match the user's question, response quality may decrease.</p>
@@ -63,7 +63,7 @@
     <p>Mitigation:</p>
     <p>Provider-independent AI abstraction.</p>
     <p>Support for future integration with additional providers.</p>
-    <h3>14.4 Operational Risks</h3>
+    <h2>14.4 Operational Risks</h2>
     <p>Operational risks relate to deployment, infrastructure, and ongoing maintenance.</p>
     <p>Potential concerns include:</p>
     <p>Server downtime.</p>
@@ -76,7 +76,7 @@
     <p>Container restart policies.</p>
     <p>Backup procedures.</p>
     <p>Deployment validation checklists.</p>
-    <h3>14.5 Business Risks</h3>
+    <h2>14.5 Business Risks</h2>
     <p>Business-related risks should also be considered.</p>
     <p>Examples include:</p>
     <p>Users expecting answers beyond the chatbot's supported domain.</p>
@@ -86,7 +86,7 @@
     <p>Clearly define the chatbot's scope.</p>
     <p>Keep the website as the single source of truth.</p>
     <p>Monitor usage trends and API costs through the Operational Dashboard.</p>
-    <h3>14.6 Risk Review Process</h3>
+    <h2>14.6 Risk Review Process</h2>
     <p>Risks should be reviewed periodically during development and after production deployment.</p>
     <p>The review process should include:</p>
     <p>Analysis of operational metrics.</p>
@@ -95,7 +95,7 @@
     <p>AI response quality.</p>
     <p>Knowledge base coverage.</p>
     <p>Continuous review allows the chatbot to evolve while maintaining reliability and accuracy.</p>
-    <h3>14.7 Key Design Decisions</h3>
+    <h2>14.7 Key Design Decisions</h2>
     <p>Decision</p>
     <p>Justification</p>
     <p>Early risk identification</p>

@@ -44,7 +44,7 @@
       <row><cell>Version Control</cell><cell>Git</cell><cell>Source code management</cell><cell>Enables version tracking, collaboration, and change management</cell></row>
       <row><cell>Hosting</cell><cell>Linux Server (On-Premise)</cell><cell>Hosts the chatbot infrastructure</cell><cell>Provides secure, controlled, and cost-effective deployment within the organization's infrastructure</cell></row>
     </table>
-    <h3>Technology Selection Notes</h3>
+    <h2>Technology Selection Notes</h2>
     <p>Several components in the proposed architecture offer more than one viable technology option. The final selection for each will be made based on an evaluation of project requirements, performance needs, and operational constraints at the time of implementation. The criteria guiding these decisions are outlined below.</p>
     <p>&lt;b&gt;AI Model Selection:&lt;/b&gt; Two LLM options are considered — Google Gemini and OpenAI. Google Gemini is selected as the initial model for development and evaluation. The final decision between the two will depend on:</p>
     <ul>
@@ -67,7 +67,7 @@
   <sheet label="TECHNOLOGY STACK" kicker="TECHNOLOGY" footnum="03" title="3.3 Technology Selection Rationale">
     <h2>3.3 Technology Selection Rationale</h2>
     <p>Instead of selecting technologies based solely on popularity, each major component was evaluated against multiple alternatives using criteria such as performance, scalability, maintainability, operational cost, ease of deployment, and compatibility with AI-based applications. The following sections summarize the key architectural decisions made during the technology selection process.</p>
-    <h3>3.3.1 Backend Framework Selection</h3>
+    <h2>3.3.1 Backend Framework Selection</h2>
     <table>
       <row header="1"><cell>Technology</cell><cell>Advantages</cell><cell>Limitations</cell></row>
       <row><cell>Flask</cell><cell>Lightweight and simple</cell><cell>Limited support for asynchronous APIs</cell></row>
@@ -76,21 +76,21 @@
       <row><cell><b>FastAPI (Selected)</b></cell><cell>High performance, asynchronous processing, automatic API documentation, strong AI ecosystem</cell><cell>Requires understanding of asynchronous programming</cell></row>
     </table>
     <p>&lt;b&gt;Decision:&lt;/b&gt; FastAPI was selected because it provides high-performance asynchronous request handling, integrates seamlessly with Python AI libraries, and automatically generates OpenAPI documentation. These capabilities make it well suited for scalable AI-powered REST services.</p>
-    <h3>3.3.2 Large Language Model Selection</h3>
+    <h2>3.3.2 Large Language Model Selection</h2>
     <table>
       <row header="1"><cell>Provider</cell><cell>Advantages</cell><cell>Limitations</cell></row>
       <row><cell>Google Gemini</cell><cell>Cost-effective, large context window, good performance</cell><cell>May require evaluation for highly complex reasoning</cell></row>
       <row><cell>OpenAI</cell><cell>Excellent reasoning and structured output</cell><cell>Higher operational cost</cell></row>
     </table>
     <p>&lt;b&gt;Decision:&lt;/b&gt; Google Gemini is proposed as the initial LLM for development and evaluation due to its balance between performance and operational cost. However, the application architecture remains provider-independent, allowing migration to OpenAI if future evaluation indicates improved performance or business value.</p>
-    <h3>3.3.3 Vector Storage Selection</h3>
+    <h2>3.3.3 Vector Storage Selection</h2>
     <table>
       <row header="1"><cell>Technology</cell><cell>Advantages</cell><cell>Limitations</cell></row>
       <row><cell>Qdrant</cell><cell>High-performance semantic search, lightweight, Docker-friendly</cell><cell>Separate database for structured data</cell></row>
       <row><cell>PostgreSQL + pgvector</cell><cell>Unified relational and vector storage, supports analytics</cell><cell>Higher infrastructure requirements</cell></row>
     </table>
     <p>&lt;b&gt;Decision:&lt;/b&gt; The final selection depends on deployment requirements. Qdrant is recommended for deployments focused on semantic search, while PostgreSQL with pgvector is better suited for deployments requiring dashboards, reporting, analytics, and unified data management.</p>
-    <h3>3.3.4 Deployment Strategy</h3>
+    <h2>3.3.4 Deployment Strategy</h2>
     <table>
       <row header="1"><cell>Option</cell><cell>Advantages</cell><cell>Limitations</cell></row>
       <row><cell>On-Premise</cell><cell>Data privacy, infrastructure control, lower long-term cost</cell><cell>Requires internal server management</cell></row>

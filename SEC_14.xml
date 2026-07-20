@@ -17,7 +17,7 @@
   <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="03" title="15.2 Phase 1 – Initial Production Release (MVP)">
     <h2>15.2 Phase 1 – Initial Production Release (MVP)</h2>
     <p>The first phase focuses on delivering a production-ready chatbot integrated with the Theta Technolabs website.</p>
-    <h3>Features</h3>
+    <h2>Features</h2>
     <ul>
       <li>Website-based knowledge retrieval</li>
       <li>Retrieval-Augmented Generation (RAG)</li>
@@ -41,7 +41,7 @@
   <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="04" title="15.3 Phase 2 – Monitoring &amp; Analytics">
     <h2>15.3 Phase 2 – Monitoring &amp; Analytics</h2>
     <p>Following the initial deployment, the focus shifts toward improving operational visibility, monitoring, and performance analysis.</p>
-    <h3>Features</h3>
+    <h2>Features</h2>
     <ul>
       <li>Administrative dashboard</li>
       <li>Conversation history</li>
@@ -60,7 +60,7 @@
   <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="05" title="15.4 Phase 3 – User Experience Enhancements">
     <h2>15.4 Phase 3 – User Experience Enhancements</h2>
     <p>This phase focuses on enhancing the overall user experience and making interactions more engaging and accessible.</p>
-    <h3>Features</h3>
+    <h2>Features</h2>
     <ul>
       <li>Suggested follow-up questions</li>
       <li>Rich response cards</li>
@@ -78,7 +78,7 @@
   <sheet label="FUTURE ENHANCEMENTS" kicker="ROADMAP" footnum="06" title="15.5 Long-Term Vision">
     <h2>15.5 Long-Term Vision</h2>
     <p>The long-term vision is to continuously enhance the Theta Chat Bot by improving response quality, user experience, and operational efficiency while preserving its modular architecture. Future enhancements will focus on increasing system performance, simplifying maintenance, and supporting evolving business requirements without requiring significant architectural changes.</p>
-    <h3>Potential Future Enhancements</h3>
+    <h2>Potential Future Enhancements</h2>
     <ul>
       <li>Multi-website support</li>
       <li>Improved Retrieval-Augmented Generation (RAG) techniques</li>

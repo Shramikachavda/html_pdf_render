@@ -1,0 +1,92 @@
+# Chapter 1 – Executive Summary
+
+## 1.1 Introduction
+
+The Theta Chat Bot is an AI-powered virtual assistant designed for the Theta Technolabs website. It enables visitors to quickly access information about the company, its services, technologies, case studies, blogs, careers, and other business offerings through a conversational interface.
+
+Unlike a general-purpose AI assistant, the Theta Chat Bot responds only with information derived from approved Theta Technolabs content. This ensures that responses remain accurate, relevant, and consistent with the organization's official information while minimizing incorrect or unrelated answers.
+
+The chatbot is integrated into the website as a floating chat widget, allowing visitors to interact with it from any page and receive immediate assistance.
+
+---
+
+## 1.2 Project Objectives
+
+The primary objectives of the Theta Chat Bot are to:
+
+* Provide instant and accurate responses to visitor queries.
+* Improve the overall website user experience through conversational search.
+* Help users quickly discover services, technologies, case studies, careers, blogs, and other company information.
+* Reduce the time spent manually navigating multiple web pages.
+* Deliver responses based only on verified company content.
+* Reduce repetitive inquiries handled by sales and support teams.
+* Guide visitors to relevant pages for additional information.
+
+---
+
+## 1.3 Key Features
+
+The chatbot provides the following capabilities:
+
+* Answer questions about Theta Technolabs and its business offerings.
+* Provide information about services, technologies, and industry expertise.
+* Answer frequently asked questions (FAQs).
+* Help users navigate to relevant website pages.
+* Share official website links related to the requested information.
+* Support greetings and general conversational interactions.
+* Respond politely when information is unavailable or outside the supported knowledge base.
+* Generate natural and context-aware responses based on retrieved company information.
+
+---
+
+## 1.4 Project Scope
+
+The Theta Chat Bot is designed exclusively for the Theta Technolabs website and supports queries related to the company's services, technologies, case studies, blogs, careers, contact information, FAQs, and other official website content.
+
+The chatbot assists users by answering questions, guiding them to relevant website pages, and providing information based solely on approved company content.
+
+The chatbot does **not** provide internet search results, current news, personal opinions, or advice related to medical, legal, financial, or any topics outside the scope of Theta Technolabs.
+
+---
+
+## 1.5 High-Level Solution Overview
+
+The Theta Chat Bot follows a Retrieval-Augmented Generation (RAG) approach to provide accurate and context-aware responses.
+
+When a user submits a question, the chatbot searches an approved knowledge base containing information from the Theta Technolabs website. The most relevant information is retrieved and provided to the AI model, which generates a natural-language response based on the retrieved context.
+
+By retrieving information before generating responses, the chatbot delivers reliable answers while making it easy to keep the knowledge base synchronized with website updates.
+
+---
+
+## 1.6 Benefits of the Solution
+
+The proposed solution offers several business and technical benefits:
+
+* Provides responses based only on official company information.
+* Improves visitor engagement through conversational interactions.
+* Reduces repetitive customer support and sales inquiries.
+* Enables faster discovery of relevant website content.
+* Simplifies maintenance by allowing knowledge updates without retraining the AI model.
+* Supports future scalability as additional content and features are introduced.
+* Reduces hallucinations by generating responses from retrieved company information.
+
+---
+
+## 1.7 Expected User Experience
+
+A visitor opens the Theta Technolabs website and clicks the chatbot icon displayed in the bottom-right corner of the screen.
+
+The visitor asks:
+
+> **"Do you develop AI Agents?"**
+
+The chatbot searches the approved knowledge base, retrieves the relevant information, and responds with a concise answer such as:
+
+> **"Yes. Theta Technolabs develops custom AI agents, conversational AI solutions, Large Language Model (LLM) applications, and intelligent automation solutions tailored to business requirements."**
+
+The chatbot also provides a link to the relevant service page, allowing the visitor to explore additional information directly from the official Theta Technolabs website.
+
+---
+
+This chapter serves as a high-level overview of the project. The following chapters describe the system architecture, RAG pipeline, knowledge management process, APIs, guardrails, deployment architecture, and other technical implementation details in greater depth.

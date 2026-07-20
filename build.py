@@ -161,6 +161,43 @@ def render_list(el, tag):
     return f"<{tag}>{items}</{tag}>"
 
 
+def render_adr(el):
+    title = esc(el.get("title", ""))
+    
+    decision_el = el.find("decision")
+    decision_text = inline_html(decision_el) if decision_el is not None else ""
+    
+    alternatives_el = el.find("alternatives")
+    alternatives_html = ""
+    if alternatives_el is not None:
+        items = "".join(f"<li>{inline_html(li)}</li>" for li in alternatives_el.findall("item"))
+        alternatives_html = f"<ul>{items}</ul>"
+        
+    rationale_el = el.find("rationale")
+    rationale_text = inline_html(rationale_el) if rationale_el is not None else ""
+    
+    impact_el = el.find("impact")
+    impact_html = ""
+    if impact_el is not None:
+        pos = esc(impact_el.get("pos", ""))
+        neg = esc(impact_el.get("neg", ""))
+        pos_html = f'<span class="impact-pos">Positive:</span> {pos}<br/>' if pos else ""
+        neg_html = f'<span class="impact-neg">Trade-off:</span> {neg}' if neg else ""
+        impact_html = f"{pos_html}{neg_html}"
+        
+    return f"""
+    <div class="adr">
+      <div class="adr-head">{title}</div>
+      <div class="adr-body">
+        <div class="adr-row"><span class="k">DECISION</span>{decision_text}</div>
+        <div class="adr-row"><span class="k">ALTERNATIVES CONSIDERED</span>{alternatives_html}</div>
+        <div class="adr-row"><span class="k">RATIONALE</span>{rationale_text}</div>
+        <div class="adr-row"><span class="k">IMPACT</span>{impact_html}</div>
+      </div>
+    </div>
+    """
+
+
 def render_block(el):
     """Dispatch one block-level XML element to its HTML rendering."""
     t = el.tag
@@ -184,10 +221,11 @@ def render_block(el):
         return render_list(el, "ul")
     if t == "orderedlist":
         return render_list(el, "ol")
+    if t == "adr":
+        return render_adr(el)
     if t == "svg":
-        # raw passthrough — write inline SVG markup directly inside a <raw> child,
-        # or just place raw SVG text as the element's text content.
-        return (el.text or "").strip()
+        import xml.etree.ElementTree as ET
+        return ET.tostring(el, encoding="utf-8").decode("utf-8")
     if t == "raw":
         return (el.text or "").strip()
     return ""
