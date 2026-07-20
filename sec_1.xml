@@ -1,15 +1,135 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<doc title="EXECUTIVE SUMMARY">
+<doc title="Theta ChatBot — Executive Summary">
+
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="EXECUTIVE SUMMARY" kicker="INTRODUCTION" footnum="01" title="1. Executive Summary">
-    <h2>1. Executive Summary</h2>
-    <h2>1.1 Introduction The Theta Chat Bot is an AI-powered virtual assistant designed for the Theta Technolabs website. It helps visitors quickly find information about the company, services, technologies, case studies, careers, and other business offerings without manually searching through multiple web pages. Unlike a general-purpose AI chatbot, the Theta Chat Bot works only with approved company information. It does not search the internet or answer unrelated questions. This ensures that users receive accurate, consistent, and trustworthy information based on Theta Technolabs' official content. The chatbot will appear as a floating chat widget in the bottom-right corner of the website, allowing visitors to interact with it from any page.</h2>
-    <h2>1.2 Project Goals The primary goals of the chatbot are: Provide instant answers to visitor questions. Help users explore Theta Technolabs' services and solutions. Reduce the time users spend searching the website. Increase engagement by guiding users to relevant pages. Provide accurate information based only on approved company content. Reduce the workload on the sales and support teams by answering common questions.</h2>
-    <h2>1.3 Key Features The chatbot will support the following capabilities: Answer questions about the company. Explain services offered by Theta Technolabs. Provide information about technologies and expertise. Answer frequently asked questions (FAQs). Guide users to relevant service or contact pages. Share the official website link for the referenced information. Handle greetings and general navigation assistance. Respond politely when a question is outside the chatbot's knowledge.</h2>
-    <h2>1.4 Scope The chatbot is designed specifically for the Theta Technolabs website. It will answer questions related to: Company information AI Development Mobile App Development Web Development IoT Solutions Blockchain Solutions Cloud Services UI/UX Design Case Studies Blogs Careers Contact Information Company Technologies FAQs The chatbot will not provide: Personal opinions Medical advice Legal advice Financial advice Current news Internet search results Information unrelated to Theta Technolabs</h2>
-    <h2>1.5 High-Level Solution The chatbot follows a Retrieval-Augmented Generation (RAG) architecture. Instead of memorizing company information, it searches a structured knowledge base to find relevant content. The retrieved information is then provided to the AI model, which generates a natural-language response. This approach keeps responses accurate and makes it easy to update the chatbot by simply updating the knowledge base.</h2>
-    <h2>1.5 Why We Chose This Approach We selected this approach because it provides several advantages: Accurate Answers: Responses are based only on verified company information. Easy to Update: New documents can be added without retraining the AI model. Faster Search: The Vector Database quickly finds the most relevant information. Lower Maintenance: Updating the knowledge base is simple and cost-effective. Reduced Hallucinations: Since the AI receives relevant company information before answering, it is less likely to generate incorrect or unrelated responses</h2>
-    <h2>1.6 Why This Architecture? This architecture was selected because it offers several practical benefits: The chatbot always answers using official company information. Updating the chatbot only requires updating the knowledge base, not retraining the AI model. Semantic search enables the chatbot to understand questions even when users use different wording. The system can scale easily as more content is added. Running the system on-premise ensures complete control over data and infrastructure.</h2>
-    <h2>1.7 Expected User Experience A visitor opens the Theta Technolabs website and notices the chat icon in the bottom-right corner. The visitor asks: "Do you develop AI Agents?" The chatbot searches the knowledge base, retrieves the relevant AI services content, generates a concise answer, and responds with: "Yes. Theta Technolabs develops custom AI agents, conversational AI solutions, LLM applications, and intelligent automation systems tailored to business needs." It then provides: Related Page: https://www.thetatechnolabs.com/artificial-intelligence This allows users to both receive an immediate answer and continue exploring the official website. Excellent. This is Chapter 2: Overall Approach. I've written it in simple, professional language so anyone (developer, QA, manager, intern, or client) can un</h2>
+  <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="01" title="Chapter 1 – Executive Summary">
+    
+    <h2>1.1 Introduction</h2>
+    <p>The <b>Theta Chat Bot</b> is a modular, AI-powered virtual assistant designed to enhance user interaction on the <b>Theta Technolabs website</b>. It provides instant, accurate, and context-aware responses based exclusively on the company's publicly available website content, services, portfolios, case studies, careers, and blogs.</p>
+    <p>The system utilizes a <b>Retrieval-Augmented Generation (RAG)</b> architecture. User queries are matched against indexed website content before generating responses through a Large Language Model (LLM). This approach significantly <b>reduces hallucinations</b> while maintaining response quality. The chatbot initially utilizes <b>Google Gemini</b> as the primary LLM due to its cost-effectiveness, with migration support to <b>OpenAI</b> if stronger reasoning is required.</p>
+    <p>To support different business requirements, the proposed solution offers two deployment models:</p>
+    <list>
+      <item><b>Lightweight Architecture</b>: FastAPI + Qdrant + Gemini, optimized for quick deployment and low infrastructure overhead.</item>
+      <item><b>Enterprise Architecture</b>: FastAPI + PostgreSQL + Qdrant + Admin Dashboard, providing advanced analytics, API usage tracking, and operational monitoring.</item>
+    </list>
+    <p>The chatbot is embedded into the website as a <b>floating chat widget</b> using a custom JavaScript widget integrated with the current CMS platform. The entire application is containerized using <b>Docker</b>, allowing deployment on an on-premise company server or cloud infrastructure.</p>
+  </sheet>
+
+  <!-- ============ SHEET 02 ============ -->
+  <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="02">
+    
+    <h2>1.2 Why This Solution?</h2>
+    <p>Modern websites contain extensive information spread across pages, making it time-consuming for visitors to locate specific details. Users expect conversational interfaces that interpret natural language and deliver concise, context-aware answers.</p>
+    <p>The proposed chatbot transforms the website into an intelligent knowledge assistant. Instead of relying on manually curated FAQs or hardcoded rules, the system retrieves relevant information directly from indexed website content and uses an LLM to generate human-like responses grounded in that content.</p>
+    <p>This approach offers several key advantages:</p>
+    <list>
+      <item>Reduces repetitive customer support and sales inquiries.</item>
+      <item>Improves user engagement through conversational search.</item>
+      <item>Ensures responses remain aligned with the latest website content.</item>
+      <item>Minimizes hallucinations by grounding responses in retrieved context.</item>
+      <item>Provides a scalable foundation for future CRM integrations and analytics.</item>
+    </list>
+
+    <h2>1.3 Project Goals</h2>
+    <p>The primary goals of the chatbot are:</p>
+    <list>
+      <item>Provide <b>instant answers</b> to visitor questions.</item>
+      <item>Help users explore <b>Theta Technolabs' services and solutions</b>.</item>
+      <item>Reduce the time users spend <b>searching the website</b>.</item>
+      <item>Increase engagement by <b>guiding users to relevant pages</b>.</item>
+      <item>Provide <b>accurate information</b> based only on <b>approved company content</b>.</item>
+      <item>Reduce the workload on the <b>sales and support teams</b> by answering <b>common questions</b>.</item>
+    </list>
+  </sheet>
+
+  <!-- ============ SHEET 03 ============ -->
+  <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="03">
+    
+    <h2>1.4 Key Features</h2>
+    <p>The chatbot will support the following capabilities:</p>
+    <list>
+      <item>Answer questions about the <b>company</b>.</item>
+      <item>Explain <b>services offered</b> by Theta Technolabs.</item>
+      <item>Provide information about <b>technologies and expertise</b>.</item>
+      <item>Answer <b>frequently asked questions (FAQs)</b>.</item>
+      <item>Guide users to relevant <b>service or contact pages</b>.</item>
+      <item>Share the <b>official website link</b> for the referenced information.</item>
+      <item>Handle <b>greetings</b> and general navigation assistance.</item>
+      <item>Respond politely when a question is <b>outside the chatbot's knowledge</b>.</item>
+    </list>
+
+    <h2>1.5 Scope</h2>
+    <table>
+      <row header="1">
+        <cell width="50%">In Scope (Supported Queries)</cell>
+        <cell width="50%">Out of Scope (Unsupported)</cell>
+      </row>
+      <row>
+        <cell>• Company information
+• AI Development
+• Mobile App Development
+• Web Development
+• IoT Solutions
+• Blockchain Solutions
+• Cloud Services
+• UI/UX Design
+• Case Studies
+• Blogs
+• Careers
+• Contact Information
+• Company Technologies
+• FAQs</cell>
+        <cell>• Personal opinions
+• Medical advice
+• Legal advice
+• Financial advice
+• Current news
+• Internet search results
+• Information unrelated to Theta Technolabs</cell>
+      </row>
+    </table>
+  </sheet>
+
+  <!-- ============ SHEET 04 ============ -->
+  <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="04">
+    
+    <h2>1.6 High-Level Solution</h2>
+    <p>The chatbot follows a <b>Retrieval-Augmented Generation (RAG)</b> architecture. Instead of memorizing company information, it searches a <b>structured knowledge base</b> to find relevant content. The retrieved information is then provided to the <b>AI model</b>, which generates a <b>natural-language response</b>. This approach keeps responses accurate and makes it easy to update the chatbot by simply updating the knowledge base.</p>
+
+    <h2>Why We Chose This Approach</h2>
+    <list>
+      <item><b>Accurate Answers</b>: Responses are based only on verified company information.</item>
+      <item><b>Easy to Update</b>: New documents can be added without retraining the AI model.</item>
+      <item><b>Faster Search</b>: The Vector Database quickly finds the most relevant information.</item>
+      <item><b>Lower Maintenance</b>: Updating the knowledge base is simple and cost-effective.</item>
+      <item><b>Reduced Hallucinations</b>: Since the AI receives relevant company information before answering, it is less likely to generate incorrect or unrelated responses.</item>
+    </list>
+
+    <h2>1.7 Why This Architecture?</h2>
+    <p>This architecture was selected because it offers several practical benefits:</p>
+    <list>
+      <item>The chatbot always answers using <b>official company information</b>.</item>
+      <item>Updating the chatbot only requires <b>updating the knowledge base</b>, not retraining the AI model.</item>
+      <item><b>Semantic search</b> enables the chatbot to understand questions even when users use different wording.</item>
+      <item>The system can <b>scale easily</b> as more content is added.</item>
+      <item>Running the system <b>on-premise</b> ensures complete control over data and infrastructure.</item>
+    </list>
+  </sheet>
+
+  <!-- ============ SHEET 05 ============ -->
+  <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="05">
+    
+    <h2>1.8 Expected User Experience</h2>
+    <p>A visitor opens the <b>Theta Technolabs website</b> and notices the <b>chat icon</b> in the bottom-right corner.</p>
+    
+    <p>The visitor asks:</p>
+    <callout label="VISITOR QUESTION">"Do you develop <b>AI Agents</b>?"</callout>
+    
+    <p>The chatbot searches the knowledge base, retrieves the relevant AI services content, generates a concise answer, and responds with:</p>
+    <decision label="CHATBOT RESPONSE">"Yes. Theta Technolabs develops custom <b>AI agents</b>, <b>conversational AI</b> solutions, <b>LLM</b> applications, and <b>intelligent automation</b> systems tailored to business needs."</decision>
+    
+    <p>It then provides:</p>
+    <callout label="RELATED LINK">Related Page: <link href="https://www.thetatechnolabs.com/artificial-intelligence">https://www.thetatechnolabs.com/artificial-intelligence</link></callout>
+    
+    <p>This allows users to both receive an immediate answer and continue exploring the official website.</p>
   </sheet>
 </doc>

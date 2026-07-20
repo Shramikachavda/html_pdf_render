@@ -41,7 +41,7 @@ h1.section-title { font-size:20pt; color:#0d2b45; border-bottom:2pt solid #0d2b4
 h2 { font-size:12.5pt; color:#0d2b45; margin-top:6.5mm; margin-bottom:3mm; padding-left:3mm; border-left:3pt solid #e8a33d; }
 h3 { font-size:10.3pt; color:#1c5d8c; margin-top:4.5mm; margin-bottom:2mm; font-family:"DejaVu Sans Mono",monospace; letter-spacing:0.5px; }
 p { margin-bottom:2.8mm; text-align:justify; }
-ul, ol { margin:2mm 0 3mm 5mm; }
+ul, ol { margin:2mm 0 3mm 5mm; padding-left: 5mm; }
 li { margin-bottom:1.4mm; }
 strong { color:#0d2b45; }
 table.spec { width:100%; border-collapse:collapse; margin:3mm 0 5mm 0; font-size:8.8pt; }
@@ -53,7 +53,9 @@ table.spec td .mono { font-family:"DejaVu Sans Mono",monospace; font-size:8.1pt;
 .callout .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; letter-spacing:2px; color:#1c5d8c; font-weight:bold; display:block; margin-bottom:1.5mm; }
 .decision { background:#fdf6ea; border-left:3pt solid #e8a33d; padding:3mm 4mm; margin:4mm 0; font-size:9.1pt; }
 .decision .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; letter-spacing:2px; color:#b5791c; font-weight:bold; display:block; margin-bottom:1.5mm; }
-.tag { display:inline-block; font-family:"DejaVu Sans Mono",monospace; font-size:7.3pt; letter-spacing:1px; color:#fff; background:#1c5d8c; padding:0.7mm 2mm; border-radius:2px; margin-right:1.6mm; }
+.tag { display:inline-block; font-family:"DejaVu Sans Mono",monospace; font-size:7.3pt; letter-spacing:1px; color:#1c5d8c; background:#f4f7f9; border:0.5pt solid #1c5d8c; padding:0.6mm 2mm; border-radius:3px; margin-right:1.6mm; margin-bottom:1.5mm; }
+.tag-danger { color:#b91c1c; background:#fef2f2; border:0.5pt solid #fca5a5; }
+.mermaid { background-color:#f8fafc; padding:5mm; border-radius:3px; border:0.5pt solid #e2e8f0; margin:5mm 0; text-align:center; }
 .steps { margin:3mm 0; }
 .step { position:relative; padding:2mm 0 2mm 11mm; border-bottom:0.4pt dotted #c7d2da; }
 .step:last-child { border-bottom:none; }
@@ -85,6 +87,8 @@ INLINE_TAG_MAP = {
     "em": "em",
     "code": "span class=\"mono\"",
     "mono": "span class=\"mono\"",
+    "p": "p",
+    "br": "br",
 }
 
 
@@ -145,7 +149,9 @@ def render_steps(steps_el):
 
 
 def render_tags(tags_el):
-    pills = "".join(f'<span class="tag">{esc(t.text)}</span>' for t in tags_el.findall("tag"))
+    tag_type = tags_el.get("type", "")
+    tag_class = "tag tag-danger" if tag_type == "danger" else "tag"
+    pills = "".join(f'<span class="{tag_class}">{esc(t.text)}</span>' for t in tags_el.findall("tag"))
     return f"<p>{pills}</p>"
 
 
@@ -228,6 +234,8 @@ def render_block(el):
         return ET.tostring(el, encoding="utf-8").decode("utf-8")
     if t == "raw":
         return (el.text or "").strip()
+    if t == "mermaid-diagram":
+        return f'<div class="mermaid">{esc((el.text or "").strip())}</div>'
     return ""
 
 

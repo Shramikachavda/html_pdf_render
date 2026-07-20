@@ -223,6 +223,8 @@ const INLINE_TAG_MAP = {
   "em": "em",
   "code": "span class=\"mono\"",
   "mono": "span class=\"mono\"",
+  "p": "p",
+  "br": "br",
 };
 
 // ==========================================================================
@@ -316,9 +318,11 @@ function renderSteps(stepsEl) {
 
 // Compile Tags matching build.py
 function renderTags(tagsEl) {
+  const type = tagsEl.getAttribute('type');
+  const tagClass = type === 'danger' ? 'tag tag-danger' : 'tag';
   let pills = '';
   tagsEl.querySelectorAll('tag').forEach(tag => {
-    pills += `<span class="tag">${esc(tag.textContent)}</span>`;
+    pills += `<span class="${tagClass}">${esc(tag.textContent)}</span>`;
   });
   return `<p>${pills}</p>`;
 }
@@ -380,6 +384,52 @@ function renderADR(el) {
       </div>
     </div>
   `;
+}
+
+// Render JSON Block component
+function renderJsonBlock(el) {
+  const label = el.getAttribute('label') || 'JSON';
+  const badge = el.getAttribute('badge') || '';
+  const type  = el.getAttribute('type')  || 'request';
+  const note  = el.getAttribute('note')  || '';
+
+  const schemes = {
+    request: { hBg:'#0d2b45', hColor:'#e8a33d', bColor:'#bfe3ef', bBg:'#f8fafc', kColor:'#1c5d8c', nBg:'#fdf6ea', nBorder:'rgba(232,163,61,0.25)', nColor:'#b5791c', bdr:'#c7d2da' },
+    success: { hBg:'#0d2b45', hColor:'#e8a33d', bColor:'#bfe3ef', bBg:'#f8fafc', kColor:'#1c5d8c', nBg:'#fdf6ea', nBorder:'rgba(232,163,61,0.25)', nColor:'#b5791c', bdr:'#c7d2da' },
+    error:   { hBg:'#ef5350', hColor:'#ffffff', bColor:'#fecaca', bBg:'#fff8f8', kColor:'#ef5350', nBg:'#fef2f2', nBorder:'rgba(248,180,180,0.4)', nColor:'#dc2626', bdr:'#fca5a5' }
+  };
+  const s = schemes[type] || schemes.request;
+
+  let rows = '';
+  const fields = el.querySelectorAll('jfield');
+  fields.forEach((f, i) => {
+    const key   = f.getAttribute('key')   || '';
+    const val   = f.getAttribute('val')   || '';
+    const vtype = f.getAttribute('vtype') || 'string';
+    const comma = i < fields.length - 1 ? '<span class="jb-punct">,</span>' : '';
+
+    let valColor = '#2d7a3a';
+    let dispVal  = `"${esc(val)}"`;
+    if (vtype === 'number') { valColor = '#c25f0a'; dispVal = esc(val); }
+    if (vtype === 'array' || vtype === 'object') { valColor = '#6b7a86'; dispVal = esc(val); }
+
+    rows += `<div class="jb-row"><span class="jb-key" style="color:${s.kColor};">&quot;${esc(key)}&quot;</span><span class="jb-punct">: </span><span class="jb-val" style="color:${valColor};">${dispVal}</span>${comma}</div>`;
+  });
+
+  const noteHTML = note ? `<div class="jb-note" style="background:${s.nBg};border-top:1px solid ${s.nBorder};color:${s.nColor};">&#9432; ${esc(note)}</div>` : '';
+  const badgeHTML = badge ? `<span class="jb-badge" style="color:${s.bColor};">${esc(badge)}</span>` : '';
+
+  return `<div class="json-block" style="border-color:${s.bdr};">
+  <div class="jb-header" style="background:${s.hBg};color:${s.hColor};">
+    <span class="jb-label">${esc(label)}</span>${badgeHTML}
+  </div>
+  <div class="jb-body" style="background:${s.bBg};">
+    <span class="jb-punct">{</span>
+    ${rows}
+    <span class="jb-punct">}</span>
+  </div>
+  ${noteHTML}
+</div>`;
 }
 
 // Dispatch block-level element compilation matching build.py
@@ -487,6 +537,12 @@ function renderBlock(el) {
   }
   if (t === "raw") {
     return el.textContent.trim();
+  }
+  if (t === "json-block") {
+    return renderJsonBlock(el);
+  }
+  if (t === "mermaid-diagram") {
+    return `<div class="mermaid">${esc(el.textContent.trim())}</div>`;
   }
   return "";
 }
@@ -771,6 +827,15 @@ function renderDocument() {
   }
 
   documentContent.innerHTML = compiledHTML || '<div style="color: var(--text-muted); font-style:italic; text-align:center; padding: 40px 0;">Empty Document. Start typing inside the editor...</div>';
+
+  // Initialize Mermaid diagrams if present
+  if (window.mermaid) {
+    try {
+      mermaid.init(undefined, documentContent.querySelectorAll('.mermaid'));
+    } catch (e) {
+      console.error("Mermaid rendering failed:", e);
+    }
+  }
 }
 
 // ==========================================================================

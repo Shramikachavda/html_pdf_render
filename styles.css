@@ -699,7 +699,7 @@ h3 {
 
 p { margin-bottom: 3mm; text-align: justify; }
 
-ul, ol { margin: 2mm 0 3mm 5mm; }
+ul, ol { margin: 2mm 0 3mm 5mm; padding-left: 6mm; }
 li { margin-bottom: 1.5mm; }
 
 strong { 
@@ -836,11 +836,28 @@ table.spec td.mono, table.spec td .mono {
   font-family: 'JetBrains Mono', monospace;
   font-size: 7.5pt;
   letter-spacing: 1px;
-  color: #fff;
-  background: var(--doc-secondary);
-  padding: 0.8mm 2.2mm;
-  border-radius: 2px;
+  color: var(--doc-secondary);
+  background: var(--doc-accent-bg);
+  border: 1px solid var(--doc-secondary);
+  padding: 0.6mm 2.2mm;
+  border-radius: 3px;
   margin-right: 2mm;
+  margin-bottom: 2mm;
+}
+
+.tag-danger {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.mermaid {
+  background-color: #f8fafc;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin: 20px 0;
+  text-align: center;
 }
 
 .adr { border: 0.6pt solid var(--doc-border); margin: 4mm 0 6mm 0; page-break-inside: avoid; }
@@ -1146,4 +1163,56 @@ table.revtable th { background: rgba(0, 0, 0, 0.15); color: #7fd0e6; letter-spac
     size: A4 portrait;
     margin: 0;
   }
+}
+
+/* ==========================================================================
+   JSON BLOCK COMPONENT
+   ========================================================================== */
+
+.json-block {
+  margin: 10px 0 14px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--doc-border);
+  font-size: 8.5pt;
+  page-break-inside: avoid;
+}
+
+.jb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.jb-label { flex: 1; }
+
+.jb-badge { font-weight: 400; }
+
+.jb-body {
+  padding: 10px 14px 10px 14px;
+  line-height: 1.85;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8.2pt;
+  color: #16232f;
+}
+
+.jb-row {
+  display: block;
+  padding-left: 18px;
+}
+
+.jb-key  { font-weight: 600; }
+.jb-val  { }
+.jb-punct { color: #6b7a86; }
+
+.jb-note {
+  padding: 5px 14px;
+  font-size: 7.5pt;
+  font-family: var(--font-body);
+  line-height: 1.5;
 }

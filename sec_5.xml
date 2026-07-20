@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc title="SYSTEM ARCHITECTURE">
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="SYSTEM ARCHITECTURE" kicker="ARCHITECTURE" footnum="01" title="5. System Architecture">
-    <h2>5. System Architecture</h2>
+  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 3 — ARCHITECTURE" footnum="01" title="Chapter 3 – System Architecture">
     <h2>5.1 Architecture Overview</h2>
     <p>The Theta Chat Bot follows a modular, service-oriented architecture designed around the principles of scalability, maintainability, and loose coupling. Each major component has a clearly defined responsibility, allowing individual services to be upgraded or replaced without impacting the rest of the system.</p>
     <p>The architecture separates the user interface, application logic, artificial intelligence layer, knowledge storage, and operational services into independent layers. This design ensures the chatbot remains easy to maintain while supporting future enhancements such as analytics dashboards, multilingual support, CRM integration, or migration to different Large Language Models (LLMs).</p>
@@ -131,7 +130,98 @@
     <p>Simplified backup and maintenance</p>
     <p>If future scalability requirements increase, the same Docker architecture can be deployed on cloud platforms with minimal modifications.</p>
     <h2>5.10 Component Communication</h2>
-    <raw><img src="dia_2.svg" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+    <mermaid-diagram>
+flowchart TD
+    %% Styling
+    classDef client fill:#4ade80,stroke:#22c55e,color:#064e3b,stroke-width:2px;
+    classDef frontend fill:#3b82f6,stroke:#2563eb,color:#eff6ff,stroke-width:2px;
+    classDef app fill:#a855f7,stroke:#9333ea,color:#faf5ff,stroke-width:2px;
+    classDef kb fill:#4ade80,stroke:#22c55e,color:#064e3b,stroke-width:2px;
+    classDef storage fill:#fbbf24,stroke:#f59e0b,color:#78350f,stroke-width:2px;
+    classDef ai fill:#f97316,stroke:#ea580c,color:#fffbeb,stroke-width:2px;
+    
+    %% Client Layer
+    subgraph ClientLayer ["👤 Client Layer"]
+        V[Website Visitor] --&gt; B[Browser]
+        B &lt;--&gt; CW[Chat Widget]
+    end
+
+    %% Frontend Layer
+    subgraph FrontendLayer ["💻 Frontend Layer"]
+        SM[Session Manager]
+        AC[API Client]
+    end
+    CW &lt;--&gt; AC
+    SM --&gt; AC
+
+    %% AI Layer
+    subgraph AILayer ["🧠 AI Layer"]
+        EM[Embedding Model]
+        LLM[LLM Provider]
+    end
+
+    %% Application Layer
+    subgraph AppLayer ["⚙️ Application Layer"]
+        API[REST API]
+        IV[Input Validation]
+        SL[Security Layer]
+        ES[Embedding Service]
+        RS[Retrieval Service]
+        CV[Context Validator]
+        PB[Prompt Builder]
+        LS[LLM Service]
+        RF[Response Formatter]
+        LOG[Logging]
+    end
+
+    %% Storage &amp; Knowledge Base
+    subgraph KBLayer ["📚 Knowledge Base"]
+        WP[Website Pages]
+        S[Services]
+        BL[Blogs]
+        F[FAQs]
+        CS[Case Studies]
+    end
+
+    subgraph StorageLayer ["📦 Storage Layer"]
+        VD[(Vector Database)]
+        MS[(Metadata Store)]
+    end
+
+    %% App Flow
+    AC --&gt; API
+    API --&gt; IV
+    IV --&gt; SL
+    SL --&gt; ES
+    ES --&gt; RS
+    RS --&gt; CV
+    CV --&gt; PB
+    PB --&gt; LS
+    LS --&gt; RF
+    RF --&gt; LOG
+    RF --&gt; AC
+
+    %% External Connections
+    ES &lt;--&gt; EM
+    LS &lt;--&gt; LLM
+    RS &lt;--&gt; VD
+
+    %% Knowledge Sync Flow
+    WP --&gt; VD
+    S --&gt; VD
+    BL --&gt; VD
+    F --&gt; VD
+    CS --&gt; VD
+    VD --&gt; MS
+
+    %% Assign Styles
+    class V,B,CW client;
+    class SM,AC frontend;
+    class API,IV,SL,ES,RS,CV,PB,LS,RF,LOG app;
+    class WP,S,BL,F,CS kb;
+    class VD,MS storage;
+    class EM,LLM ai;
+    </mermaid-diagram>
 
     <p>The communication flow between components follows this sequence:</p>
     <p>User submits a question through the chatbot.</p>

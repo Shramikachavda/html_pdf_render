@@ -1,48 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<doc title="CONCLUSION">
-  <!-- ============ SHEET 01 ============ -->
-  <sheet label="CONCLUSION" kicker="SUMMARY" footnum="01" title="12. Monitoring &amp; Logging">
+<doc title="MONITORING &amp; LOGGING">
+  <sheet label="THETA CHATBOT · MONITORING" kicker="CHAPTER 9 — MONITORING" footnum="01" title="Chapter 9 – Monitoring &amp; Logging">
     <h2>12. Monitoring &amp; Logging</h2>
     <h2>12.1 Overview</h2>
     <p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p>
     <p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p>
+    
+    <mermaid-diagram>
+flowchart LR
+    %% Application Layer
+    subgraph AppLayer ["⚙️ Application Layer"]
+        API[FastAPI Backend]
+        SYNC[Knowledge Sync]
+    end
+
+    %% Observability Layer
+    subgraph Observability ["📊 Observability &amp; Logging"]
+        HEALTH[Health Metrics]
+        AI[AI Performance Metrics]
+        KBM[Knowledge Base Metrics]
+        LOGS[Structured Logs]
+    end
+
+    %% Admin Layer
+    subgraph AdminLayer ["👤 Administration"]
+        DASH[Operational Dashboard]
+    end
+
+    API --&gt;|Response Time, Errors, Sessions| HEALTH
+    API --&gt;|Tokens, Latency, Confidence| AI
+    SYNC --&gt;|Index Count, Sync Status| KBM
+    API --&gt;|API Requests, Warnings| LOGS
+    SYNC --&gt;|Sync Events, Errors| LOGS
+
+    HEALTH --&gt; DASH
+    AI --&gt; DASH
+    KBM --&gt; DASH
+    LOGS --&gt; DASH
+
+    classDef app fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
+    classDef obs fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c;
+    classDef admin fill:#0d2b45,stroke:#7fd0e6,stroke-width:2px,color:#ffffff;
+
+    class API,SYNC app;
+    class HEALTH,AI,KBM,LOGS obs;
+    class DASH admin;
+    </mermaid-diagram>
+
     <h2>12.2 Monitoring Objectives</h2>
     <p>The monitoring system is designed to:</p>
-    <ul>
-      <li>Ensure high application availability.</li>
-      <li>Detect operational issues early.</li>
-      <li>Monitor chatbot performance.</li>
-      <li>Measure AI response quality.</li>
-      <li>Track operational costs.</li>
-      <li>Support troubleshooting and maintenance.</li>
-    </ul>
+    <list>
+      <item>Ensure high application availability.</item>
+      <item>Detect operational issues early.</item>
+      <item>Monitor chatbot performance.</item>
+      <item>Measure AI response quality.</item>
+      <item>Track operational costs.</item>
+      <item>Support troubleshooting and maintenance.</item>
+    </list>
+
     <h2>12.3 Application Health</h2>
     <p>Monitoring application health involves tracking several key metrics.</p>
-    <p>Metric | Purpose</p>
-    <p>--- | ---</p>
-    <p>API Availability | Verify backend uptime</p>
-    <p>Response Time | Measure request latency</p>
-    <p>Error Rate | Detect application failures</p>
-    <p>Active Sessions | Monitor current usage</p>
-    <p>Request Volume | Measure traffic patterns</p>
+    <table>
+      <row header="1"><cell>Metric</cell><cell>Purpose</cell></row>
+      <row><cell>API Availability</cell><cell>Verify backend uptime</cell></row>
+      <row><cell>Response Time</cell><cell>Measure request latency</cell></row>
+      <row><cell>Error Rate</cell><cell>Detect application failures</cell></row>
+      <row><cell>Active Sessions</cell><cell>Monitor current usage</cell></row>
+      <row><cell>Request Volume</cell><cell>Measure traffic patterns</cell></row>
+    </table>
+
     <h2>12.4 AI Performance</h2>
     <p>AI performance is tracked to evaluate cost and quality. Metrics include: total AI requests, average generation time, token consumption, estimated API cost, retrieval confidence, and LLM provider utilization.</p>
+
     <h2>12.5 Knowledge Base Monitoring</h2>
-    <p>Metric | Description</p>
-    <p>--- | ---</p>
-    <p>Total Indexed Pages | Pages currently indexed</p>
-    <p>Total Content Chunks | Semantic chunks in the KB</p>
-    <p>Last Synchronization | Most recent successful update</p>
-    <p>Failed Synchronizations | Sync errors</p>
-    <p>Knowledge Version | Current indexed version</p>
+    <table>
+      <row header="1"><cell>Metric</cell><cell>Description</cell></row>
+      <row><cell>Total Indexed Pages</cell><cell>Pages currently indexed</cell></row>
+      <row><cell>Total Content Chunks</cell><cell>Semantic chunks in the KB</cell></row>
+      <row><cell>Last Synchronization</cell><cell>Most recent successful update</cell></row>
+      <row><cell>Failed Synchronizations</cell><cell>Sync errors</cell></row>
+      <row><cell>Knowledge Version</cell><cell>Current indexed version</cell></row>
+    </table>
+
     <h2>12.6 Logging Strategy</h2>
     <p>Logs capture API requests, AI requests, synchronization events, warnings, and errors — using standard levels (INFO, WARNING, ERROR, CRITICAL) to keep noise low while enabling fast troubleshooting. API keys, tokens, and other credentials must never be written to logs.</p>
+
     <h2>12.7 Key Design Decisions</h2>
-    <p>Decision | Justification</p>
-    <p>--- | ---</p>
-    <p>Continuous health monitoring | Ensures reliable availability</p>
-    <p>Structured logging | Simplifies troubleshooting</p>
-    <p>AI performance monitoring | Supports cost and quality optimization</p>
-    <p>Knowledge sync monitoring | Ensures responses stay current</p>
+    <table>
+      <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
+      <row><cell>Continuous health monitoring</cell><cell>Ensures reliable availability</cell></row>
+      <row><cell>Structured logging</cell><cell>Simplifies troubleshooting</cell></row>
+      <row><cell>AI performance monitoring</cell><cell>Supports cost and quality optimization</cell></row>
+      <row><cell>Knowledge sync monitoring</cell><cell>Ensures responses stay current</cell></row>
+    </table>
   </sheet>
 </doc>

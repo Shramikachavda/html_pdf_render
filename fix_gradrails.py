@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+import os
+
+new_content = """<?xml version="1.0" encoding="UTF-8"?>
 <doc title="AI GUARDRAILS STRATEGY">
   <!-- ============ SHEET 01 ============ -->
   <sheet label="AI GUARDRAILS STRATEGY" kicker="AI GUARDRAILS" footnum="01" title="AI GUARDRAILS STRATEGY">
@@ -253,4 +255,8 @@ flowchart TD
       <item>Makes the chatbot more secure, reliable, and maintainable for production deployment.</item>
     </list>
   </sheet>
-</doc>
+</doc>"""
+
+with open("/home/shramikachavda/html_pdf_render/gradrails.xml", "w", encoding="utf-8") as f:
+    f.write(new_content)
+print("Updated gradrails.xml")

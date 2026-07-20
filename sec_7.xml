@@ -1,208 +1,187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc title="API DESIGN">
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="API DESIGN" kicker="API" footnum="01" title="7. API Design &amp; Communication Flow">
-    <h2>7. API Design &amp; Communication Flow</h2>
+  <sheet label="THETA CHATBOT · API DESIGN" kicker="CHAPTER 6 — API DESIGN" footnum="01" title="Chapter 6 – API Design &amp; Communication Flow">
     <h2>7.1 Overview</h2>
     <raw><img src="mermaid-diagram (5).png" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
 
     <p>The Theta Chat Bot follows a RESTful API architecture, where the chatbot widget communicates with the FastAPI backend through secure HTTPS endpoints.</p>
     <p>The backend acts as the central orchestration layer responsible for validating requests, retrieving relevant knowledge, communicating with the Large Language Model (LLM), and returning structured responses to the frontend.</p>
     <p>All communication between components is performed using JSON payloads, making the APIs lightweight, language-independent, and easy to integrate with existing or future frontend applications.</p>
+
     <h2>7.2 API Communication Architecture</h2>
     <p>The communication between system components follows the sequence below:</p>
-    <p>Website Chat Widget</p>
-    <p>↓</p>
-    <p>REST API Request</p>
-    <p>↓</p>
-    <p>FastAPI Backend</p>
-    <p>↓</p>
-    <p>Retrieval Engine</p>
-    <p>↓</p>
-    <p>Vector Database (Qdrant / PostgreSQL + pgvector)</p>
-    <p>↓</p>
-    <p>Prompt Builder</p>
-    <p>↓</p>
-    <p>Gemini API</p>
-    <p>↓</p>
-    <p>FastAPI Backend</p>
-    <p>↓</p>
-    <p>JSON Response</p>
-    <p>↓</p>
-    <p>Website Chat Widget</p>
+    <mermaid-diagram>
+flowchart TD
+
+%% Nodes
+A[Website Chat Widget]
+B[FastAPI Backend]
+C[(Qdrant / PostgreSQL + pgvector)]
+D[Prompt Builder]
+E[Gemini API]
+
+%% Flow
+A -- REST API Request --> B
+B -- Retrieval Engine --> C
+C --> D
+D --> E
+E --> B
+B -- JSON Response --> A
+
+%% Styling
+classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
+classDef highlight fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c;
+classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
+
+class A startend;
+class B,D process;
+class C,E highlight;
+linkStyle default stroke:#0d2b45,stroke-width:2px;
+    </mermaid-diagram>
     <p>Each component has a clearly defined responsibility, ensuring loose coupling and easier maintenance.</p>
+
     <h2>7.3 API Endpoints</h2>
     <p>The following endpoints are proposed for the initial version of the chatbot.</p>
-    <p>Endpoint</p>
-    <p>Method</p>
-    <p>Purpose</p>
-    <p>/api/v1/chat</p>
-    <p>POST</p>
-    <p>Process user queries and generate chatbot responses</p>
-    <p>/api/v1/session</p>
-    <p>POST</p>
-    <p>Create or resume a user session</p>
-    <p>/api/v1/feedback</p>
-    <p>POST</p>
-    <p>Submit user feedback on chatbot responses</p>
-    <p>/api/v1/health</p>
-    <p>GET</p>
-    <p>Health check for monitoring and deployment validation</p>
-    <p>/api/v1/version</p>
-    <p>GET</p>
-    <p>Retrieve application version information</p>
-    <p>/api/v1/config (Optional)</p>
-    <p>GET</p>
-    <p>Retrieve chatbot configuration and feature flags</p>
+    <json-block type="request" label="AVAILABLE ENDPOINTS" badge="REST">
+      <jfield key="POST /api/v1/chat" val="Process user queries and generate chatbot responses" />
+      <jfield key="POST /api/v1/session" val="Create or resume a user session" />
+      <jfield key="POST /api/v1/feedback" val="Submit user feedback on chatbot responses" />
+      <jfield key="GET /api/v1/health" val="Health check for monitoring and deployment validation" />
+      <jfield key="GET /api/v1/version" val="Retrieve application version information" />
+      <jfield key="GET /api/v1/config" val="Retrieve chatbot configuration and feature flags (Optional)" />
+    </json-block>
     <p>Future administrative endpoints may include analytics, knowledge synchronization, and dashboard APIs.</p>
+
     <h2>7.4 Request Flow</h2>
-    <p>When a visitor submits a message, the frontend sends a POST request to the chatbot API.</p>
-    <p>Example Request</p>
-    <p>POST /api/v1/chat</p>
-    <p>{</p>
-    <p>  "session_id": "c9a3d9b7",</p>
-    <p>  "message": "What AI services does Theta Technolabs provide?",</p>
-    <p>  "timestamp": "2026-07-15T14:30:00Z"</p>
-    <p>}</p>
-    <p>Request Parameters</p>
-    <p>Field</p>
-    <p>Type</p>
-    <p>Description</p>
-    <p>session_id</p>
-    <p>String</p>
-    <p>Unique identifier for the current browser session</p>
-    <p>message</p>
-    <p>String</p>
-    <p>User's natural language question</p>
-    <p>timestamp</p>
-    <p>DateTime</p>
-    <p>Request creation time</p>
+    <p>When a visitor submits a message, the frontend sends a POST request to the chatbot API endpoint. The request body uses a structured JSON schema to pass the user message and session context to the backend.</p>
+    <callout><b>Note:</b> The request schema shown below is indicative. Field names, optional parameters, and request structure may be adjusted during implementation to fit final integration requirements.</callout>
+    <p><b>POST /api/v1/chat — Request Body Schema</b></p>
+    <json-block type="request" label="SCHEMA DEFINITION" badge="application/json" note="Sample payload only. Field values are illustrative and will be populated at runtime.">
+      <jfield key="session_id" val="String | Required | Unique identifier for the current browser session." />
+      <jfield key="message" val="String | Required | The user's natural language question or input text." />
+      <jfield key="timestamp" val="ISO 8601 | Optional | Client-side timestamp of the request." />
+    </json-block>
+    <json-block type="request" label="SAMPLE REQUEST PAYLOAD" badge="POST /api/v1/chat" note="Sample payload only. Field values are illustrative and will be populated at runtime.">
+      <jfield key="session_id" val="c9a3d9b7-f21a-4b8e" />
+      <jfield key="message" val="What AI services does Theta Technolabs provide?" />
+      <jfield key="timestamp" val="2026-07-15T14:30:00Z" />
+    </json-block>
+
     <h2>7.5 Backend Processing Flow</h2>
     <p>Upon receiving the request, the backend performs the following operations:</p>
-    <p>Validate the request payload.</p>
-    <p>Verify session information.</p>
-    <p>Sanitize user input.</p>
-    <p>Generate the query embedding.</p>
-    <p>Search the vector database.</p>
-    <p>Retrieve the Top-K relevant content chunks.</p>
-    <p>Build the final prompt.</p>
-    <p>Send the prompt to the configured LLM.</p>
-    <p>Validate the generated response.</p>
-    <p>Return the final response to the frontend.</p>
+    <steps>
+      <step>Validate the request payload.</step>
+      <step>Verify session information.</step>
+      <step>Sanitize user input.</step>
+      <step>Generate the query embedding.</step>
+      <step>Search the vector database.</step>
+      <step>Retrieve the Top-K relevant content chunks.</step>
+      <step>Build the final prompt.</step>
+      <step>Send the prompt to the configured LLM.</step>
+      <step>Validate the generated response.</step>
+      <step>Return the final response to the frontend.</step>
+    </steps>
     <p>Each step is executed sequentially to ensure consistent and reliable responses.</p>
+
     <h2>7.6 Response Structure</h2>
-    <p>The backend returns a standardized JSON response.</p>
-    <p>Example Response</p>
-    <p>{</p>
-    <p>  "status": "success",</p>
-    <p>  "session_id": "c9a3d9b7",</p>
-    <p>  "response": "Theta Technolabs provides AI Development, Machine Learning, Computer Vision, and Conversational AI solutions.",</p>
-    <p>  "source": [</p>
-    <p>    {</p>
-    <p>      "title": "AI Development Services",</p>
-    <p>      "url": "https://www.thetatechnolabs.in/services/artificial-intelligence"</p>
-    <p>    }</p>
-    <p>  ],</p>
-    <p>  "confidence": "High",</p>
-    <p>  "processing_time_ms": 842</p>
-    <p>}</p>
-    <h2>7.7 Response Fields</h2>
-    <p>Field</p>
-    <p>Description</p>
-    <p>status</p>
-    <p>Request execution status</p>
-    <p>session_id</p>
-    <p>Current conversation session</p>
-    <p>response</p>
-    <p>AI-generated answer</p>
-    <p>source</p>
-    <p>Website pages used to generate the response</p>
-    <p>confidence</p>
-    <p>Confidence level assigned to the response</p>
-    <p>processing_time_ms</p>
-    <p>Total backend processing time</p>
-    <p>Including source references increases transparency and allows users to verify the information directly on the official website.</p>
+    <p>The backend returns a standardized JSON response envelope. Every successful response includes a status indicator, the AI-generated answer, source references used to construct the response, a confidence classification, and backend processing metadata.</p>
+    <callout><b>Note:</b> The response schema shown below is a representative sample. The exact field names, confidence scoring levels, and source reference structure may be refined during implementation and adjusted at runtime without breaking the core API contract.</callout>
+    <p><b>Success Response — Field Schema</b></p>
+    <json-block type="success" label="SCHEMA DEFINITION" badge="application/json" note="Sample payload only. Field values are illustrative and will be populated at runtime.">
+      <jfield key="status" val="String | Required | Execution result: success or error." />
+      <jfield key="session_id" val="String | Required | Echo of the session identifier from the request." />
+      <jfield key="response" val="String | Required | The AI-generated natural language answer." />
+      <jfield key="source" val="Array | Optional | List of knowledge base pages used." />
+      <jfield key="confidence" val="String | Required | Confidence classification: High, Medium, or Low." />
+      <jfield key="processing_time_ms" val="Integer | Required | Total end-to-end processing time." />
+    </json-block>
+    <json-block type="success" label="SAMPLE SUCCESS RESPONSE" badge="200 OK" note="Sample payload only. Field values are illustrative and will be populated at runtime.">
+      <jfield key="status" val="success" />
+      <jfield key="session_id" val="c9a3d9b7-f21a-4b8e" />
+      <jfield key="response" val="Theta Technolabs provides AI Development, Machine Learning..." />
+      <jfield key="source" val="[ { &quot;title&quot;: &quot;AI Development Services&quot;, &quot;url&quot;: &quot;https://thetatechnolabs.in/services/ai&quot; } ]" vtype="array" />
+      <jfield key="confidence" val="High" />
+      <jfield key="processing_time_ms" val="842" vtype="number" />
+    </json-block>
+    <p>Source references are included to increase transparency and allow users to verify the information directly on the Theta Technolabs website.</p>
+
     <h2>7.8 Error Handling</h2>
-    <p>The API returns standardized error responses whenever a request cannot be completed successfully.</p>
-    <p>Example Error Response</p>
-    <p>{</p>
-    <p>  "status": "error",</p>
-    <p>  "error_code": "KB_404",</p>
-    <p>  "message": "Relevant information could not be found within the current knowledge base."</p>
-    <p>}</p>
-    <p>Common Error Codes</p>
-    <p>Error Code</p>
-    <p>Description</p>
-    <p>INVALID_REQUEST</p>
-    <p>Invalid or incomplete request payload</p>
-    <p>SESSION_EXPIRED</p>
-    <p>Session is no longer valid</p>
-    <p>KB_404</p>
-    <p>No relevant knowledge found</p>
-    <p>LLM_TIMEOUT</p>
-    <p>Language model request timed out</p>
-    <p>API_LIMIT</p>
-    <p>API rate limit exceeded</p>
-    <p>INTERNAL_ERROR</p>
-    <p>Unexpected server error</p>
+    <p>The API returns a standardized error envelope whenever a request cannot be completed successfully. All error responses share the same top-level structure as success responses to simplify client-side parsing.</p>
+    <callout><b>Note:</b> Error codes and messages are indicative. Additional error codes may be introduced at runtime as new edge cases are identified during testing and production operation.</callout>
+    <p><b>Error Response — Field Schema</b></p>
+    <json-block type="error" label="SCHEMA DEFINITION" badge="application/json" note="Sample payload only. Field values are illustrative and will be populated at runtime.">
+      <jfield key="status" val="String | Always error for failed requests." />
+      <jfield key="error_code" val="String | Machine-readable error identifier." />
+      <jfield key="message" val="String | Human-readable description of the error." />
+    </json-block>
+    <json-block type="error" label="SAMPLE ERROR RESPONSE" badge="404 / 500" note="Sample payload only. Field values are illustrative and will be populated at runtime.">
+      <jfield key="status" val="error" />
+      <jfield key="error_code" val="KB_404" />
+      <jfield key="message" val="Relevant information could not be found within the current knowledge base." />
+    </json-block>
+    <p><b>Common Error Codes</b></p>
+    <json-block type="error" label="ERROR CODES ENUM" badge="reference">
+      <jfield key="INVALID_REQUEST" val="Invalid or incomplete request payload" />
+      <jfield key="SESSION_EXPIRED" val="Session is no longer valid" />
+      <jfield key="KB_404" val="No relevant knowledge found" />
+      <jfield key="LLM_TIMEOUT" val="Language model request timed out" />
+      <jfield key="API_LIMIT" val="API rate limit exceeded" />
+      <jfield key="INTERNAL_ERROR" val="Unexpected server error" />
+    </json-block>
     <p>Providing standardized error codes simplifies debugging and future monitoring.</p>
+
     <h2>7.9 HTTP Status Codes</h2>
-    <p>Status Code</p>
-    <p>Description</p>
-    <p>200 OK</p>
-    <p>Request processed successfully</p>
-    <p>400 Bad Request</p>
-    <p>Invalid request</p>
-    <p>401 Unauthorized (Future)</p>
-    <p>Authentication required</p>
-    <p>404 Not Found</p>
-    <p>Endpoint or resource not found</p>
-    <p>429 Too Many Requests</p>
-    <p>Rate limit exceeded</p>
-    <p>500 Internal Server Error</p>
-    <p>Unexpected backend error</p>
-    <p>503 Service Unavailable</p>
-    <p>LLM or database temporarily unavailable</p>
+    <json-block type="request" label="HTTP STATUS CODES" badge="reference">
+      <jfield key="200" val="OK | Request processed successfully" />
+      <jfield key="400" val="Bad Request | Invalid request" />
+      <jfield key="401" val="Unauthorized | Authentication required (Future)" />
+      <jfield key="404" val="Not Found | Endpoint or resource not found" />
+      <jfield key="429" val="Too Many Requests | Rate limit exceeded" />
+      <jfield key="500" val="Internal Server Error | Unexpected backend error" />
+      <jfield key="503" val="Service Unavailable | LLM or database temporarily unavailable" />
+    </json-block>
+
     <h2>7.10 Session Management</h2>
     <p>Although the chatbot is publicly accessible and does not require user authentication, temporary browser sessions are maintained to support conversational context.</p>
     <p>Each visitor receives a unique session identifier when opening the chatbot.</p>
     <p>The session identifier enables:</p>
-    <p>Context-aware follow-up questions</p>
-    <p>Temporary conversation memory</p>
-    <p>Improved response quality</p>
-    <p>Analytics (optional)</p>
+    <list>
+      <item>Context-aware follow-up questions</item>
+      <item>Temporary conversation memory</item>
+      <item>Improved response quality</item>
+      <item>Analytics (optional)</item>
+    </list>
     <p>No personally identifiable information (PII) is required to create or maintain a session.</p>
+
     <h2>7.11 Security Considerations</h2>
     <p>To protect the chatbot APIs from misuse, the backend implements multiple validation and security mechanisms.</p>
     <p>These include:</p>
-    <p>HTTPS communication</p>
-    <p>Input validation</p>
-    <p>Request sanitization</p>
-    <p>Maximum message length validation</p>
-    <p>API rate limiting (future enhancement)</p>
-    <p>CORS configuration</p>
-    <p>Environment-based API key management</p>
-    <p>Secure server-side communication with LLM providers</p>
+    <list>
+      <item>HTTPS communication</item>
+      <item>Input validation</item>
+      <item>Request sanitization</item>
+      <item>Maximum message length validation</item>
+      <item>API rate limiting (future enhancement)</item>
+      <item>CORS configuration</item>
+      <item>Environment-based API key management</item>
+      <item>Secure server-side communication with LLM providers</item>
+    </list>
     <p>Sensitive API credentials are never exposed to the frontend.</p>
+
     <h2>7.12 API Versioning</h2>
     <p>All public endpoints are versioned using URI-based versioning.</p>
-    <p>Example:</p>
-    <p>/api/v1/chat</p>
+    <p>Example: <b>/api/v1/chat</b></p>
     <p>Versioning allows future API enhancements without breaking compatibility with existing frontend integrations.</p>
+
     <h2>7.13 Key Design Decisions</h2>
-    <p>Decision</p>
-    <p>Justification</p>
-    <p>RESTful API architecture</p>
-    <p>Simple, widely supported, and easy to integrate.</p>
-    <p>JSON payloads</p>
-    <p>Lightweight, language-independent communication.</p>
-    <p>Session-based context</p>
-    <p>Improves conversational continuity without requiring user authentication.</p>
-    <p>Source references in responses</p>
-    <p>Increases transparency and user trust.</p>
-    <p>Standardized error responses</p>
-    <p>Simplifies debugging and monitoring.</p>
-    <p>API versioning</p>
-    <p>Supports future enhancements while maintaining backward compatibility.</p>
+    <json-block type="success" label="KEY DESIGN DECISIONS" badge="architecture">
+      <jfield key="RESTful API" val="Simple, widely supported, and easy to integrate." />
+      <jfield key="JSON payloads" val="Lightweight, language-independent communication." />
+      <jfield key="Session-based context" val="Improves conversational continuity without user auth." />
+      <jfield key="Source references" val="Increases transparency and user trust." />
+      <jfield key="Standardized errors" val="Simplifies debugging and monitoring." />
+      <jfield key="API versioning" val="Supports future enhancements with backward compatibility." />
+    </json-block>
   </sheet>
 </doc>
