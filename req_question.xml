@@ -1,7 +1,7 @@
 <doc title="Requirement Gathering Questions">
 
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · REQUIREMENTS" kicker="CHAPTER 12 — REQUIREMENTS" footnum="01" title="Chapter 12 – Requirement Gathering Questions">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX — REQUIREMENT GATHERING" footnum="01" title="Appendix – Requirement Gathering Questions">
     
     <p><b>Q1: Which website(s) should the chatbot support (e.g., only thetatechnolabs.in or multiple domains such as .com and .ca)?</b></p>
     <why>This determines the overall scope of the chatbot's knowledge base and helps define how the data should be organized and stored. Supporting multiple websites may require separate knowledge collections, metadata management, or a scalable storage architecture to efficiently manage content from different domains.</why>
@@ -17,7 +17,7 @@
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · REQUIREMENTS" kicker="CHAPTER 12 — REQUIREMENTS" footnum="02">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX — REQUIREMENT GATHERING" footnum="02">
 
     <p><b>The existing website already has a manual inquiry chat widget on the right side of the website. Are conversation details such as user queries, responses, timestamps, and other interaction data currently being stored? If yes, where is this data stored, and can I access it?</b></p>
     <why>Understanding whether the existing inquiry chat stores conversation data helps identify if valuable historical information is already available. Access to this data can provide insights into the most frequently asked questions, common user inquiries, recurring issues, and user behavior. It also helps determine whether the existing chat platform can be used as a source for analytics, reporting, and improving the new chatbot's knowledge base, while understanding where the data is stored (e.g., database, CRM, third-party service, or CMS) helps assess integration and migration possibilities.</why>
@@ -27,20 +27,17 @@
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · REQUIREMENTS" kicker="CHAPTER 12 — REQUIREMENTS" footnum="03">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX — REQUIREMENT GATHERING" footnum="03">
 
     <p><b>Should the chatbot be available on every page of the website or only on selected pages?</b></p>
     <why>The chatbot's placement affects user accessibility, frontend integration, user experience, and whether context-specific behavior is required for different sections of the website.</why>
     
     <p><b>Does the existing server have sufficient CPU, RAM, and storage to host the chatbot and its supporting services?</b></p>
     <why>This helps determine whether the existing infrastructure is capable of hosting the chatbot and its supporting services. If the available resources are insufficient, cloud deployment or additional infrastructure planning may be required to ensure reliable performance and future scalability.</why>
-
-    <!-- Interactive Diagram Upload Slot -->
-    <diagram id="infra-layout" caption="Infrastructure Layout &amp; Hosting Setup Diagram" height="55mm" />
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->
-  <sheet label="THETA CHATBOT · REQUIREMENTS" kicker="CHAPTER 12 — REQUIREMENTS" footnum="04">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX — REQUIREMENT GATHERING" footnum="04">
 
     <p><b>Is an admin dashboard required for managing the knowledge base, chatbot configuration, or analytics?</b></p>
     <why>This helps identify the required administrative capabilities and provides a better understanding of future system requirements. It also helps determine the most suitable database architecture (for example, PostgreSQL with pgvector or a dedicated vector database) based on future needs such as analytics, conversation history, reporting, and scalability.</why>

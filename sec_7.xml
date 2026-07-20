@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc title="API DESIGN">
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · API DESIGN" kicker="CHAPTER 6 — API DESIGN" footnum="01" title="Chapter 6 – API Design &amp; Communication Flow">
+  <sheet label="THETA CHATBOT · API DESIGN" kicker="CHAPTER 7 — API DESIGN" footnum="01" title="Chapter 7 – API Design &amp; Communication Flow">
     <h2>7.1 Overview</h2>
 
 
@@ -45,10 +45,10 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <p>The following endpoints are proposed for the initial version of the chatbot.</p>
     <json-block type="request" label="AVAILABLE ENDPOINTS" badge="REST">
       <jfield key="POST /api/v1/chat" val="Process user queries and generate chatbot responses" />
-      <jfield key="POST /api/v1/session" val="Create or resume a user session" />
-      <jfield key="POST /api/v1/feedback" val="Submit user feedback on chatbot responses" />
-      <jfield key="GET /api/v1/health" val="Health check for monitoring and deployment validation" />
-      <jfield key="GET /api/v1/version" val="Retrieve application version information" />
+      <jfield key="POST /api/v1/feedback" val="Submit user feedback (helpful/unhelpful) on responses" />
+      <jfield key="GET /api/v1/health" val="Health check probe for monitoring and deployment validation" />
+      <jfield key="POST /api/v1/sync" val="Trigger knowledge base synchronization (Admin/Internal)" />
+      <jfield key="GET /api/v1/analytics" val="Retrieve operational analytics and usage stats (Admin/Internal)" />
       <jfield key="GET /api/v1/config" val="Retrieve chatbot configuration and feature flags (Optional)" />
     </json-block>
     <p>Future administrative endpoints may include analytics, knowledge synchronization, and dashboard APIs.</p>
@@ -135,7 +135,6 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <json-block type="request" label="HTTP STATUS CODES" badge="reference">
       <jfield key="200" val="OK | Request processed successfully" />
       <jfield key="400" val="Bad Request | Invalid request" />
-      <jfield key="401" val="Unauthorized | Authentication required (Future)" />
       <jfield key="404" val="Not Found | Endpoint or resource not found" />
       <jfield key="429" val="Too Many Requests | Rate limit exceeded" />
       <jfield key="500" val="Internal Server Error | Unexpected backend error" />

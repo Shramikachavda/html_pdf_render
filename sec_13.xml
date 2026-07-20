@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc title="RISKS &amp; LIMITATIONS">
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 10 — RISK MANAGEMENT" footnum="01" title="Chapter 10 – Risk Assessment &amp; Mitigation">
-    <h2>14.1 Overview</h2>
+  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="01" title="Chapter 15 – Risk Assessment &amp; Mitigation">
+    <h2>15.1 Overview</h2>
     <p>Every software solution introduces technical and operational risks that should be identified during the design phase. Evaluating these risks early enables the team to define appropriate mitigation strategies and reduces the likelihood of unexpected issues during deployment or production.</p>
     <p>The following table summarizes the primary risks identified for the Theta Chat Bot project.</p>
-    <h2>14.2 Risk Register</h2>
+    <h2>15.2 Risk Register</h2>
     <table>
       <row header="1"><cell>Risk</cell><cell>Impact</cell><cell>Probability</cell><cell>Mitigation Strategy</cell></row>
       <row><cell>Website content becomes outdated</cell><cell>High</cell><cell>Medium</cell><cell>Implement event-driven incremental synchronization whenever content is published or updated.</cell></row>
@@ -13,12 +13,11 @@
       <row><cell>API provider downtime</cell><cell>High</cell><cell>Low</cell><cell>Display a user-friendly fallback message and monitor provider availability. Future support for multiple LLM providers can improve resilience.</cell></row>
       <row><cell>Increased API costs</cell><cell>Medium</cell><cell>Medium</cell><cell>Monitor token usage, analyze operational costs, and optimize prompts and retrieval strategies.</cell></row>
       <row><cell>Knowledge retrieval returns low-confidence results</cell><cell>Medium</cell><cell>Medium</cell><cell>Apply confidence thresholds and direct users to the Contact or Inquiry page when sufficient information is unavailable.</cell></row>
-      <row><cell>High website traffic</cell><cell>Medium</cell><cell>Low</cell><cell>Scale the FastAPI backend horizontally and optimize database performance.</cell></row>
       <row><cell>Vector database corruption or failure</cell><cell>High</cell><cell>Low</cell><cell>Maintain regular database backups and validate restoration procedures.</cell></row>
       <row><cell>Unexpected application failures</cell><cell>High</cell><cell>Low</cell><cell>Implement structured logging, health monitoring, and automated alerting.</cell></row>
     </table>
 
-    <h2>14.3 Technical Risks</h2>
+    <h2>15.3 Technical Risks</h2>
     <p>Several technical risks are associated with AI-powered chatbot systems.</p>
 
     <json-block type="error" label="TECHNICAL RISK" badge="Retrieval Accuracy">
@@ -28,48 +27,60 @@
 
     <json-block type="error" label="TECHNICAL RISK" badge="Knowledge Freshness">
       <jfield key="Risk" val="Outdated website content may result in inaccurate responses." />
-      <jfield key="Mitigations" val="Event-driven incremental synchronization, metadata versioning, and history tracking." />
+      <jfield key="Mitigations" val="Incremental synchronization, automated website polling, and manual refresh options." />
     </json-block>
 
-    <json-block type="error" label="TECHNICAL RISK" badge="AI Provider Dependency">
-      <jfield key="Risk" val="Reliance on a single LLM provider may introduce operational risks." />
-      <jfield key="Mitigations" val="Provider-independent AI abstraction and support for future LLM integration." />
+    <json-block type="error" label="TECHNICAL RISK" badge="AI Model Dependency">
+      <jfield key="Risk" val="Changes in external AI API performance, latency, or availability." />
+      <jfield key="Mitigations" val="Provider-independent AI abstraction layer, request timeouts, and structured error handling." />
     </json-block>
 
-    <h2>14.4 Operational Risks</h2>
+    <h2>15.4 Operational Risks</h2>
     <p>Operational risks relate to deployment, infrastructure, and ongoing maintenance.</p>
-    <json-block type="error" label="OPERATIONAL RISKS" badge="Infrastructure">
-      <jfield key="Concerns" val="Server downtime, database issues, Docker failures, and misconfigured environments." />
-      <jfield key="Mitigations" val="Health monitoring, container restart policies, backups, and deployment validation." />
+
+    <json-block type="error" label="OPERATIONAL RISK" badge="Infrastructure Capacity">
+      <jfield key="Risk" val="Insufficient server resources impacting backend performance." />
+      <jfield key="Mitigations" val="Containerized deployment, resource monitoring, and flexible hosting upgrade options." />
     </json-block>
 
-    <h2>14.5 Business Risks</h2>
+    <json-block type="error" label="OPERATIONAL RISK" badge="Database Reliability">
+      <jfield key="Risk" val="Database service disruption affecting vector search." />
+      <jfield key="Mitigations" val="Database connection pooling, automated restarts, and regular backup routines." />
+    </json-block>
+
+    <h2>15.5 Business Risks</h2>
     <p>Business-related risks should also be considered.</p>
-    <json-block type="error" label="BUSINESS RISKS" badge="Domain &amp; Cost">
-      <jfield key="Concerns" val="Out-of-scope questions, outdated content, and increased operational costs." />
-      <jfield key="Mitigations" val="Define scope clearly, maintain website as source of truth, and monitor API costs." />
+
+    <json-block type="error" label="BUSINESS RISK" badge="User Trust">
+      <jfield key="Risk" val="Incorrect or unverified answers impacting user confidence." />
+      <jfield key="Mitigations" val="RAG-based grounding, clear website source links, and conservative confidence thresholds." />
     </json-block>
 
-    <h2>14.6 Risk Review Process</h2>
+    <json-block type="error" label="BUSINESS RISK" badge="Cost Management">
+      <jfield key="Risk" val="Unpredictable API costs under high usage." />
+      <jfield key="Mitigations" val="Token tracking, prompt optimization, and optional rate limiting." />
+    </json-block>
+
+    <h2>15.6 Risk Review Process</h2>
     <p>Risks should be reviewed periodically during development and after production deployment.</p>
     <p>The review process involves the following sequential checks:</p>
     <steps>
-      <step><b>Metrics Analysis:</b> Review API costs, token usage, and latency.</step>
-      <step><b>Feedback Review:</b> Analyze thumbs up/down and explicit user feedback.</step>
-      <step><b>Query Audit:</b> Identify failed, unanswered, or low-confidence queries.</step>
-      <step><b>Quality Check:</b> Assess the accuracy and hallucination rate of AI responses.</step>
-      <step><b>Knowledge Audit:</b> Expand knowledge base coverage to address gaps.</step>
+      <step title="Metrics Analysis">Review API costs, token usage, and latency.</step>
+      <step title="Feedback Review">Analyze thumbs up/down and explicit user feedback.</step>
+      <step title="Query Audit">Identify failed, unanswered, or low-confidence queries.</step>
+      <step title="Quality Check">Assess the accuracy and hallucination rate of AI responses.</step>
+      <step title="Knowledge Audit">Expand knowledge base coverage to address gaps.</step>
     </steps>
     <p>Continuous review allows the chatbot to evolve while maintaining reliability and accuracy.</p>
 
-    <h2>14.7 Key Design Decisions</h2>
+    <h2>15.7 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
-      <row><cell>Early risk identification</cell><cell>Reduces implementation and operational uncertainty.</cell></row>
-      <row><cell>RAG architecture</cell><cell>Minimizes hallucinations by grounding responses in approved content.</cell></row>
-      <row><cell>Event-driven synchronization</cell><cell>Ensures knowledge remains current without unnecessary processing.</cell></row>
-      <row><cell>Operational monitoring</cell><cell>Enables early detection of technical issues.</cell></row>
-      <row><cell>Provider-independent architecture</cell><cell>Reduces dependency on a single AI provider and improves future flexibility.</cell></row>
+      <row><cell><b>Early risk identification</b></cell><cell>Reduces implementation and operational uncertainty.</cell></row>
+      <row><cell><b>RAG architecture</b></cell><cell>Minimizes hallucinations by grounding responses in approved content.</cell></row>
+      <row><cell><b>Event-driven synchronization</b></cell><cell>Ensures knowledge remains current without unnecessary processing.</cell></row>
+      <row><cell><b>Operational monitoring</b></cell><cell>Enables early detection of technical issues.</cell></row>
+      <row><cell><b>Provider-independent architecture</b></cell><cell>Reduces dependency on a single AI provider and improves future flexibility.</cell></row>
     </table>
   </sheet>
 </doc>

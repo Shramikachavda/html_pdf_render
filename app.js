@@ -259,7 +259,9 @@ function compileInlineHTML(elem) {
       const tag = child.nodeName.toLowerCase();
       const inner = compileInlineHTML(child);
       
-      if (tag === 'link') {
+      if (tag === 'br') {
+        parts.push('<br>');
+      } else if (tag === 'link') {
         const href = esc(child.getAttribute('href') || '#');
         parts.push(`<a href="${href}">${inner}</a>`);
       } else if (INLINE_TAG_MAP[tag]) {
@@ -643,10 +645,19 @@ function renderTOC(tocEl, docTitle) {
 // XML Document compiler
 function compileXML(text) {
   const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(text, 'application/xml');
-  
-  // Check for XML parsing error
-  const parserError = xmlDoc.querySelector('parsererror');
+  let xmlDoc = parser.parseFromString(text, 'application/xml');
+  let parserError = xmlDoc.querySelector('parsererror');
+
+  if (parserError) {
+    // Auto-repair common HTML void elements for XML DOMParser compatibility
+    const sanitized = text
+      .replace(/<br\s*>/gi, '<br/>')
+      .replace(/<hr\s*>/gi, '<hr/>')
+      .replace(/<img\s+([^>]*[^\/])>/gi, '<img $1/>');
+    xmlDoc = parser.parseFromString(sanitized, 'application/xml');
+    parserError = xmlDoc.querySelector('parsererror');
+  }
+
   if (parserError) {
     return {
       error: true,

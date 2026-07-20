@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc title="FRONTEND INTEGRATION">
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · FRONTEND" kicker="CHAPTER 7 — FRONTEND" footnum="01" title="Chapter 7 – Frontend Integration">
+  <sheet label="THETA CHATBOT · FRONTEND" kicker="CHAPTER 8 — FRONTEND INTEGRATION" footnum="01" title="Chapter 8 – Frontend Integration">
     <h2>8.1 Overview</h2>
     <mermaid-diagram>
 flowchart LR

@@ -106,7 +106,9 @@ def inline_html(elem):
     for child in elem:
         inner = inline_html(child)
         tag = child.tag
-        if tag == "link":
+        if tag == "br":
+            parts.append("<br>")
+        elif tag == "link":
             href = esc(child.get("href", "#"))
             parts.append(f'<a href="{href}">{inner}</a>')
         elif tag in INLINE_TAG_MAP:
@@ -188,7 +190,7 @@ def render_adr(el):
     if impact_el is not None:
         pos = esc(impact_el.get("pos", ""))
         neg = esc(impact_el.get("neg", ""))
-        pos_html = f'<span class="impact-pos">Positive:</span> {pos}<br/>' if pos else ""
+        pos_html = f'<span class="impact-pos">Positive:</span> {pos}<br>' if pos else ""
         neg_html = f'<span class="impact-neg">Trade-off:</span> {neg}' if neg else ""
         impact_html = f"{pos_html}{neg_html}"
         

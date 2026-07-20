@@ -5,39 +5,37 @@
     
     <h2>1.1 Introduction</h2>
     <p>The <b>Theta Chat Bot</b> is a modular, AI-powered virtual assistant designed to enhance user interaction on the <b>Theta Technolabs website</b>. It provides instant, accurate, and context-aware responses based exclusively on the company's publicly available website content, services, portfolios, case studies, careers, and blogs.</p>
-    <p>The system utilizes a <b>Retrieval-Augmented Generation (RAG)</b> architecture. User queries are matched against indexed website content before generating responses through a Large Language Model (LLM). This approach significantly <b>reduces hallucinations</b> while maintaining response quality. The chatbot initially utilizes <b>Google Gemini</b> as the primary LLM due to its cost-effectiveness, with migration support to <b>OpenAI</b> if stronger reasoning is required.</p>
+    <p>The system utilizes a <b>Retrieval-Augmented Generation (RAG)</b> architecture. User queries are matched against indexed website content before generating responses through a Large Language Model (LLM). This approach significantly <b>reduces hallucinations</b> while maintaining response quality, featuring model-agnostic flexibility to support high-performance or cost-effective AI providers as needed.</p>
     <p>To support different business requirements, the proposed solution offers two deployment models:</p>
     <list>
-      <item><b>Lightweight Architecture</b>: FastAPI + Qdrant + Gemini, optimized for quick deployment and low infrastructure overhead.</item>
-      <item><b>Enterprise Architecture</b>: FastAPI + PostgreSQL + Qdrant + Admin Dashboard, providing advanced analytics, API usage tracking, and operational monitoring.</item>
+      <item><b>Lightweight Architecture</b>: Asynchronous API Backend + Vector Database + LLM Engine, optimized for quick deployment and low infrastructure overhead.</item>
+      <item><b>Enterprise Architecture</b>: Asynchronous API Backend + Relational &amp; Vector Database + Admin Dashboard, providing advanced analytics, API usage tracking, and operational monitoring.</item>
     </list>
-    <p>The chatbot is embedded into the website as a <b>floating chat widget</b> using a custom JavaScript widget integrated with the current CMS platform. The entire application is containerized using <b>Docker</b>, allowing deployment on an on-premise company server or cloud infrastructure.</p>
+    <p>The chatbot is embedded into the website as a <b>floating chat widget</b> using a lightweight frontend component integrated with the current website platform. The entire application is fully <b>containerized</b>, allowing seamless deployment on an on-premise company server or cloud infrastructure.</p>
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
   <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="02">
     
     <h2>1.2 Why This Solution?</h2>
-    <p>Modern websites contain extensive information spread across pages, making it time-consuming for visitors to locate specific details. Users expect conversational interfaces that interpret natural language and deliver concise, context-aware answers.</p>
-    <p>The proposed chatbot transforms the website into an intelligent knowledge assistant. Instead of relying on manually curated FAQs or hardcoded rules, the system retrieves relevant information directly from indexed website content and uses an LLM to generate human-like responses grounded in that content.</p>
-    <p>This approach offers several key advantages:</p>
+    <p>Modern websites contain extensive information spread across multiple pages, making it time-consuming for visitors to locate specific details. Users expect conversational interfaces that interpret natural language and deliver concise, context-aware answers.</p>
+    <p>The proposed chatbot transforms the website into an intelligent knowledge assistant. Instead of relying on manually curated FAQs or hardcoded decision rules, the system dynamically retrieves relevant information directly from indexed website content and uses an LLM to generate human-like responses grounded in that verified context.</p>
+    <p>This approach offers several key business advantages:</p>
     <list>
-      <item>Reduces repetitive customer support and sales inquiries.</item>
-      <item>Improves user engagement through conversational search.</item>
-      <item>Ensures responses remain aligned with the latest website content.</item>
-      <item>Minimizes hallucinations by grounding responses in retrieved context.</item>
-      <item>Provides a scalable foundation for future CRM integrations and analytics.</item>
+      <item><b>Reduces Support Workload</b>: Minimizes repetitive customer support and sales inquiries.</item>
+      <item><b>Enhances User Engagement</b>: Guides website visitors through conversational discovery.</item>
+      <item><b>Continuous Alignment</b>: Ensures responses automatically reflect website updates without retraining.</item>
+      <item><b>Scalable Foundation</b>: Provides a modular architecture for dashboards and analytics.</item>
     </list>
 
     <h2>1.3 Project Goals</h2>
-    <p>The primary goals of the chatbot are:</p>
+    <p>The primary business objectives of the chatbot are:</p>
     <list>
-      <item>Provide <b>instant answers</b> to visitor questions.</item>
-      <item>Help users explore <b>Theta Technolabs' services and solutions</b>.</item>
-      <item>Reduce the time users spend <b>searching the website</b>.</item>
-      <item>Increase engagement by <b>guiding users to relevant pages</b>.</item>
-      <item>Provide <b>accurate information</b> based only on <b>approved company content</b>.</item>
-      <item>Reduce the workload on the <b>sales and support teams</b> by answering <b>common questions</b>.</item>
+      <item><b>Improve Visitor Experience</b>: Deliver immediate, 24/7 conversational assistance on website offerings.</item>
+      <item><b>Reduce Support Workload</b>: Automate responses to common inquiries for sales and support teams.</item>
+      <item><b>Increase Engagement &amp; Conversion</b>: Guide users to relevant service, portfolio, and contact pages.</item>
+      <item><b>Ensure High Accuracy</b>: Provide reliable answers based strictly on approved company content.</item>
+      <item><b>Provide Scalable AI Platform</b>: Establish an extensible architecture that grows with business needs.</item>
     </list>
   </sheet>
 
@@ -45,16 +43,14 @@
   <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="03">
     
     <h2>1.4 Key Features</h2>
-    <p>The chatbot will support the following capabilities:</p>
+    <p>The chatbot delivers the following technical and functional capabilities:</p>
     <list>
-      <item>Answer questions about the <b>company</b>.</item>
-      <item>Explain <b>services offered</b> by Theta Technolabs.</item>
-      <item>Provide information about <b>technologies and expertise</b>.</item>
-      <item>Answer <b>frequently asked questions (FAQs)</b>.</item>
-      <item>Guide users to relevant <b>service or contact pages</b>.</item>
-      <item>Share the <b>official website link</b> for the referenced information.</item>
-      <item>Handle <b>greetings</b> and general navigation assistance.</item>
-      <item>Respond politely when a question is <b>outside the chatbot's knowledge</b>.</item>
+      <item><b>Semantic Search</b>: Understands user intent and natural language queries beyond exact keyword matching.</item>
+      <item><b>Context-Aware Answering</b>: Dynamically retrieves relevant website chunks before response generation.</item>
+      <item><b>Source Citations &amp; Links</b>: Includes direct page references for transparent verification.</item>
+      <item><b>Session-Based Conversation Memory</b>: Maintains context across follow-up questions within active sessions.</item>
+      <item><b>Out-of-Scope &amp; Fallback Handling</b>: Politely declines off-topic queries and directs users to contact channels.</item>
+      <item><b>Embeddable UI Widget</b>: Floating chat interface accessible across all website pages or header navigation.</item>
     </list>
 
     <h2>1.5 Scope</h2>
@@ -93,25 +89,22 @@
   <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="04">
     
     <h2>1.6 High-Level Solution</h2>
-    <p>The chatbot follows a <b>Retrieval-Augmented Generation (RAG)</b> architecture. Instead of memorizing company information, it searches a <b>structured knowledge base</b> to find relevant content. The retrieved information is then provided to the <b>AI model</b>, which generates a <b>natural-language response</b>. This approach keeps responses accurate and makes it easy to update the chatbot by simply updating the knowledge base.</p>
-
-    <h2>Why We Chose This Approach</h2>
-    <list>
-      <item><b>Accurate Answers</b>: Responses are based only on verified company information.</item>
-      <item><b>Easy to Update</b>: New documents can be added without retraining the AI model.</item>
-      <item><b>Faster Search</b>: The Vector Database quickly finds the most relevant information.</item>
-      <item><b>Lower Maintenance</b>: Updating the knowledge base is simple and cost-effective.</item>
-      <item><b>Reduced Hallucinations</b>: Since the AI receives relevant company information before answering, it is less likely to generate incorrect or unrelated responses.</item>
-    </list>
+    <p>The chatbot operates on a <b>Retrieval-Augmented Generation (RAG)</b> pipeline. Instead of storing hardcoded answers or relying on pre-trained model memory, the system executes a four-step processing flow for every user query:</p>
+    <steps>
+      <step title="User Query Processing">Accepts and validates user natural language input.</step>
+      <step title="Semantic Knowledge Retrieval">Searches the vector database to extract the most relevant website chunks.</step>
+      <step title="Contextual Prompt Construction">Injects retrieved chunks and system guardrails into a structured prompt.</step>
+      <step title="Grounded Response Delivery">Generates a concise, verified answer with source references.</step>
+    </steps>
 
     <h2>1.7 Why This Architecture?</h2>
-    <p>This architecture was selected because it offers several practical benefits:</p>
+    <p>The technical architecture is selected based on key operational advantages:</p>
     <list>
-      <item>The chatbot always answers using <b>official company information</b>.</item>
-      <item>Updating the chatbot only requires <b>updating the knowledge base</b>, not retraining the AI model.</item>
-      <item><b>Semantic search</b> enables the chatbot to understand questions even when users use different wording.</item>
-      <item>The system can <b>scale easily</b> as more content is added.</item>
-      <item>Running the system <b>on-premise</b> ensures complete control over data and infrastructure.</item>
+      <item><b>Why RAG over Fine-Tuning</b>: Eliminates expensive AI model retraining whenever website content changes.</item>
+      <item><b>Why Vector Search Database</b>: Delivers sub-second semantic retrieval across unstructured company content.</item>
+      <item><b>Why Asynchronous API Layer</b>: Ensures high concurrency, low latency, and efficient request handling.</item>
+      <item><b>Why Containerized Deployment</b>: Guarantees environment consistency, portability, and on-premise security.</item>
+      <item><b>Why Modular Component Design</b>: Permits independent upgrades of LLMs, vector stores, or UI widgets.</item>
     </list>
   </sheet>
 
@@ -119,7 +112,7 @@
   <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="05">
     
     <h2>1.8 Expected User Experience</h2>
-    <p>A visitor opens the <b>Theta Technolabs website</b> and notices the <b>chat icon</b> in the bottom-right corner.</p>
+    <p>A visitor opens the <b>Theta Technolabs website</b> and notices the <b>chat icon</b> in the bottom-right corner (or optionally in the website header).</p>
     
     <p>The visitor asks:</p>
     <callout label="VISITOR QUESTION">"Do you develop <b>AI Agents</b>?"</callout>

@@ -39,7 +39,6 @@
       <item>Receive user messages</item>
       <item>Validate requests</item>
       <item>Generate session identifiers</item>
-      <item>Handle authentication (future)</item>
       <item>Route requests to the AI pipeline</item>
       <item>Return structured JSON responses</item>
     </list>

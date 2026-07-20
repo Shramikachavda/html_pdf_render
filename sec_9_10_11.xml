@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc title="DATA &amp; DEPLOYMENT">
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · OPERATIONS" kicker="CHAPTER 8 — OPERATIONS" footnum="01" title="Chapter 8 – Dashboard, Security &amp; Deployment">
-    <h2>9.1 Overview</h2>
+  <sheet label="THETA CHATBOT · DASHBOARD" kicker="CHAPTER 10 — DASHBOARD &amp; ANALYTICS" footnum="01" title="Chapter 10 – Operational Dashboard &amp; Analytics">
+    <h2>12.1 Overview</h2>
     <mermaid-diagram>
 flowchart TD
     %% ===========================
@@ -40,7 +40,7 @@ flowchart TD
     <p>The dashboard provides centralized monitoring and analytics, enabling administrators to understand how the chatbot is performing, identify knowledge gaps, monitor API usage, and make informed decisions about future improvements.</p>
     <callout>The dashboard is <b>optional</b> and is recommended for production deployments where long-term monitoring and business insights are required.</callout>
 
-    <h2>9.2 Dashboard Architecture</h2>
+    <h2>12.2 Dashboard Architecture</h2>
     <p>When the dashboard is enabled, PostgreSQL with the pgvector extension is recommended as the primary database. The database stores both vector embeddings and operational data, allowing semantic search and analytics to coexist within a single platform.</p>
     <p>Operational data may include:</p>
     <list>
@@ -55,7 +55,7 @@ flowchart TD
     </list>
     <p>This architecture reduces infrastructure complexity by avoiding multiple databases for related operational data.</p>
 
-    <h2>9.3 Dashboard Modules</h2>
+    <h2>12.3 Dashboard Modules</h2>
     <p>The Operational Dashboard is organized into five functional modules:</p>
 
     <callout label="A. Conversation Analytics">
@@ -78,7 +78,7 @@ flowchart TD
       Provides operational visibility: <b>API availability, error rate, failed requests, average latency, synchronization status, Docker container health, database connectivity, and storage utilization.</b> Helps administrators detect issues before they impact users.
     </callout>
 
-    <h2>9.4 Dashboard Database Design</h2>
+    <h2>12.4 Dashboard Database Design</h2>
     <p>When PostgreSQL is used, the following logical tables are recommended:</p>
     <table>
       <row header="1"><cell>Table</cell><cell>Purpose</cell></row>
@@ -92,7 +92,7 @@ flowchart TD
     </table>
     <p>Additional tables can be introduced as future requirements evolve.</p>
 
-    <h2>9.5 Example Dashboard KPIs</h2>
+    <h2>12.5 Example Dashboard KPIs</h2>
     <p>The dashboard homepage can present a high-level overview of system performance:</p>
     <table>
       <row header="1"><cell>KPI</cell><cell>Description</cell></row>
@@ -106,7 +106,7 @@ flowchart TD
       <row><cell>Last Synchronization</cell><cell>Timestamp of the latest knowledge update</cell></row>
     </table>
 
-    <h2>9.6 Dashboard Benefits</h2>
+    <h2>12.6 Dashboard Benefits</h2>
     <p><b>Business Benefits:</b></p>
     <list>
       <item>Measure chatbot adoption</item>
@@ -124,7 +124,7 @@ flowchart TD
       <item>Improve system reliability</item>
     </list>
 
-    <h2>9.7 Future Dashboard Enhancements</h2>
+    <h2>12.7 Future Dashboard Enhancements</h2>
     <p>The modular dashboard architecture allows future expansion without redesign. Potential enhancements include:</p>
     <list>
       <item>Real-time analytics</item>
@@ -139,7 +139,7 @@ flowchart TD
       <item>AI-powered operational summaries</item>
     </list>
 
-    <h2>9.8 Dashboard Availability</h2>
+    <h2>11.8 Dashboard Availability</h2>
     <table>
       <row header="1"><cell>Deployment</cell><cell>Dashboard Included</cell></row>
       <row><cell>Lightweight (Qdrant)</cell><cell>Not Included</cell></row>
@@ -147,7 +147,7 @@ flowchart TD
     </table>
     <p>Organizations that require only chatbot functionality can deploy the lightweight architecture without operational analytics. As business requirements evolve, the enterprise architecture can be adopted without changing the overall chatbot design.</p>
 
-    <h2>9.9 Key Design Decisions</h2>
+    <h2>11.9 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
       <row><cell>PostgreSQL + pgvector for enterprise deployments</cell><cell>Supports both semantic search and operational analytics within a single database platform.</cell></row>
@@ -159,12 +159,12 @@ flowchart TD
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · OPERATIONS" kicker="CHAPTER 8 — OPERATIONS" footnum="02">
-    <h2>10.1 Overview</h2>
+  <sheet label="THETA CHATBOT · SECURITY" kicker="CHAPTER 11 — SECURITY &amp; BOT PREVENTION" footnum="02" title="Chapter 11 – Security &amp; Bot Prevention">
+    <h2>12.1 Overview</h2>
     <p>Although the Theta Chat Bot is publicly accessible and does not require user authentication, security remains a critical aspect of the overall system design. The chatbot communicates with external AI services, processes user input, and retrieves information from the company's knowledge base. Therefore, appropriate security controls must be implemented to ensure system reliability, protect sensitive configurations, and prevent misuse.</p>
     <p>The proposed security strategy follows a <b>defense-in-depth approach</b>, where multiple layers of protection work together to reduce potential risks.</p>
 
-    <h2>10.2 Security Objectives</h2>
+    <h2>12.2 Security Objectives</h2>
     <p>The primary security objectives of the chatbot are:</p>
     <list>
       <item>Protect backend services from unauthorized access</item>
@@ -176,17 +176,16 @@ flowchart TD
     </list>
     <callout>Since the chatbot answers questions <b>only about Theta Technolabs</b>, it is intentionally restricted to information available in the approved knowledge base.</callout>
 
-    <h2>10.3 Communication Security</h2>
+    <h2>11.3 Communication Security</h2>
     <p>All communication between the website, backend, vector database, and external AI provider should use encrypted channels.</p>
     <p>Recommended practices include:</p>
     <list>
       <item>HTTPS for all frontend-to-backend communication</item>
-      <item>TLS encryption for external API requests</item>
       <item>Secure communication between internal services where applicable</item>
       <item>Automatic redirection from HTTP to HTTPS</item>
     </list>
 
-    <h2>10.4 API Security</h2>
+    <h2>11.4 API Security</h2>
     <p>Because the chatbot APIs are publicly accessible, they should include multiple validation mechanisms. Recommended controls:</p>
     <list>
       <item>Request validation</item>
@@ -198,7 +197,7 @@ flowchart TD
       <item>API versioning</item>
     </list>
 
-    <h2>10.5 API Key Management</h2>
+    <h2>11.5 API Key Management</h2>
     <p>The chatbot communicates with external AI providers such as Google Gemini and, potentially, OpenAI. API credentials must never be exposed to the frontend. Recommended practices:</p>
     <steps>
       <step>Store API keys in environment variables.</step>
@@ -209,7 +208,7 @@ flowchart TD
     </steps>
     <p>All AI requests should originate from the backend to ensure credentials remain protected.</p>
 
-    <h2>10.6 Knowledge Base Protection</h2>
+    <h2>11.6 Knowledge Base Protection</h2>
     <p>The chatbot should retrieve information only from the approved Theta Technolabs knowledge base. To maintain data integrity:</p>
     <list>
       <item>Only indexed website content should be used</item>
@@ -219,7 +218,7 @@ flowchart TD
       <item>Version information should be maintained for indexed content</item>
     </list>
 
-    <h2>10.7 Privacy Considerations</h2>
+    <h2>11.7 Privacy Considerations</h2>
     <p>The chatbot is designed to answer general questions about Theta Technolabs and does not require users to register or provide personal information. By default:</p>
     <list>
       <item>No login required</item>
@@ -228,7 +227,7 @@ flowchart TD
       <item>Future CRM/forms integration will require a privacy review</item>
     </list>
 
-    <h2>10.8 Logging &amp; Audit Trail</h2>
+    <h2>11.8 Logging &amp; Audit Trail</h2>
     <p>Application logging is important for troubleshooting, monitoring, and operational analysis. The system should record:</p>
     <list>
       <item>API requests</item>
@@ -240,7 +239,7 @@ flowchart TD
     </list>
     <callout type="danger">Sensitive information such as API keys, authentication tokens, or confidential configuration values must <b>never</b> be written to application logs.</callout>
 
-    <h2>10.9 Security Risks &amp; Mitigation</h2>
+    <h2>11.9 Security Risks &amp; Mitigation</h2>
     <table>
       <row header="1"><cell>Potential Risk</cell><cell>Mitigation Strategy</cell></row>
       <row><cell>Prompt injection attempts</cell><cell>Restrict responses to retrieved knowledge base content and enforce system prompt rules.</cell></row>
@@ -252,7 +251,7 @@ flowchart TD
       <row><cell>Service outage</cell><cell>Return a user-friendly fallback message and log the incident for investigation.</cell></row>
     </table>
 
-    <h2>10.10 Bot Prevention &amp; CAPTCHA Strategy</h2>
+    <h2>11.10 Bot Prevention &amp; CAPTCHA Strategy</h2>
     <p>To prevent malicious bots and automated scripts from exhausting the AI provider's API budget (Financial DoS) or skewing operational analytics, an invisible CAPTCHA mechanism (e.g., Google reCAPTCHA v3 or Cloudflare Turnstile) is implemented on the frontend.</p>
     <p><b>Technical Flow:</b></p>
     <steps>
@@ -263,19 +262,17 @@ flowchart TD
     </steps>
     <callout><b>Second Layer of Defense:</b> Even if a user bypasses the CAPTCHA, strict IP-based rate limiting (e.g., max 20 messages per 10 minutes) acts as a fail-safe against manual or distributed spam attacks.</callout>
 
-    <h2>10.11 Future Security Enhancements</h2>
+    <h2>11.11 Future Security Enhancements</h2>
     <p>As the chatbot evolves, additional security features may be introduced:</p>
     <list>
       <item>Web Application Firewall (WAF)</item>
       <item>Advanced rate limiting policies</item>
-      <item>Role-based access control for the operational dashboard</item>
       <item>Audit log management</item>
       <item>Secrets management using a vault solution</item>
-      <item>Single Sign-On (SSO) for administrators</item>
       <item>Security monitoring and alerting</item>
     </list>
 
-    <h2>10.12 Key Design Decisions</h2>
+    <h2>11.12 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
       <row><cell>HTTPS for all communications</cell><cell>Protects data in transit and ensures secure communication.</cell></row>
@@ -289,11 +286,11 @@ flowchart TD
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · OPERATIONS" kicker="CHAPTER 8 — OPERATIONS" footnum="03">
-    <h2>11.1 Overview</h2>
+  <sheet label="THETA CHATBOT · DEPLOYMENT" kicker="CHAPTER 12 — DEPLOYMENT STRATEGY" footnum="03" title="Chapter 12 – Deployment Strategy">
+    <h2>12.1 Overview</h2>
     <p>The chatbot is containerized using Docker for consistent, portable deployment across development, testing, and production. Initial deployment is on-premise, hosted within company infrastructure — giving full control, predictable costs, and easier compliance. The architecture remains cloud-ready for future migration to AWS, Azure, or GCP with minimal changes.</p>
 
-    <h2>11.2 Environments</h2>
+    <h2>12.2 Environments</h2>
     <table>
       <row header="1"><cell>Environment</cell><cell>Purpose</cell></row>
       <row><cell>Development</cell><cell>Feature development and local testing</cell></row>
@@ -301,7 +298,7 @@ flowchart TD
       <row><cell>Production</cell><cell>Live deployment for website visitors</cell></row>
     </table>
 
-    <h2>11.3 Containerized Components</h2>
+    <h2>12.3 Containerized Components</h2>
     <table>
       <row header="1"><cell>Container</cell><cell>Responsibility</cell></row>
       <row><cell>Nginx</cell><cell>Reverse proxy, SSL termination, routing</cell></row>
@@ -312,7 +309,7 @@ flowchart TD
       <row><cell>Monitoring Stack (Future)</cell><cell>Metrics collection and visualization</cell></row>
     </table>
 
-    <h2>11.4 Deployment Options</h2>
+    <h2>12.4 Deployment Options</h2>
     <callout label="Option A – Lightweight">
       <b>Stack:</b> FastAPI + Qdrant + Nginx + Docker<br/>
       <b>Best for:</b> Minimal resources, fast setup, low maintenance. No conversation storage required.
@@ -321,11 +318,11 @@ flowchart TD
       Adds <b>PostgreSQL + pgvector + pgAdmin</b> for conversation analytics, token/cost tracking, feedback analysis, and an operational dashboard.
     </callout>
 
-    <h2>11.5 Configuration &amp; Backup</h2>
+    <h2>12.5 Configuration &amp; Backup</h2>
     <p>All configuration (API keys, DB connection strings, LLM provider, ports, logging, session timeout) is externalized via environment variables — never hardcoded. Backups run on a schedule for PostgreSQL/Qdrant data, config files, and source code, with periodic restore testing.</p>
     <callout>Since the knowledge base is derived from the live website, embeddings can be <b>fully regenerated</b> if lost — the knowledge base is not a single point of failure.</callout>
 
-    <h2>11.6 Deployment Workflow</h2>
+    <h2>12.6 Deployment Workflow</h2>
     <steps>
       <step>Pull the latest source code.</step>
       <step>Update configuration files and environment variables.</step>
@@ -338,7 +335,7 @@ flowchart TD
       <step>Release to production traffic.</step>
     </steps>
 
-    <h2>11.7 Key Design Decisions</h2>
+    <h2>12.7 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
       <row><cell>Docker-based deployment</cell><cell>Consistency and portability across environments</cell></row>

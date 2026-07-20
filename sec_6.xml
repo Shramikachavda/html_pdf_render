@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc title="TECHNOLOGY STACK">
   <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="01" title="Chapter 4 – Technology Stack">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="01" title="Chapter 6 – Technology Stack">
     <h2>6.1 Introduction</h2>
     <p>The Theta Chat Bot is a modular AI-powered customer support solution that integrates with the existing Theta Technolabs website without requiring changes to the current Webflow implementation. It follows a service-oriented architecture where the frontend communicates with a FastAPI backend through REST APIs. The backend manages request validation, knowledge retrieval, prompt construction, LLM interaction, and response generation.</p>
     <p>The technology stack was selected based on the following four criteria:</p>
@@ -21,7 +21,7 @@
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="02">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="02">
     <h2>6.2 Technology Stack Overview</h2>
     <mermaid-diagram>
 flowchart TD
@@ -56,12 +56,12 @@ flowchart TD
     class LLM startend;
     </mermaid-diagram>
     <p>The Theta Chat Bot is built on a modern, modular technology stack that emphasizes scalability, maintainability, performance, and cost-effectiveness. Each technology was selected for its suitability for AI application development, ease of integration, community support, and flexibility for future enhancements. This modular architecture allows individual components to be upgraded or replaced with minimal impact on the overall system.</p>
-    <p><b>Table 3.1: Technology Stack Overview</b></p>
+    <p><b>Table 6.1: Technology Stack Overview</b></p>
     <table>
       <row header="1"><cell>Layer</cell><cell>Technology</cell><cell>Role</cell><cell>Reason / Consideration</cell></row>
       <row><cell>Chat Interface</cell><cell>Custom JavaScript Widget</cell><cell>Provides the chatbot's user interface and communicates with the backend</cell><cell>Lightweight, framework-agnostic, and easily integrated into the existing Webflow website</cell></row>
-      <row><cell>Programming Language</cell><cell>Python</cell><cell>Core backend and AI application development</cell><cell>Rich AI ecosystem, extensive libraries, and strong community support</cell></row>
-      <row><cell>Backend</cell><cell>FastAPI</cell><cell>Handles REST APIs, request validation, AI orchestration, and business logic</cell><cell>High-performance asynchronous framework with native Python integration, well suited for scalable AI applications</cell></row>
+      <row><cell>Programming Language</cell><cell>Python</cell><cell>Core backend and AI application development</cell><cell>Easy to learn, broad adoption in AI/ML engineering, and a rich, mature AI/ML library ecosystem</cell></row>
+      <row><cell>Backend</cell><cell>FastAPI</cell><cell>Handles REST APIs, request validation, AI orchestration, and business logic</cell><cell>High-performance asynchronous framework with native Python AI ecosystem integration and automatic API documentation</cell></row>
       <row><cell>AI Model</cell><cell>Google Gemini / OpenAI</cell><cell>Generates natural language responses</cell><cell>Modular design allows switching between LLM providers with minimal code changes</cell></row>
       <row><cell>Embedding Model</cell><cell>Sentence Transformers</cell><cell>Generates vector embeddings for semantic search</cell><cell>Runs locally, eliminating API costs while supporting offline deployment and full control over embedding generation</cell></row>
       <row><cell>Vector Store / Database</cell><cell>Qdrant or PostgreSQL + pgvector</cell><cell>Stores vector embeddings and performs semantic search for RAG</cell><cell>Qdrant is optimized for high-performance vector search; PostgreSQL with pgvector suits deployments managing both relational and vector data in a single database</cell></row>
@@ -73,23 +73,16 @@ flowchart TD
     </table>
     <h2>Technology Selection Notes</h2>
     <p>Several components in the proposed architecture offer more than one viable technology option. The final selection for each will be made based on an evaluation of project requirements, performance needs, and operational constraints at the time of implementation.</p>
-    <p><b>AI Model Selection:</b> Two LLM options are considered — Google Gemini and OpenAI. Google Gemini is selected as the initial model for development and evaluation. The final decision will depend on:</p>
-    <list>
-      <item>Response quality and accuracy for domain-specific queries</item>
-      <item>Latency and performance under expected load</item>
-      <item>Operational/API cost at scale</item>
-      <item>Alignment with future business requirements</item>
-    </list>
-    <p>If Gemini does not satisfactorily meet these criteria during evaluation, the modular architecture allows migration to OpenAI with minimal code changes.</p>
-    <p><b>Vector Storage Choice:</b> Two storage options are considered — Qdrant and PostgreSQL with pgvector.</p>
-    <callout><b>Qdrant</b> — preferred if the priority is high-performance, large-scale vector search as a standalone requirement. If custom dashboards are not required, Qdrant can be used on its own without the added overhead of managing a separate relational database.</callout>
-    <callout><b>PostgreSQL + pgvector</b> — preferred if structured application data (chat history, user sessions, analytics, dashboards) needs to be managed alongside vector embeddings within a single database.</callout>
-    <p>The final choice will be made based on which factor — pure search performance vs. unified data management — is more critical to the deployment.</p>
+    <p><b>AI Model Selection:</b> Two LLM options are considered — Google Gemini and OpenAI. Google Gemini is selected as the initial model for development and evaluation. The final decision will depend on response quality, latency, operational cost, and business requirements. If Gemini does not satisfactorily meet these criteria during evaluation, the modular architecture allows migration to OpenAI with minimal code changes.</p>
+    <p><b>Vector Storage Choice:</b> Two storage options are considered: Qdrant and PostgreSQL with the pgvector extension.</p>
+    <p><b>Qdrant</b> – Recommended when the primary requirement is high-performance semantic search with minimal infrastructure. As a dedicated vector database, it is optimized for fast similarity search and is well suited for chatbot deployments that do not require storing relational application data such as conversation history, analytics, or administrative dashboard information.</p>
+    <p><b>PostgreSQL with pgvector</b> – Recommended when the application needs to manage both vector embeddings and structured relational data within a single database. This approach is ideal for deployments that require conversation history, user sessions, feedback, analytics, reporting, or an administrative dashboard, eliminating the need for a separate vector database.</p>
+    <p><b>Recommendation:</b> For deployments focused solely on semantic search, Qdrant provides the best performance and simplest architecture. For deployments requiring both semantic search and relational data management, PostgreSQL with pgvector is the preferred choice, as it consolidates all application and vector data into a single database, simplifying infrastructure and maintenance.</p>
     <p><b>Deployment Flexibility:</b> The system is designed for on-premise deployment by default, prioritizing cost control. If on-premise resources prove insufficient, or scalability needs grow, the architecture supports migration to cloud platforms.</p>
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="03">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="03">
     <h2>6.3 Technology Selection Rationale</h2>
     <p>Instead of selecting technologies based solely on popularity, each major component was evaluated against multiple alternatives using criteria such as performance, scalability, maintainability, operational cost, ease of deployment, and compatibility with AI-based applications.</p>
     <h2>6.3.1 Backend Framework Selection</h2>
@@ -98,34 +91,37 @@ flowchart TD
       <row><cell>Flask</cell><cell>Lightweight and simple</cell><cell>Limited support for asynchronous APIs</cell></row>
       <row><cell>Django</cell><cell>Feature-rich framework</cell><cell>Overhead for AI microservices</cell></row>
       <row><cell>Node.js (Express)</cell><cell>Good performance</cell><cell>Smaller AI ecosystem than Python</cell></row>
-      <row><cell><b>FastAPI (Selected)</b></cell><cell>High performance, asynchronous processing, automatic API documentation, strong AI ecosystem</cell><cell>Requires understanding of asynchronous programming</cell></row>
+      <row><cell><b>FastAPI + Python (Selected)</b></cell><cell>High performance, asynchronous processing, automatic API documentation, rich AI ecosystem</cell><cell>Requires understanding of asynchronous programming</cell></row>
     </table>
-    <decision><b>Decision:</b> FastAPI was selected because it provides high-performance asynchronous request handling, integrates seamlessly with Python AI libraries, and automatically generates OpenAPI documentation. These capabilities make it well suited for scalable AI-powered REST services.</decision>
+    <p>FastAPI and Python were selected because Python is easy to learn and write, has broad adoption across AI/ML engineering, and offers a mature AI/ML library ecosystem. FastAPI provides high-performance asynchronous request handling and automatic OpenAPI documentation, enabling rapid development velocity.</p>
+
     <h2>6.3.2 Large Language Model Selection</h2>
     <table>
       <row header="1"><cell>Provider</cell><cell>Advantages</cell><cell>Limitations</cell></row>
-      <row><cell>Google Gemini</cell><cell>Cost-effective, large context window, good performance</cell><cell>May require evaluation for highly complex reasoning</cell></row>
-      <row><cell>OpenAI</cell><cell>Excellent reasoning and structured output</cell><cell>Higher operational cost</cell></row>
+      <row><cell>Google Gemini (Selected Initial)</cell><cell>Cost-effective, large context window, strong performance</cell><cell>Requires quality benchmarking for complex reasoning</cell></row>
+      <row><cell>OpenAI (Fallback)</cell><cell>Excellent reasoning and structured output</cell><cell>Higher operational cost</cell></row>
     </table>
-    <decision><b>Decision:</b> Google Gemini is proposed as the initial LLM for development and evaluation due to its balance between performance and operational cost. However, the application architecture remains provider-independent, allowing migration to OpenAI if future evaluation indicates improved performance or business value.</decision>
+    <p>Google Gemini is proposed as the initial LLM due to its balance between performance and operational cost. The architecture remains provider-independent, allowing seamless migration to OpenAI if evaluation indicates improved business value.</p>
+
     <h2>6.3.3 Vector Storage Selection</h2>
     <table>
       <row header="1"><cell>Technology</cell><cell>Advantages</cell><cell>Limitations</cell></row>
-      <row><cell>Qdrant</cell><cell>High-performance semantic search, lightweight, Docker-friendly</cell><cell>Separate database for structured data</cell></row>
-      <row><cell>PostgreSQL + pgvector</cell><cell>Unified relational and vector storage, supports analytics</cell><cell>Higher infrastructure requirements</cell></row>
+      <row><cell>Qdrant (Vector-Only)</cell><cell>High-performance semantic search, lightweight, Docker-friendly</cell><cell>Separate database for relational data</cell></row>
+      <row><cell>PostgreSQL + pgvector (Unified)</cell><cell>Unified relational and vector storage, supports analytics &amp; dashboards</cell><cell>Higher infrastructure requirements</cell></row>
     </table>
-    <decision><b>Decision:</b> The final selection depends on deployment requirements. Qdrant is recommended for deployments focused on semantic search, while PostgreSQL with pgvector is better suited for deployments requiring dashboards, reporting, analytics, and unified data management.</decision>
+    <p>Qdrant is selected for deployments requiring high-speed semantic search alone. PostgreSQL with pgvector is selected when user sessions, conversation history, and admin dashboards must be managed in a single database.</p>
+
     <h2>6.3.4 Deployment Strategy</h2>
     <table>
       <row header="1"><cell>Option</cell><cell>Advantages</cell><cell>Limitations</cell></row>
-      <row><cell>On-Premise</cell><cell>Data privacy, infrastructure control, lower long-term cost</cell><cell>Requires internal server management</cell></row>
+      <row><cell>On-Premise (Selected)</cell><cell>Data privacy, infrastructure control, lower long-term cost</cell><cell>Requires internal server management</cell></row>
       <row><cell>Cloud</cell><cell>Elastic scalability and managed services</cell><cell>Ongoing infrastructure costs</cell></row>
     </table>
-    <decision><b>Decision:</b> On-premise deployment is recommended as the default deployment model to maximize infrastructure control and data privacy. The modular architecture also supports migration to cloud infrastructure if future scaling requirements justify the transition.</decision>
+    <p>On-premise deployment is selected to maximize data control and privacy, while the modular containerized design supports seamless migration to cloud hosting if scaling demands evolve.</p>
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="04">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="04">
     <h2>6.4 Component Interaction</h2>
     <p>The Theta Chat Bot utilizes a modular request-processing pipeline designed for clarity and efficiency. Each component is decoupled, ensuring that business logic, knowledge retrieval, and AI inference remain independent.</p>
     <p><b>Step-by-Step Workflow:</b></p>
@@ -188,21 +184,21 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 05 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="05">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="05">
     <h2>6.5 APIs Used</h2>
     <table>
       <row header="1"><cell>API</cell><cell>Type</cell><cell>Purpose</cell></row>
       <row><cell><b>Internal — /api/chat</b></cell><cell>REST (FastAPI, own API)</cell><cell>The only endpoint the frontend widget calls; accepts a user message, returns the generated answer + sources</cell></row>
       <row><cell><b>Gemini API</b></cell><cell>External</cell><cell>Primary LLM — generates the natural-language response from the assembled prompt</cell></row>
       <row><cell><b>OpenAI API</b> (optional)</cell><cell>External</cell><cell>Fallback LLM, used case-by-case when a Gemini response fails the quality bar during testing</cell></row>
-      <row><cell><b>Gemini Embedding API</b></cell><cell>External</cell><cell>Default embedding generator — converts knowledge-base chunks and user queries into vectors</cell></row>
       <row><cell><b>Qdrant REST API</b></cell><cell>Internal (self-hosted)</cell><cell>Stores vectors, performs similarity search; called by the backend, never by the frontend</cell></row>
     </table>
-    <callout>Sentence Transformers, if used instead of the Gemini Embedding API, runs <b>locally</b> inside the backend — it is not an external API call, which is precisely its advantage (no per-token cost, works offline).</callout>
+    <callout>Sentence Transformers runs <b>locally</b> inside the backend — it is not an external API call, which is precisely its advantage (no per-token cost, works offline).</callout>
+    <callout><b>Note:</b> Additional internal APIs (such as session management, authentication, analytics, and admin configuration endpoints) will also be introduced as feature requirements evolve.</callout>
   </sheet>
 
   <!-- ============ SHEET 06 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="06">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="06">
     <h2>6.6 Frontend: Integrating with Webflow Using an Embedded Widget</h2>
     <p>The Theta Technolabs website is already built and maintained using Webflow. To preserve the existing website while adding AI chatbot functionality, the chatbot is implemented as a lightweight embedded JavaScript widget. This approach allows the chatbot to integrate seamlessly with the current website without requiring modifications to the existing Webflow structure or design.</p>
     <p>Benefits of this approach:</p>
@@ -216,20 +212,14 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 07 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="07">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="07">
     <h2>6.7 Backend: Python + FastAPI</h2>
-    <p><b>Python</b> was the obvious base layer — it's where the AI ecosystem lives (embedding SDKs, vector-DB clients, LLM SDKs), and it keeps one language across the whole backend instead of splitting logic between a JS API layer and a Python ML layer.</p>
-    <p><b>FastAPI</b> sits on top of it because the bot's job is fundamentally I/O-bound: call an embedding model, query the vector store, call an LLM, return a response. FastAPI's async request handling means one worker can juggle many concurrent chats without blocking, and its automatic OpenAPI docs mean the API is self-documenting for whoever maintains it next.</p>
-    <table>
-      <row header="1"><cell>Alternative</cell><cell>Why it lost</cell></row>
-      <row><cell>Node.js (Express)</cell><cell>Solid for APIs, but a thinner AI/ML library ecosystem</cell></row>
-      <row><cell>Flask</cell><cell>Simple, but synchronous by default — a poor fit for concurrent LLM calls</cell></row>
-      <row><cell>Java / .NET</cell><cell>Reliable for enterprise systems, but slower to iterate on AI-integration code</cell></row>
-    </table>
+    <p><b>Python</b> was selected as the core foundation because it is easy to learn and write, features broad industry adoption in AI/ML engineering, and provides a rich, mature ecosystem of libraries (embedding SDKs, vector database clients, LLM SDKs). Using Python maintains a single unified language across the entire backend, avoiding fragmented logic between API and ML layers.</p>
+    <p><b>FastAPI</b> sits on top of Python because the chatbot service is fundamentally I/O-bound: call an embedding model, query the vector store, call an LLM, and return a response. FastAPI's high-performance asynchronous request handling allows a single worker to manage many concurrent chat sessions without blocking, while its automatic OpenAPI documentation ensures rapid development velocity and self-documenting APIs.</p>
   </sheet>
 
   <!-- ============ SHEET 08 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="08">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="08">
     <h2>6.8 AI Model Layer: Gemini First, Provider-Agnostic by Design</h2>
     <p>The response-generation layer is built behind a thin provider interface, so the LLM is a <b>configuration value, not a hardcoded dependency</b>. If Gemini underperforms on a specific use case later, swapping to OpenAI doesn't touch the retrieval pipeline, the API contract, or the frontend.</p>
     <table>
@@ -253,7 +243,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 09 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="09">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="09">
     <h2>6.9 Embeddings: Local Semantic Representation</h2>
     <p>The chatbot uses <b>Sentence Transformers</b> to generate vector embeddings for both the knowledge base documents and incoming user queries. The same embedding model is used during both document indexing and query processing, ensuring that all content is represented within the same vector space — a prerequisite for accurate semantic similarity search.</p>
     <callout><b>Key advantage:</b> Sentence Transformers run <b>entirely on the local server</b>. There is no external API call, no per-token cost, and no dependency on a third-party embedding service — making it suitable for offline or air-gapped environments.</callout>
@@ -267,7 +257,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 10 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="10">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="10">
     <h2>6.10 Vector Database: Qdrant, or PostgreSQL + pgvector</h2>
     <table>
       <row header="1"><cell>Option</cell><cell>Strength</cell><cell>Weakness</cell></row>
@@ -278,13 +268,13 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 11 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="11">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="11">
     <h2>6.11 Containerization: Docker + Docker Compose</h2>
     <p>Every service — the FastAPI backend, the vector store, and Nginx — ships as a container, defined once in a <b>docker-compose.yml</b>, so "works on my machine" stops being a risk. Identical environments across dev, staging, and production; one-command startup (<b>docker compose up</b>); simple rollback by pinning image tags.</p>
   </sheet>
 
   <!-- ============ SHEET 12 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="12">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="12">
     <h2>6.12 Hosting: On-Premise Linux, With a Documented Exit Ramp</h2>
     <p>The recommendation is an on-premise Linux server rather than a cloud platform — driven by data control, not cost alone. Company and customer conversation data never leaves internal infrastructure, and there's no recurring cloud compute bill for a workload that's steady rather than spiky.</p>
     <callout><b>Note — hosting is not fixed:</b> if the on-premise server doesn't have enough disk/compute headroom, the hosting model can shift without a redesign. The right path depends on one question: <b>do we need to store what users ask?</b></callout>
@@ -294,7 +284,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 13 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="13">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="13">
     <h2>6.13 Token Economics &amp; Cost Optimization</h2>
     <p>A critical consideration for any AI system deployed in production is the ongoing operational cost. The Theta Chat Bot architecture is specifically designed to minimize recurring API expenses through strategic technology choices.</p>
     <p><b>Estimated LLM Operational Cost:</b></p>

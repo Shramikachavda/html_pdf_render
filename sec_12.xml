@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc title="MONITORING &amp; LOGGING">
-  <sheet label="THETA CHATBOT · MONITORING" kicker="CHAPTER 9 — MONITORING" footnum="01" title="Chapter 9 – Monitoring &amp; Logging">
-    <h2>12. Monitoring &amp; Logging</h2>
-    <h2>12.1 Overview</h2>
+  <sheet label="THETA CHATBOT · MONITORING" kicker="CHAPTER 13 — MONITORING &amp; LOGGING" footnum="01" title="Chapter 13 – Monitoring &amp; Logging">
+    <h2>13.1 Overview</h2>
     <p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p>
     <p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p>
     
@@ -47,7 +46,7 @@ flowchart LR
     class DASH admin;
     </mermaid-diagram>
 
-    <h2>12.2 Monitoring Objectives</h2>
+    <h2>13.2 Monitoring Objectives</h2>
     <p>The monitoring system is designed to:</p>
     <list>
       <item>Ensure high application availability.</item>
@@ -58,7 +57,7 @@ flowchart LR
       <item>Support troubleshooting and maintenance.</item>
     </list>
 
-    <h2>12.3 Application Health</h2>
+    <h2>13.3 Application Health</h2>
     <p>Monitoring application health involves tracking several key metrics.</p>
     <table>
       <row header="1"><cell>Metric</cell><cell>Purpose</cell></row>
@@ -69,10 +68,10 @@ flowchart LR
       <row><cell>Request Volume</cell><cell>Measure traffic patterns</cell></row>
     </table>
 
-    <h2>12.4 AI Performance</h2>
+    <h2>13.4 AI Performance</h2>
     <p>AI performance is tracked to evaluate cost and quality. Metrics include: total AI requests, average generation time, token consumption, estimated API cost, retrieval confidence, and LLM provider utilization.</p>
 
-    <h2>12.5 Knowledge Base Monitoring</h2>
+    <h2>13.5 Knowledge Base Monitoring</h2>
     <table>
       <row header="1"><cell>Metric</cell><cell>Description</cell></row>
       <row><cell>Total Indexed Pages</cell><cell>Pages currently indexed</cell></row>
@@ -82,10 +81,10 @@ flowchart LR
       <row><cell>Knowledge Version</cell><cell>Current indexed version</cell></row>
     </table>
 
-    <h2>12.6 Logging Strategy</h2>
+    <h2>13.6 Logging Strategy</h2>
     <p>Logs capture API requests, AI requests, synchronization events, warnings, and errors — using standard levels (INFO, WARNING, ERROR, CRITICAL) to keep noise low while enabling fast troubleshooting. API keys, tokens, and other credentials must never be written to logs.</p>
 
-    <h2>12.7 Key Design Decisions</h2>
+    <h2>13.7 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
       <row><cell>Continuous health monitoring</cell><cell>Ensures reliable availability</cell></row>
