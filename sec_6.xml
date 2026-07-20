@@ -23,7 +23,38 @@
   <!-- ============ SHEET 02 ============ -->
   <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="02">
     <h2>6.2 Technology Stack Overview</h2>
-    <raw><img src="mermaid-diagram (4).png" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+    <mermaid-diagram>
+flowchart TD
+    subgraph Client ["Client Layer"]
+        UI["Webflow Chat Widget (JS/CSS)"]
+    end
+    subgraph App ["Application Layer"]
+        N["Nginx Reverse Proxy"]
+        API["FastAPI Backend (Python)"]
+    end
+    subgraph Knowledge ["Knowledge Layer"]
+        EMB["Sentence Transformers"]
+        DB[("Vector DB (Qdrant/PostgreSQL)")]
+    end
+    subgraph Intelligence ["AI Layer"]
+        LLM["Google Gemini / OpenAI"]
+    end
+
+    UI &lt;--&gt;|HTTPS REST API| N
+    N &lt;--&gt; API
+    API --&gt;|Text Chunk| EMB
+    EMB --&gt;|Vector| DB
+    API &lt;--&gt;|Prompt context| LLM
+
+    %% Styling
+    classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
+    classDef highlight fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c;
+    classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
+    
+    class UI highlight;
+    class N,API,EMB,DB process;
+    class LLM startend;
+    </mermaid-diagram>
     <p>The Theta Chat Bot is built on a modern, modular technology stack that emphasizes scalability, maintainability, performance, and cost-effectiveness. Each technology was selected for its suitability for AI application development, ease of integration, community support, and flexibility for future enhancements. This modular architecture allows individual components to be upgraded or replaced with minimal impact on the overall system.</p>
     <p><b>Table 3.1: Technology Stack Overview</b></p>
     <table>
@@ -260,5 +291,28 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <callout><b>Option A — Don't store user queries.</b> Keep Qdrant as the vector store and add Prometheus + Grafana for monitoring (uptime, latency, request volume). This needs an extra custom container for the monitoring stack and some initial setup work, and still consumes on-premise space for those containers — but no conversation data is retained.</callout>
     <callout><b>Option B — Store user queries</b> (for analytics, QA, or improving answers over time). Move to <b>PostgreSQL + pgvector</b> with Python as the access layer, replacing Qdrant. This sets up a natural next step: a <b>custom admin panel</b> built later on top of the same Postgres instance for reviewing conversations and reporting.</callout>
     <callout>Both options stay on-premise; if space is the real constraint rather than the storage model, either can also move to a cloud-hosted instance without changing anything else in the architecture.</callout>
+  </sheet>
+
+  <!-- ============ SHEET 13 ============ -->
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 4 — TECHNOLOGY" footnum="13">
+    <h2>6.13 Token Economics &amp; Cost Optimization</h2>
+    <p>A critical consideration for any AI system deployed in production is the ongoing operational cost. The Theta Chat Bot architecture is specifically designed to minimize recurring API expenses through strategic technology choices.</p>
+    <p><b>Estimated LLM Operational Cost:</b></p>
+    <p>Using the default Gemini model, the cost per conversation is extremely low. Assuming an average conversation uses 2,000 input tokens (retrieved context + user query) and generates 300 output tokens, the cost breakdown is:</p>
+    <list>
+      <item><b>Input Cost:</b> 2,000 tokens @ $0.25 / 1M = $0.0005</item>
+      <item><b>Output Cost:</b> 300 tokens @ $1.50 / 1M = $0.00045</item>
+      <item><b>Total per Conversation:</b> ~$0.00095</item>
+    </list>
+    <callout label="ROI IMPACT">At this rate, <b>1,000 complete customer conversations will cost approximately $0.95 in AI API fees.</b></callout>
+    
+    <p><b>Cost Reduction Strategies Implemented:</b></p>
+    <table>
+      <row header="1"><cell>Strategy</cell><cell>Impact on Cost</cell></row>
+      <row><cell><b>Local Embedding Models</b></cell><cell>100% reduction in embedding API costs. By using Sentence Transformers locally, vectorizing the entire website and all user queries is entirely free.</cell></row>
+      <row><cell><b>Semantic Caching</b></cell><cell>Retrieving answers for frequently asked questions (e.g., "What are your services?") from an in-memory cache bypasses the LLM entirely, reducing API calls for common queries by an estimated 30-40%.</cell></row>
+      <row><cell><b>On-Premise Vector DB</b></cell><cell>Avoids expensive managed cloud database fees (e.g., Pinecone or Weaviate Cloud) by utilizing self-hosted Qdrant or PostgreSQL.</cell></row>
+    </table>
+    <p>These architectural decisions ensure that the system's operational expenditure scales linearly and predictably with business growth, preventing unexpected billing spikes.</p>
   </sheet>
 </doc>

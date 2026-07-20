@@ -252,11 +252,21 @@ flowchart TD
       <row><cell>Service outage</cell><cell>Return a user-friendly fallback message and log the incident for investigation.</cell></row>
     </table>
 
-    <h2>10.10 Future Security Enhancements</h2>
+    <h2>10.10 Bot Prevention &amp; CAPTCHA Strategy</h2>
+    <p>To prevent malicious bots and automated scripts from exhausting the AI provider's API budget (Financial DoS) or skewing operational analytics, an invisible CAPTCHA mechanism (e.g., Google reCAPTCHA v3 or Cloudflare Turnstile) is implemented on the frontend.</p>
+    <p><b>Technical Flow:</b></p>
+    <steps>
+      <step><b>Frontend Generation:</b> The JavaScript widget silently evaluates browser behavior and generates a temporary `captcha_token` without requiring the user to solve visual puzzles.</step>
+      <step><b>API Request:</b> This token is submitted along with the user's message in the `POST /api/v1/chat` request.</step>
+      <step><b>Backend Verification:</b> The FastAPI backend validates the token with the CAPTCHA provider before initializing the retrieval pipeline.</step>
+      <step><b>Decision:</b> If the score indicates a bot, the request is immediately rejected (`403 Forbidden`). <b>The LLM is never called, and no API costs are incurred.</b></step>
+    </steps>
+    <callout><b>Second Layer of Defense:</b> Even if a user bypasses the CAPTCHA, strict IP-based rate limiting (e.g., max 20 messages per 10 minutes) acts as a fail-safe against manual or distributed spam attacks.</callout>
+
+    <h2>10.11 Future Security Enhancements</h2>
     <p>As the chatbot evolves, additional security features may be introduced:</p>
     <list>
       <item>Web Application Firewall (WAF)</item>
-      <item>CAPTCHA for abuse prevention</item>
       <item>Advanced rate limiting policies</item>
       <item>Role-based access control for the operational dashboard</item>
       <item>Audit log management</item>
@@ -265,12 +275,13 @@ flowchart TD
       <item>Security monitoring and alerting</item>
     </list>
 
-    <h2>10.11 Key Design Decisions</h2>
+    <h2>10.12 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
       <row><cell>HTTPS for all communications</cell><cell>Protects data in transit and ensures secure communication.</cell></row>
       <row><cell>Backend-only AI communication</cell><cell>Prevents exposure of AI provider credentials to the client.</cell></row>
       <row><cell>Environment-based configuration</cell><cell>Improves security and simplifies deployment across environments.</cell></row>
+      <row><cell>Invisible CAPTCHA integration</cell><cell>Protects against API budget drain without harming the user experience.</cell></row>
       <row><cell>RAG-based response generation</cell><cell>Reduces hallucinations by grounding responses in approved website content.</cell></row>
       <row><cell>Temporary session identifiers</cell><cell>Supports conversational continuity without requiring user authentication.</cell></row>
       <row><cell>Optional enterprise security enhancements</cell><cell>Allows the security model to evolve alongside future business requirements.</cell></row>

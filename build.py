@@ -28,14 +28,14 @@ body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size:
 .sheet-foot { position:absolute; bottom:8mm; left:18mm; right:16mm; border-top:0.5pt solid #c7d2da; padding-top:3mm;
   font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; color:#6b7a86; }
 .sheet-foot .num { float:right; }
-.cover { background:#0d2b45; color:#e8f1f6; padding:0; }
-.cover-inner { padding:26mm 18mm; }
-.cover .kicker2 { font-family:"DejaVu Sans Mono",monospace; color:#6ec6dd; letter-spacing:4px; font-size:9.5pt; margin-bottom:10mm; }
-.cover h1 { font-size:32pt; line-height:1.15; margin-bottom:6mm; border-bottom:none; }
-.cover .subtitle { font-size:11.5pt; color:#9fc3d6; max-width:135mm; margin-bottom:50mm; }
-table.revtable { width:100%; border-collapse:collapse; margin-top:4mm; font-family:"DejaVu Sans Mono",monospace; font-size:8pt; }
-table.revtable th, table.revtable td { border:0.5pt solid #2f5674; padding:2mm 2.5mm; color:#cfe4ee; text-align:left; }
-table.revtable th { background:#123a5c; color:#7fd0e6; letter-spacing:1px; }
+.cover { background:#ffffff; color:#0d2b45; padding:0; border: 4mm solid #0d2b45; box-sizing: border-box; }
+.cover-inner { padding:22mm 14mm; }
+.cover .kicker2 { font-family:"DejaVu Sans Mono",monospace; color:#e8a33d; letter-spacing:4px; font-size:9.5pt; margin-bottom:10mm; text-transform: uppercase; font-weight: bold; }
+.cover h1 { font-size:36pt; color:#0d2b45; line-height:1.15; margin-bottom:6mm; border-bottom:none; font-weight: 800; letter-spacing: -1px; }
+.cover .subtitle { font-size:14pt; color:#1c5d8c; max-width:135mm; margin-bottom:40mm; font-weight: 500; }
+table.revtable { width:100%; border-collapse:collapse; margin-top:4mm; font-family:"DejaVu Sans Mono",monospace; font-size:8.5pt; }
+table.revtable th, table.revtable td { border:1pt solid #d8dfe4; padding:2.5mm 3mm; color:#0d2b45; text-align:left; }
+table.revtable th { background:#f4f7f9; color:#1c5d8c; letter-spacing:1px; font-weight:bold; }
 .kicker { font-family:"DejaVu Sans Mono",monospace; font-size:8pt; letter-spacing:2.5px; color:#1c5d8c; font-weight:bold; margin-bottom:2mm; }
 h1.section-title { font-size:20pt; color:#0d2b45; border-bottom:2pt solid #0d2b45; padding-bottom:3mm; margin-bottom:6mm; }
 h2 { font-size:12.5pt; color:#0d2b45; margin-top:6.5mm; margin-bottom:3mm; padding-left:3mm; border-left:3pt solid #e8a33d; }
@@ -54,7 +54,7 @@ table.spec td .mono { font-family:"DejaVu Sans Mono",monospace; font-size:8.1pt;
 .decision { background:#fdf6ea; border-left:3pt solid #e8a33d; padding:3mm 4mm; margin:4mm 0; font-size:9.1pt; }
 .decision .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; letter-spacing:2px; color:#b5791c; font-weight:bold; display:block; margin-bottom:1.5mm; }
 .tag { display:inline-block; font-family:"DejaVu Sans Mono",monospace; font-size:7.3pt; letter-spacing:1px; color:#1c5d8c; background:#f4f7f9; border:0.5pt solid #1c5d8c; padding:0.6mm 2mm; border-radius:3px; margin-right:1.6mm; margin-bottom:1.5mm; }
-.tag-danger { color:#b91c1c; background:#fef2f2; border:0.5pt solid #fca5a5; }
+.tag-danger { color:#7f1d1d; background:#fef2f2; border:0.5pt solid #fecaca; }
 .mermaid { background-color:#f8fafc; padding:5mm; border-radius:3px; border:0.5pt solid #e2e8f0; margin:5mm 0; text-align:center; }
 .steps { margin:3mm 0; }
 .step { position:relative; padding:2mm 0 2mm 11mm; border-bottom:0.4pt dotted #c7d2da; }
@@ -89,6 +89,7 @@ INLINE_TAG_MAP = {
     "mono": "span class=\"mono\"",
     "p": "p",
     "br": "br",
+    "hlt": "span class=\"tag tag-danger\"",
 }
 
 
@@ -270,7 +271,7 @@ def render_cover(cover_el, doc_title):
     )
     table_html = f'<table class="revtable"><tr><th>Field</th><th>Value</th></tr>{rows}</table>' if fields else ""
     
-    img_html = f'<div style="text-align:center; margin-bottom: 20mm;"><img src="{image}" style="max-width:200px;" /></div>' if image else ""
+    img_html = f'<div style="text-align:left; margin-bottom: 25mm;"><img src="{image}" style="max-width:280px;" /></div>' if image else ""
     
     return f"""
 <div class="sheet cover">

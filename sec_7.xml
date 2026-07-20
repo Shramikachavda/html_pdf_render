@@ -3,7 +3,7 @@
   <!-- ============ SHEET 01 ============ -->
   <sheet label="THETA CHATBOT · API DESIGN" kicker="CHAPTER 6 — API DESIGN" footnum="01" title="Chapter 6 – API Design &amp; Communication Flow">
     <h2>7.1 Overview</h2>
-    <raw><img src="mermaid-diagram (5).png" style="width:100%; max-width:800px; display:block; margin:auto;" /></raw>
+
 
     <p>The Theta Chat Bot follows a RESTful API architecture, where the chatbot widget communicates with the FastAPI backend through secure HTTPS endpoints.</p>
     <p>The backend acts as the central orchestration layer responsible for validating requests, retrieving relevant knowledge, communicating with the Large Language Model (LLM), and returning structured responses to the frontend.</p>
