@@ -14,6 +14,7 @@ files_in_order = [
     "appendics.xml",
     "sec_13.xml",
     "SEC_14.xml",
+    "llm_cost.xml",
     "req_question.xml"
 ]
 
@@ -49,7 +50,8 @@ with open(os.path.join(base_dir, output_file), "w", encoding="utf-8") as out:
     <item n="14" title="AI System Validation &amp; Testing" desc="Testing strategy and evaluation scorecards" />
     <item n="15" title="Risk Assessment &amp; Mitigation" desc="Security and technical risks" />
     <item n="16" title="Future Roadmap" desc="Phased evolution &amp; enhancements" />
-    <item n="A1" title="Appendix A – Requirement Gathering Questions" desc="Project scope &amp; discovery questions" />
+    <item n="A1" title="Appendix A – LLM Cost Comparison" desc="LLM pricing models, token calculation &amp; cost optimization" />
+    <item n="B1" title="Appendix B – Requirement Gathering Questions" desc="Project scope &amp; discovery questions" />
   </toc>\n\n''')
 
     sheet_counter = [1]

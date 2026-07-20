@@ -2,7 +2,7 @@
 <doc title="DATA &amp; DEPLOYMENT">
   <!-- ============ SHEET 01 ============ -->
   <sheet label="THETA CHATBOT · DASHBOARD" kicker="CHAPTER 10 — DASHBOARD &amp; ANALYTICS" footnum="01" title="Chapter 10 – Operational Dashboard &amp; Analytics">
-    <h2>12.1 Overview</h2>
+    <h2>10.1 Overview</h2>
     <mermaid-diagram>
 flowchart TD
     %% ===========================
@@ -40,7 +40,7 @@ flowchart TD
     <p>The dashboard provides centralized monitoring and analytics, enabling administrators to understand how the chatbot is performing, identify knowledge gaps, monitor API usage, and make informed decisions about future improvements.</p>
     <callout>The dashboard is <b>optional</b> and is recommended for production deployments where long-term monitoring and business insights are required.</callout>
 
-    <h2>12.2 Dashboard Architecture</h2>
+    <h2>10.2 Dashboard Architecture</h2>
     <p>When the dashboard is enabled, PostgreSQL with the pgvector extension is recommended as the primary database. The database stores both vector embeddings and operational data, allowing semantic search and analytics to coexist within a single platform.</p>
     <p>Operational data may include:</p>
     <list>
@@ -55,7 +55,7 @@ flowchart TD
     </list>
     <p>This architecture reduces infrastructure complexity by avoiding multiple databases for related operational data.</p>
 
-    <h2>12.3 Dashboard Modules</h2>
+    <h2>10.3 Dashboard Modules</h2>
     <p>The Operational Dashboard is organized into five functional modules:</p>
 
     <callout label="A. Conversation Analytics">
@@ -78,7 +78,7 @@ flowchart TD
       Provides operational visibility: <b>API availability, error rate, failed requests, average latency, synchronization status, Docker container health, database connectivity, and storage utilization.</b> Helps administrators detect issues before they impact users.
     </callout>
 
-    <h2>12.4 Dashboard Database Design</h2>
+    <h2>10.4 Dashboard Database Design</h2>
     <p>When PostgreSQL is used, the following logical tables are recommended:</p>
     <table>
       <row header="1"><cell>Table</cell><cell>Purpose</cell></row>
@@ -92,7 +92,7 @@ flowchart TD
     </table>
     <p>Additional tables can be introduced as future requirements evolve.</p>
 
-    <h2>12.5 Example Dashboard KPIs</h2>
+    <h2>10.5 Example Dashboard KPIs</h2>
     <p>The dashboard homepage can present a high-level overview of system performance:</p>
     <table>
       <row header="1"><cell>KPI</cell><cell>Description</cell></row>
@@ -106,7 +106,7 @@ flowchart TD
       <row><cell>Last Synchronization</cell><cell>Timestamp of the latest knowledge update</cell></row>
     </table>
 
-    <h2>12.6 Dashboard Benefits</h2>
+    <h2>10.6 Dashboard Benefits</h2>
     <p><b>Business Benefits:</b></p>
     <list>
       <item>Measure chatbot adoption</item>
@@ -124,7 +124,7 @@ flowchart TD
       <item>Improve system reliability</item>
     </list>
 
-    <h2>12.7 Future Dashboard Enhancements</h2>
+    <h2>10.7 Future Dashboard Enhancements</h2>
     <p>The modular dashboard architecture allows future expansion without redesign. Potential enhancements include:</p>
     <list>
       <item>Real-time analytics</item>
@@ -139,7 +139,7 @@ flowchart TD
       <item>AI-powered operational summaries</item>
     </list>
 
-    <h2>11.8 Dashboard Availability</h2>
+    <h2>10.8 Dashboard Availability</h2>
     <table>
       <row header="1"><cell>Deployment</cell><cell>Dashboard Included</cell></row>
       <row><cell>Lightweight (Qdrant)</cell><cell>Not Included</cell></row>
@@ -147,7 +147,7 @@ flowchart TD
     </table>
     <p>Organizations that require only chatbot functionality can deploy the lightweight architecture without operational analytics. As business requirements evolve, the enterprise architecture can be adopted without changing the overall chatbot design.</p>
 
-    <h2>11.9 Key Design Decisions</h2>
+    <h2>10.9 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
       <row><cell>PostgreSQL + pgvector for enterprise deployments</cell><cell>Supports both semantic search and operational analytics within a single database platform.</cell></row>
@@ -160,11 +160,11 @@ flowchart TD
 
   <!-- ============ SHEET 02 ============ -->
   <sheet label="THETA CHATBOT · SECURITY" kicker="CHAPTER 11 — SECURITY &amp; BOT PREVENTION" footnum="02" title="Chapter 11 – Security &amp; Bot Prevention">
-    <h2>12.1 Overview</h2>
+    <h2>11.1 Overview</h2>
     <p>Although the Theta Chat Bot is publicly accessible and does not require user authentication, security remains a critical aspect of the overall system design. The chatbot communicates with external AI services, processes user input, and retrieves information from the company's knowledge base. Therefore, appropriate security controls must be implemented to ensure system reliability, protect sensitive configurations, and prevent misuse.</p>
     <p>The proposed security strategy follows a <b>defense-in-depth approach</b>, where multiple layers of protection work together to reduce potential risks.</p>
 
-    <h2>12.2 Security Objectives</h2>
+    <h2>11.2 Security Objectives</h2>
     <p>The primary security objectives of the chatbot are:</p>
     <list>
       <item>Protect backend services from unauthorized access</item>

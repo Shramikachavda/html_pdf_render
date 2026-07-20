@@ -121,7 +121,6 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <row><cell>Docker deployment</cell><cell>Simplifies deployment, portability, and on-premise hosting.</cell></row>
       <row><cell>Optional PostgreSQL dashboard</cell><cell>Enables analytics and operational monitoring without affecting the core chatbot functionality.</cell></row>
     </table>
-    <p>---</p>
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
@@ -360,7 +359,6 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <row><cell>PostgreSQL + pgvector for enterprise deployments</cell><cell>Provides semantic search alongside analytics and dashboard capabilities within a single database.</cell></row>
       <row><cell>Modular pipeline architecture</cell><cell>Enables future enhancements without requiring major architectural changes.</cell></row>
     </table>
-    <p>---</p>
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->

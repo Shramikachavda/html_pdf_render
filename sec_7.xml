@@ -42,16 +42,16 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <p>Each component has a clearly defined responsibility, ensuring loose coupling and easier maintenance.</p>
 
     <h2>7.3 API Endpoints</h2>
-    <p>The following endpoints are proposed for the initial version of the chatbot.</p>
-    <json-block type="request" label="AVAILABLE ENDPOINTS" badge="REST">
-      <jfield key="POST /api/v1/chat" val="Process user queries and generate chatbot responses" />
-      <jfield key="POST /api/v1/feedback" val="Submit user feedback (helpful/unhelpful) on responses" />
-      <jfield key="GET /api/v1/health" val="Health check probe for monitoring and deployment validation" />
-      <jfield key="POST /api/v1/sync" val="Trigger knowledge base synchronization (Admin/Internal)" />
-      <jfield key="GET /api/v1/analytics" val="Retrieve operational analytics and usage stats (Admin/Internal)" />
-      <jfield key="GET /api/v1/config" val="Retrieve chatbot configuration and feature flags (Optional)" />
+    <p><b>Note:</b> The endpoints listed below are representative examples of proposed APIs. Actual endpoints, path structures, and payload specifications may be expanded or adjusted based on implementation needs.</p>
+    <json-block type="request" label="PROPOSED EXAMPLE ENDPOINTS" badge="REST (EXAMPLES)">
+      <jfield key="POST /api/v1/chat" val="Process user queries and generate chatbot responses (Example)" />
+      <jfield key="POST /api/v1/feedback" val="Submit user feedback (helpful/unhelpful) on responses (Example)" />
+      <jfield key="GET /api/v1/health" val="Health check probe for monitoring and deployment validation (Example)" />
+      <jfield key="POST /api/v1/sync" val="Trigger knowledge base synchronization (Admin/Internal Example)" />
+      <jfield key="GET /api/v1/analytics" val="Retrieve operational analytics and usage stats (Admin/Internal Example)" />
+      <jfield key="GET /api/v1/config" val="Retrieve chatbot configuration and feature flags (Example)" />
     </json-block>
-    <p>Future administrative endpoints may include analytics, knowledge synchronization, and dashboard APIs.</p>
+    <p>Future administrative and internal endpoints may include analytics, session control, health diagnostics, knowledge synchronization, and dashboard APIs.</p>
 
     <h2>7.4 Request Flow</h2>
     <p>When a visitor submits a message, the frontend sends a POST request to the chatbot API endpoint. The request body uses a structured JSON schema to pass the user message and session context to the backend.</p>

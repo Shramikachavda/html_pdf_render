@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc title="LLM Cost Comparison">
+  <!-- ============ SHEET 01 ============ -->
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX A — LLM COST COMPARISON" footnum="01" title="Appendix A – LLM Cost Comparison">
+    <h2>A.1 Overview</h2>
+    <p>This appendix provides a comprehensive financial and operational cost breakdown for Large Language Model (LLM) providers and local embedding models evaluated for the Theta Chat Bot.</p>
+
+    <h2>A.2 LLM Pricing Reference</h2>
+    <p>The table below details current market pricing (USD per 1 Million tokens) for the primary and fallback LLM candidate models.</p>
+    <table>
+      <row header="1"><cell>Model</cell><cell>Provider</cell><cell>Input Cost (/1M)</cell><cell>Output Cost (/1M)</cell><cell>Suitability</cell></row>
+      <row><cell><b>Gemini 3.1 Flash Lite</b></cell><cell>Google</cell><cell>$0.25</cell><cell>$1.50</cell><cell>Default choice for high-speed RAG Q&amp;A</cell></row>
+      <row><cell><b>GPT-5.4 mini</b></cell><cell>OpenAI</cell><cell>$0.75</cell><cell>$4.50</cell><cell>Secondary comparison &amp; fallback model</cell></row>
+      <row><cell><b>Gemini 3.5 Flash</b></cell><cell>Google</cell><cell>$1.50</cell><cell>$9.00</cell><cell>Advanced reasoning &amp; multi-turn context</cell></row>
+      <row><cell><b>GPT-5.6 Luna</b></cell><cell>OpenAI</cell><cell>$1.00</cell><cell>$6.00</cell><cell>Enterprise fallback model</cell></row>
+    </table>
+
+    <h2>A.3 Per-Conversation Cost Calculation</h2>
+    <p>Assuming an average user interaction consists of 2,000 input tokens (retrieved website context + prompt + question) and generates a 300-token response:</p>
+    <list>
+      <item><b>Input Cost:</b> 2,000 tokens × $0.25 / 1,000,000 = <b>$0.0005</b></item>
+      <item><b>Output Cost:</b> 300 tokens × $1.50 / 1,000,000 = <b>$0.00045</b></item>
+      <item><b>Total Cost per Conversation:</b> <b>~$0.00095 USD</b></item>
+    </list>
+    <callout label="ROI IMPACT">At this rate, <b>1,000 complete customer conversations cost approximately $0.95 in AI API fees</b>, ensuring extremely low operational expenses.</callout>
+
+    <h2>A.4 Cost Reduction Strategies</h2>
+    <table>
+      <row header="1"><cell>Strategy</cell><cell>Impact on Operational Expenses</cell></row>
+      <row><cell><b>Local Embedding Models</b></cell><cell>100% savings on embedding API fees. Sentence Transformers runs locally on internal servers with zero per-token costs.</cell></row>
+      <row><cell><b>Semantic Caching</b></cell><cell>Caching answers for common questions (e.g., business hours, location, core services) reduces LLM API calls by 30–40%.</cell></row>
+      <row><cell><b>Self-Hosted Vector Store</b></cell><cell>Running Qdrant or PostgreSQL + pgvector in Docker containers avoids monthly third-party cloud vector DB subscriptions.</cell></row>
+      <row><cell><b>Prompt Compression &amp; Chunk Pruning</b></cell><cell>Filtering out low-relevance chunks ensures context stays under 2,000 tokens, directly lowering input token billing.</cell></row>
+    </table>
+  </sheet>
+</doc>
