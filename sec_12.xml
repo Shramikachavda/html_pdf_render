@@ -6,7 +6,7 @@
     <p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p>
     
     <mermaid-diagram>
-flowchart LR
+flowchart TB
     %% Application Layer
     subgraph AppLayer ["⚙️ Application Layer"]
         API[FastAPI Backend]
@@ -45,6 +45,7 @@ flowchart LR
     class HEALTH,AI,KBM,LOGS obs;
     class DASH admin;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 12.1: Monitoring and Observability Strategy</b></p>
 
     <h2>13.2 Monitoring Objectives</h2>
     <p>The monitoring system is designed to:</p>

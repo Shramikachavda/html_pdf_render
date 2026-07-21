@@ -4,8 +4,8 @@
   <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="01" title="Chapter 1 – Executive Summary">
     
     <h2>1.1 Introduction</h2>
-    <p>The <b>Theta Chat Bot</b> is a modular, AI-powered virtual assistant designed to enhance user interaction on the <b>Theta Technolabs website</b>. It provides instant, accurate, and context-aware responses based exclusively on the company's publicly available website content, services, portfolios, case studies, careers, and blogs.</p>
-    <p>The system utilizes a <b>Retrieval-Augmented Generation (RAG)</b> architecture. User queries are matched against indexed website content before generating responses through a Large Language Model (LLM). This approach significantly <b>reduces hallucinations</b> while maintaining response quality, featuring model-agnostic flexibility to support high-performance or cost-effective AI providers as needed.</p>
+    <p>The <b>Theta Chat Bot</b> is a modular, AI-powered virtual assistant designed to enhance user interaction on the <b>Theta Technolabs website</b>. It provides instant, accurate responses based exclusively on the company's publicly available website content, services, portfolios, case studies, careers, and blogs.</p>
+    <p>The system utilizes a <b>Retrieval-Augmented Generation (RAG)</b> architecture. User queries are matched against indexed website content before generating responses through a Large Language Model (LLM). This approach ensures response quality, featuring model-agnostic flexibility to support high-performance or cost-effective AI providers as needed.</p>
     <p>To support different business requirements, the proposed solution offers two deployment models:</p>
     <list>
       <item><b>Lightweight Architecture</b>: Asynchronous API Backend + Vector Database + LLM Engine, optimized for quick deployment and low infrastructure overhead.</item>

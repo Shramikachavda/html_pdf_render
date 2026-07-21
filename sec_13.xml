@@ -16,7 +16,9 @@
       <row><cell>Vector database corruption or failure</cell><cell>High</cell><cell>Low</cell><cell>Maintain regular database backups and validate restoration procedures.</cell></row>
       <row><cell>Unexpected application failures</cell><cell>High</cell><cell>Low</cell><cell>Implement structured logging, health monitoring, and automated alerting.</cell></row>
     </table>
+  </sheet>
 
+  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="01">
     <h2>15.3 Technical Risks</h2>
     <p>Several technical risks are associated with AI-powered chatbot systems.</p>
 

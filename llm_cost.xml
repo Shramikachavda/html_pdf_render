@@ -9,20 +9,20 @@
     <p>The table below details current market pricing (USD per 1 Million tokens) for the primary and fallback LLM candidate models.</p>
     <table>
       <row header="1"><cell>Model</cell><cell>Provider</cell><cell>Input Cost (/1M)</cell><cell>Output Cost (/1M)</cell><cell>Suitability</cell></row>
-      <row><cell><b>Gemini 3.1 Flash Lite</b></cell><cell>Google</cell><cell>$0.25</cell><cell>$1.50</cell><cell>Default choice for high-speed RAG Q&amp;A</cell></row>
-      <row><cell><b>GPT-5.4 mini</b></cell><cell>OpenAI</cell><cell>$0.75</cell><cell>$4.50</cell><cell>Secondary comparison &amp; fallback model</cell></row>
-      <row><cell><b>Gemini 3.5 Flash</b></cell><cell>Google</cell><cell>$1.50</cell><cell>$9.00</cell><cell>Advanced reasoning &amp; multi-turn context</cell></row>
-      <row><cell><b>GPT-5.6 Luna</b></cell><cell>OpenAI</cell><cell>$1.00</cell><cell>$6.00</cell><cell>Enterprise fallback model</cell></row>
+      <row><cell><b>Gemini 3.1 Flash Lite</b></cell><cell>Google</cell><cell>$0.25 (₹24.08)</cell><cell>$1.50 (₹144.50)</cell><cell>Default choice for high-speed RAG Q&amp;A</cell></row>
+      <row><cell><b>GPT-5.4 mini</b></cell><cell>OpenAI</cell><cell>$0.75 (₹72.25)</cell><cell>$4.50 (₹433.49)</cell><cell>Secondary comparison &amp; fallback model</cell></row>
+      <row><cell><b>Gemini 3.5 Flash</b></cell><cell>Google</cell><cell>$1.50 (₹144.50)</cell><cell>$9.00 (₹866.97)</cell><cell>Advanced reasoning &amp; multi-turn context</cell></row>
+      <row><cell><b>GPT-5.6 Luna</b></cell><cell>OpenAI</cell><cell>$1.00 (₹96.33)</cell><cell>$6.00 (₹577.98)</cell><cell>Enterprise fallback model</cell></row>
     </table>
 
     <h2>A.3 Per-Conversation Cost Calculation</h2>
-    <p>Assuming an average user interaction consists of 2,000 input tokens (retrieved website context + prompt + question) and generates a 300-token response:</p>
+    <p>Assuming an average user interaction consists of 2,000 input tokens (retrieved website context + prompt + question) and generates a 500-token response:</p>
     <list>
       <item><b>Input Cost:</b> 2,000 tokens × $0.25 / 1,000,000 = <b>$0.0005</b></item>
-      <item><b>Output Cost:</b> 300 tokens × $1.50 / 1,000,000 = <b>$0.00045</b></item>
-      <item><b>Total Cost per Conversation:</b> <b>~$0.00095 USD</b></item>
+      <item><b>Output Cost:</b> 500 tokens × $1.50 / 1,000,000 = <b>$0.00075</b></item>
+      <item><b>Total Cost per Conversation:</b> <b>~$0.00125 USD (₹0.12 INR)</b></item>
     </list>
-    <callout label="ROI IMPACT">At this rate, <b>1,000 complete customer conversations cost approximately $0.95 in AI API fees</b>, ensuring extremely low operational expenses.</callout>
+    <callout label="ROI IMPACT">At this rate, <b>1,000 complete customer conversations cost approximately $1.25 USD (₹120.41 INR) in AI API fees</b>, ensuring extremely low operational expenses.</callout>
 
     <h2>A.4 Cost Reduction Strategies</h2>
     <table>

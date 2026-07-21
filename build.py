@@ -35,7 +35,8 @@ body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size:
 .cover .subtitle { font-size:14pt; color:#1c5d8c; max-width:135mm; margin-bottom:40mm; font-weight: 500; }
 table.revtable { width:100%; border-collapse:collapse; margin-top:4mm; font-family:"DejaVu Sans Mono",monospace; font-size:8.5pt; }
 table.revtable th, table.revtable td { border:1pt solid #d8dfe4; padding:2.5mm 3mm; color:#0d2b45; text-align:left; }
-table.revtable th { background:#f4f7f9; color:#1c5d8c; letter-spacing:1px; font-weight:bold; }
+table.revtable th { background:#0d2b45; color:#ffffff; letter-spacing:1px; font-weight:bold; }
+tr { page-break-inside: avoid; }
 .kicker { font-family:"DejaVu Sans Mono",monospace; font-size:8pt; letter-spacing:2.5px; color:#1c5d8c; font-weight:bold; margin-bottom:2mm; }
 h1.section-title { font-size:20pt; color:#0d2b45; border-bottom:2pt solid #0d2b45; padding-bottom:3mm; margin-bottom:6mm; }
 h2 { font-size:12.5pt; color:#0d2b45; margin-top:6.5mm; margin-bottom:3mm; padding-left:3mm; border-left:3pt solid #e8a33d; }
@@ -49,15 +50,16 @@ table.spec th { background:#0d2b45; color:#fff; text-align:left; padding:2.1mm 3
 table.spec td { padding:2.1mm 3mm; border-bottom:0.5pt solid #d8dfe4; vertical-align:top; }
 table.spec tr:nth-child(even) td { background:#f4f7f9; }
 table.spec td .mono { font-family:"DejaVu Sans Mono",monospace; font-size:8.1pt; color:#1c5d8c; }
-.callout { background:#f4f7f9; border-left:3pt solid #1c5d8c; padding:3mm 4mm; margin:4mm 0; font-size:9.1pt; }
+.callout { background:#f4f7f9; border-left:3pt solid #1c5d8c; padding:3mm 4mm; margin:4mm 0; font-size:9.1pt; page-break-inside: avoid; }
 .callout .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; letter-spacing:2px; color:#1c5d8c; font-weight:bold; display:block; margin-bottom:1.5mm; }
-.decision { background:#fdf6ea; border-left:3pt solid #e8a33d; padding:3mm 4mm; margin:4mm 0; font-size:9.1pt; }
+.decision { background:#fdf6ea; border-left:3pt solid #e8a33d; padding:3mm 4mm; margin:4mm 0; font-size:9.1pt; page-break-inside: avoid; }
 .decision .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; letter-spacing:2px; color:#b5791c; font-weight:bold; display:block; margin-bottom:1.5mm; }
 .tag { display:inline-block; font-family:"DejaVu Sans Mono",monospace; font-size:7.3pt; letter-spacing:1px; color:#1c5d8c; background:#f4f7f9; border:0.5pt solid #1c5d8c; padding:0.6mm 2mm; border-radius:3px; margin-right:1.6mm; margin-bottom:1.5mm; }
 .tag-danger { color:#7f1d1d; background:#fef2f2; border:0.5pt solid #fecaca; }
-.mermaid { background-color:#f8fafc; padding:5mm; border-radius:3px; border:0.5pt solid #e2e8f0; margin:5mm 0; text-align:center; }
+.mermaid { background-color:#f8fafc; padding:5mm; border-radius:3px; border:0.5pt solid #e2e8f0; margin:5mm 0; text-align:center; page-break-inside: avoid; display: flex; justify-content: center; max-height: 220mm; overflow: hidden; }
+.mermaid svg { max-height: 100% !important; height: auto !important; width: auto !important; max-width: 100% !important; }
 .steps { margin:3mm 0; }
-.step { position:relative; padding:2mm 0 2mm 11mm; border-bottom:0.4pt dotted #c7d2da; }
+.step { position:relative; padding:2mm 0 2mm 11mm; border-bottom:0.4pt dotted #c7d2da; page-break-inside: avoid; }
 .step:last-child { border-bottom:none; }
 .step .n { position:absolute; left:0; top:2mm; width:7mm; height:7mm; background:#0d2b45; color:#bfe3ef;
   font-family:"DejaVu Sans Mono",monospace; font-size:8pt; font-weight:bold; text-align:center; line-height:7mm; }
@@ -73,7 +75,7 @@ table.spec td .mono { font-family:"DejaVu Sans Mono",monospace; font-size:8.1pt;
 .impact-pos { color: #1c7c4d; }
 .impact-neg { color: #b5791c; }
 
-.toc-row { display:block; padding:2mm 0; border-bottom:0.4pt dotted #c7d2da; }
+.toc-row { display:block; padding:2mm 0; border-bottom:0.4pt dotted #c7d2da; page-break-inside: avoid; }
 .toc-row .tn { font-family:"DejaVu Sans Mono",monospace; color:#1c5d8c; font-weight:bold; display:inline-block; width:12mm; }
 .toc-row .tt { font-size:10.2pt; color:#0d2b45; font-weight:bold; }
 .toc-row .td { font-size:8.4pt; color:#6b7a86; display:block; margin-left:12mm; }
@@ -349,7 +351,7 @@ def main():
     print(f"Wrote {html_path}")
 
     result = subprocess.run(
-        ["wkhtmltopdf", "--enable-local-file-access", "--quiet", html_path, pdf_path],
+        ["./wkhtmltopdf", "--enable-local-file-access", "--quiet", html_path, pdf_path],
         capture_output=True, text=True,
     )
     if result.returncode != 0:

@@ -19,7 +19,7 @@ files_in_order = [
 ]
 
 output_file = "final_content.xml"
-base_dir = r"c:\Users\sures\Desktop\doc"
+base_dir = "."
 
 with open(os.path.join(base_dir, output_file), "w", encoding="utf-8") as out:
     out.write('<?xml version="1.0" encoding="UTF-8"?>\n')
@@ -44,6 +44,9 @@ with open(os.path.join(base_dir, output_file), "w", encoding="utf-8") as out:
     <item n="08" title="Frontend Integration" desc="User experience and widgets" />
     <item n="09" title="AI Guardrails Strategy" desc="Safety rules &amp; fallback handling" />
     <item n="10" title="Operational Dashboard &amp; Analytics" desc="Metrics &amp; monitoring dashboard" />
+  </toc>
+  
+  <toc title="Contents (Continued)">
     <item n="11" title="Security &amp; Bot Prevention" desc="CAPTCHA, rate limiting &amp; security" />
     <item n="12" title="Deployment Strategy" desc="Infrastructure rollout" />
     <item n="13" title="Monitoring &amp; Logging" desc="Observability &amp; health checks" />

@@ -19,6 +19,9 @@
     <item n="08" title="Frontend Integration" desc="User experience and widgets" />
     <item n="09" title="AI Guardrails Strategy" desc="Safety rules &amp; fallback handling" />
     <item n="10" title="Operational Dashboard &amp; Analytics" desc="Metrics &amp; monitoring dashboard" />
+  </toc>
+  
+  <toc title="Contents (Continued)">
     <item n="11" title="Security &amp; Bot Prevention" desc="CAPTCHA, rate limiting &amp; security" />
     <item n="12" title="Deployment Strategy" desc="Infrastructure rollout" />
     <item n="13" title="Monitoring &amp; Logging" desc="Observability &amp; health checks" />
@@ -34,8 +37,8 @@
   <sheet label="THETA CHATBOT · EXEC SUMMARY" kicker="CHAPTER 1 — EXEC SUMMARY" footnum="01" title="Chapter 1 – Executive Summary">
     
     <h2>1.1 Introduction</h2>
-    <p>The <b>Theta Chat Bot</b> is a modular, AI-powered virtual assistant designed to enhance user interaction on the <b>Theta Technolabs website</b>. It provides instant, accurate, and context-aware responses based exclusively on the company's publicly available website content, services, portfolios, case studies, careers, and blogs.</p>
-    <p>The system utilizes a <b>Retrieval-Augmented Generation (RAG)</b> architecture. User queries are matched against indexed website content before generating responses through a Large Language Model (LLM). This approach significantly <b>reduces hallucinations</b> while maintaining response quality, featuring model-agnostic flexibility to support high-performance or cost-effective AI providers as needed.</p>
+    <p>The <b>Theta Chat Bot</b> is a modular, AI-powered virtual assistant designed to enhance user interaction on the <b>Theta Technolabs website</b>. It provides instant, accurate responses based exclusively on the company's publicly available website content, services, portfolios, case studies, careers, and blogs.</p>
+    <p>The system utilizes a <b>Retrieval-Augmented Generation (RAG)</b> architecture. User queries are matched against indexed website content before generating responses through a Large Language Model (LLM). This approach ensures response quality, featuring model-agnostic flexibility to support high-performance or cost-effective AI providers as needed.</p>
     <p>To support different business requirements, the proposed solution offers two deployment models:</p>
     <list>
       <item><b>Lightweight Architecture</b>: Asynchronous API Backend + Vector Database + LLM Engine, optimized for quick deployment and low infrastructure overhead.</item>
@@ -160,7 +163,7 @@
 <!-- ============ SHEET 02 ============ -->
   <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="06" title="Chapter 2 – Solution Overview">
     <h2>2.1 Solution Overview</h2>
-    <p>The Theta Chat Bot is designed as an AI-powered Retrieval-Augmented Generation (RAG) system that delivers accurate, context-aware responses using information exclusively retrieved from the Theta Technolabs website.</p>
+    <p>The Theta Chat Bot is designed as an AI-powered Retrieval-Augmented Generation (RAG) system that delivers accurate responses using information exclusively retrieved from the Theta Technolabs website.</p>
     <p>Rather than storing predefined question-answer pairs or training a custom language model, the chatbot dynamically retrieves the most relevant website content and uses it as contextual input for the Large Language Model (LLM). This enables the chatbot to answer user queries naturally while remaining grounded in verified company information.</p>
     <p>The chatbot follows a modular architecture consisting of five primary stages:</p>
     <list>
@@ -171,6 +174,9 @@
       <item><b>Response Delivery</b> – The generated answer is returned to the user through the website chat interface.</item>
     </list>
     <p>This architecture separates knowledge storage from language generation, allowing website content to be updated independently without retraining the AI model.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="07">
     <h2>2.2 Why Retrieval-Augmented Generation (RAG)?</h2>
     <p>Several architectural approaches were evaluated before selecting the final solution. The following table compares the available options.</p>
     <table>
@@ -184,8 +190,11 @@
       <p><b>1. Single Source of Truth</b><br/>The Theta website is the primary source of truth and will evolve over time as new services, case studies, blogs, or technologies are added.</p>
       <p><b>2. Reduced Operational Overhead</b><br/>Fine-tuning a language model whenever website content changes would introduce unnecessary operational overhead and increased costs.</p>
       <p><b>3. Seamless Updates</b><br/>RAG eliminates this challenge by separating knowledge management from language generation. Website content can be re-indexed whenever updates occur, allowing the chatbot to access the latest information without retraining the underlying LLM.</p>
-      <p><b>4. Accuracy and Flexibility</b><br/>This approach reduces hallucinations by grounding responses in retrieved website content, improves maintainability, and provides flexibility to switch between different LLM providers.</p>
+      <p><b>4. Accuracy and Flexibility</b><br/>This approach grounds responses in retrieved website content, improves maintainability, and provides flexibility to switch between different LLM providers.</p>
     </decision>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="08">
     <h2>2.3 System Workflow</h2>
     <mermaid-diagram>
 flowchart TB
@@ -260,19 +269,23 @@ style M fill:#1c5d8c,stroke:#0d2b45,color:#ffffff
 
 style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 2.1: System Workflow</b></p>
     <p>The workflow is divided into three core phases:</p>
     <list>
       <item><b>Query Processing:</b> Converts the user's natural language input into mathematical embeddings.</item>
       <item><b>Knowledge Retrieval:</b> Searches the vector database for the most relevant website content based on semantic similarity.</item>
       <item><b>Response Generation:</b> Combines the retrieved knowledge with the user query to construct an accurate, grounded response via the LLM.</item>
     </list>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="09">
     <h2>2.4 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Rationale</cell></row>
-      <row><cell>Website as the single source of truth</cell><cell>Ensures responses remain aligned with official company information.</cell></row>
+      <row><cell>Website as the primary knowledge base</cell><cell>Ensures responses remain aligned with official company information.</cell></row>
       <row><cell>RAG instead of fine-tuning</cell><cell>Simplifies updates and reduces operational costs.</cell></row>
       <row><cell>FastAPI backend</cell><cell>High performance, asynchronous request handling, and excellent AI ecosystem support.</cell></row>
-      <row><cell>Provider-Agnostic LLM Layer</cell><cell>Allows selecting the optimal LLM based on performance and cost evaluation.</cell></row>
+      <row><cell>Gemini as the initial LLM</cell><cell>Cost-effective with strong reasoning capabilities for MVP deployment.</cell></row>
       <row><cell>Modular architecture</cell><cell>Allows future replacement of the LLM, vector database, or frontend without redesigning the system.</cell></row>
       <row><cell>Docker deployment</cell><cell>Simplifies deployment, portability, and on-premise hosting.</cell></row>
       <row><cell>Optional PostgreSQL dashboard</cell><cell>Enables analytics and operational monitoring without affecting the core chatbot functionality.</cell></row>
@@ -280,9 +293,9 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="07" title="Chapter 3 – Knowledge Management Pipeline">
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="10" title="Chapter 3 – Knowledge Management Pipeline">
     <h2>3.1 Overview</h2>
-    <p>The success of the Theta Chat Bot depends on the quality, accuracy, and freshness of its knowledge source. To ensure reliable and consistent responses, the chatbot uses the Theta Technolabs website as its single source of truth. Every response generated by the chatbot is based exclusively on publicly available information published on the official website.</p>
+    <p>The success of the Theta Chat Bot depends on the quality, accuracy, and freshness of its knowledge source. To ensure reliable and consistent responses, the chatbot uses the official website data exclusively. Every response generated by the chatbot is based on publicly available information published on the site.</p>
     <p>Website content is transformed into a structured semantic knowledge base that can be efficiently searched during every user interaction.</p>
     <p>The Knowledge Management Pipeline consists of the following stages:</p>
     <list>
@@ -294,6 +307,9 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <item>Knowledge Synchronization</item>
     </list>
     <p>Each stage is independent and modular, allowing future improvements without affecting the rest of the system.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="11">
     <h2>3.2 Content Acquisition</h2>
     <p>The first stage is responsible for collecting publicly available content from the Theta Technolabs website. The crawler indexes only pages that provide meaningful business information.</p>
     <table>
@@ -306,10 +322,12 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <row><cell>Portfolio / Case Studies</cell><cell>✅</cell></row>
       <row><cell>Blogs</cell><cell>✅</cell></row>
       <row><cell>Careers</cell><cell>✅</cell></row>
-      <row><cell>Contact Information</cell><cell>✅</cell></row>
-      <row><cell>FAQ (If Available)</cell><cell>✅</cell></row>
+      <row><cell>Contact Information , FAQ</cell><cell>✅</cell></row>
     </table>
     <p>Pages such as privacy policies, cookie notices, legal disclaimers, or other pages that do not contribute to answering user queries may be excluded from indexing.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="12">
     <h2>3.3 Content Extraction &amp; Cleaning</h2>
     <p>Before any information is stored within the knowledge base, the website content undergoes a preprocessing pipeline to ensure that only meaningful and relevant information is indexed.</p>
     <p>The extraction and cleaning process includes:</p>
@@ -326,6 +344,9 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <item>Validation to discard empty or low-quality content</item>
     </list>
     <p>Only clean, structured, and meaningful textual content proceeds to the embedding stage, ensuring high-quality semantic retrieval and reducing irrelevant search results.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="13">
     <h2>3.4 Content Chunking</h2>
     <p>Since modern language models and vector databases perform better with smaller, focused contextual units, each webpage is divided into multiple semantic chunks before embeddings are generated.</p>
     <p>The system utilizes a <b>Sliding Window Overlap Chunking Strategy</b>. A <b>500-token chunk size</b> (approx. 350–400 words) with a <b>50–100 token overlap</b> is used as a baseline example in this document. Note that the exact chunk size and character/token boundaries are fully configurable and will be adjusted dynamically at runtime based on the document type, content density, and model context window optimization.</p>
@@ -337,6 +358,10 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <item><b>Heading Context Preservation</b>: Keeps headings attached to their respective body text chunks.</item>
       <item><b>Metadata Attachment</b>: Stores URL, page title, section name, and chunk index with every vector record.</item>
     </list>
+    <decision label="CHUNKING STRATEGY JUSTIFICATION">
+      <p><b>1. Context Cohesion (500 Tokens):</b> Smaller chunks (e.g., 100-200 tokens) often lose the broader context, forcing the LLM to guess connections. 500 tokens provide enough surrounding text to fully answer multi-part questions while remaining granular enough for accurate vector search.</p>
+      <p><b>2. Edge-Case Prevention (Overlap):</b> The 50–100 token overlapping window prevents critical information from being split across two separate chunks, ensuring the retrieval engine doesn't miss a fact that spans a boundary.</p>
+    </decision>
     <p>Example (Baseline Configuration):</p>
     <table>
       <row header="1"><cell>Chunk ID</cell><cell>Page</cell><cell>Section</cell><cell>Description</cell></row>
@@ -415,7 +440,7 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
     </table>
     <p><b>Synchronization Workflow</b></p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A([Content Update Detected])
@@ -444,19 +469,8 @@ class B,C,D process;
 class E,F highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
-    <p>Whenever website content changes, the following pipeline is executed:</p>
-    <steps>
-      <step>Detect the newly created or modified webpage.</step>
-      <step>Retrieve the latest page content.</step>
-      <step>Parse and clean the HTML.</step>
-      <step>Remove navigation menus, headers, footers, scripts, banners, and duplicate elements.</step>
-      <step>Normalize the extracted text.</step>
-      <step>Divide the content into semantic chunks.</step>
-      <step>Generate embeddings only for the updated chunks.</step>
-      <step>Replace the existing vectors in the vector database.</step>
-      <step>Update metadata such as indexing timestamp, page version, and source URL.</step>
-    </steps>
-    <p>All other website pages remain untouched.</p>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 3.1: Synchronization Workflow</b></p>
+    <p>Whenever website content changes, the pipeline detects the newly modified pages, cleans the HTML, divides it into semantic chunks, generates fresh embeddings, and replaces only the updated vectors in the database. All other website pages remain untouched.</p>
     <p>This approach significantly reduces processing time, minimizes embedding generation costs, and ensures the chatbot always retrieves the most recent website information without reprocessing the complete knowledge base.</p>
     <h2>3.8 Metadata Management</h2>
     <p>Every indexed content chunk stores metadata to improve retrieval quality, enable source attribution, and support future analytics.</p>
@@ -475,7 +489,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <h2>3.9 Knowledge Lifecycle</h2>
     <p>The complete knowledge processing lifecycle converts raw website pages into search-ready vector embeddings through the following structured flow:</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A([Raw Website Data])
@@ -504,10 +518,11 @@ class B,C,D process;
 class E,F highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 3.2: Knowledge Lifecycle</b></p>
     <h2>3.10 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
-      <row><cell>Official website as the single source of truth</cell><cell>Ensures responses remain accurate and aligned with company information.</cell></row>
+      <row><cell>Official website as primary domain</cell><cell>Ensures responses remain accurate and aligned with company information.</cell></row>
       <row><cell>Comprehensive content cleaning</cell><cell>Removes irrelevant website elements before indexing.</cell></row>
       <row><cell>Semantic chunking</cell><cell>Improves retrieval precision and contextual relevance.</cell></row>
       <row><cell>Event-Driven Incremental Synchronization</cell><cell>Updates only modified content, reducing processing overhead.</cell></row>
@@ -518,10 +533,10 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->
-  <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="08" title="Chapter 4 – Retrieval &amp; Response Generation">
+  <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="14" title="Chapter 4 – Retrieval &amp; Response Generation">
     <h2>4.1 Overview</h2>
     <p>The Retrieval &amp; Response Generation Pipeline is the core processing layer of the Theta Chat Bot. It is responsible for transforming a user's natural language query into an accurate, context-aware response by retrieving relevant website content and providing it to the Large Language Model (LLM).</p>
-    <p>Instead of relying solely on the language model's pre-trained knowledge, the system first searches the organization's indexed knowledge base. Only the retrieved content is supplied to the LLM, ensuring that responses remain grounded in official Theta Technolabs information while significantly reducing hallucinations.</p>
+    <p>Instead of relying solely on the language model's pre-trained knowledge, the system first searches the organization's indexed knowledge base. Only the retrieved content is supplied to the LLM, ensuring that responses remain grounded in official Theta Technolabs information.</p>
     <p>The complete processing pipeline consists of the following stages:</p>
     <list>
       <item>User Query Reception</item>
@@ -568,6 +583,7 @@ sequenceDiagram
     API--&gt;&gt;CW: Chat Response
     CW--&gt;&gt;User: Display Response
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 4.1: Request Processing Sequence</b></p>
     <h2>4.2 User Query Reception</h2>
     <p>A visitor submits a question through the chatbot interface embedded within the Theta Technolabs website.</p>
     <p>Example: <i>"What AI Development services does Theta Technolabs provide?"</i></p>
@@ -598,9 +614,13 @@ sequenceDiagram
       <row header="1"><cell>Parameter</cell><cell>Value</cell></row>
       <row><cell>Retrieval Method</cell><cell>Semantic Search</cell></row>
       <row><cell>Similarity Metric</cell><cell>Cosine Similarity</cell></row>
-      <row><cell>Retrieved Chunks</cell><cell>Top 5 (Configurable)</cell></row>
-      <row><cell>Minimum Similarity Threshold</cell><cell>Configurable</cell></row>
+      <row><cell>Retrieved Chunks (Top-K)</cell><cell>Top 3 to 5 chunks</cell></row>
+      <row><cell>Minimum Similarity Threshold</cell><cell>0.60 (Strict cutoff)</cell></row>
     </table>
+    <decision label="RETRIEVAL PARAMETERS JUSTIFICATION">
+      <p><b>1. Top-K Selection (3 to 5):</b> Retrieving more than 5 chunks increases the context window size, which drives up API costs and can dilute the LLM's focus (the "lost in the middle" phenomenon). Top-K=5 ensures maximum relevant context without overwhelming the prompt.</p>
+      <p><b>2. Similarity Threshold (0.60):</b> Queries matching below 0.60 are mathematically distant from the official knowledge base. This strict cutoff acts as the first line of defense against out-of-scope questions or hallucination risks.</p>
+    </decision>
     <p>Only highly relevant chunks are forwarded to the language model.</p>
 
     <h2>4.5 Context Construction</h2>
@@ -633,7 +653,7 @@ sequenceDiagram
     </callout>
 
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A[Question]
@@ -666,6 +686,7 @@ class E,F highlight;
 class G,H startend;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 4.2: Prompt Assembly Flow</b></p>
 
     <h2>4.7 Response Generation</h2>
     <p>The constructed prompt is submitted to the configured Large Language Model (LLM Engine). The architecture remains provider-independent, allowing seamless deployment with high-performance or cost-effective AI model providers without changing the backend logic.</p>
@@ -715,7 +736,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <item>Response completeness</item>
       <item>Supported knowledge domain</item>
     </list>
-    <p>Depending on the confidence level, different actions are taken.</p>
+    <p>Depending on the confidence level, different actions are taken. <i>(Note: The specific scoring thresholds underlying these confidence levels are detailed in Section 9.5 – Confidence Guardrail).</i></p>
     <table>
       <row header="1"><cell>Confidence Level</cell><cell>System Behavior</cell></row>
       <row><cell>High</cell><cell>Return the answer normally.</cell></row>
@@ -734,12 +755,14 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <item>Contact or Inquiry action when required</item>
     </list>
     <p>This provides users with a consistent and intuitive conversational experience.</p>
+  </sheet>
 
+  <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="15">
     <h2>4.11 Complete Processing Flow</h2>
     <p>The complete end-to-end request handling workflow illustrates how a user's question travels from the frontend floating widget through validation, semantic retrieval, prompt assembly, LLM inference, and response delivery:</p>
 
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A([1. User Submits Query])
@@ -774,20 +797,9 @@ class B,C,E,F,H,I process;
 class D,G highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 4.3: End-to-End Query Handling</b></p>
 
-    <p><b>Detailed Step-by-Step Processing Breakdown</b></p>
-    <steps>
-      <step title="User Query Submission">The visitor types a question in the floating website widget. The frontend packages the query with active session headers and transmits it via HTTPS POST to the REST API backend.</step>
-      <step title="API Security &amp; Pre-Validation">The FastAPI API gateway sanitizes the input text, enforces client rate limiting, and screens for invalid or malformed requests.</step>
-      <step title="Query Embedding Generation">The text query is passed to the embedding model, transforming natural language into a high-dimensional mathematical vector representation.</step>
-      <step title="Semantic Vector Search">The query vector is matched against indexed knowledge base embeddings using Cosine Similarity in the vector store.</step>
-      <step title="Chunk Extraction &amp; Metadata Retrieval">The Top 3–5 most relevant content chunks are retrieved along with source page titles, URLs, and section headings.</step>
-      <step title="Contextual Prompt Construction">The backend injects system instructions, strict guardrails, session memory, and retrieved website chunks into a single structured prompt.</step>
-      <step title="LLM Engine Processing">The LLM Engine receives the grounded context prompt and generates a concise, accurate response strictly grounded in the provided website data.</step>
-      <step title="Response Validation &amp; Quality Check">The backend checks the output against confidence thresholds to ensure responses remain on-topic and free of unsupported claims.</step>
-      <step title="Citation &amp; Reference Formatting">The validated response is formatted into clean markdown text, appending direct webpage reference links for transparent user verification.</step>
-      <step title="Response Delivery to Widget">The final JSON payload is transmitted back to the frontend widget, rendering the conversational answer and clickable source links.</step>
-    </steps>
+
 
     <h2>4.12 Key Design Decisions</h2>
     <table>
@@ -796,14 +808,14 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <row><cell>Prompt engineering</cell><cell>Ensures consistent and grounded responses.</cell></row>
       <row><cell>Session-based memory</cell><cell>Supports natural conversations without permanent storage.</cell></row>
       <row><cell>Confidence-based validation</cell><cell>Prevents unsupported or misleading answers.</cell></row>
-      <row><cell>Provider-independent LLM layer</cell><cell>Enables switching AI providers with minimal effort.</cell></row>
+      <row><cell>Provider-independent LLM layer</cell><cell>Enables future migration between Gemini and OpenAI with minimal effort.</cell></row>
       <row><cell>Source-aware responses</cell><cell>Improves transparency and user trust.</cell></row>
     </table>
   </sheet>
 
   <!-- ======================= sec_5.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="09" title="Chapter 5 – System Architecture">
+  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="16" title="Chapter 5 – System Architecture">
     <h2>5.1 Architecture Overview</h2>
     <p>The Theta Chat Bot follows a modular, service-oriented architecture designed around the principles of scalability, maintainability, and loose coupling. Each major component has a clearly defined responsibility, allowing individual services to be upgraded or replaced without impacting the rest of the system.</p>
     <p>The architecture separates the user interface, application logic, artificial intelligence layer, knowledge storage, and operational services into independent layers. This design ensures the chatbot remains easy to maintain while supporting future enhancements such as analytics dashboards, multilingual support, CRM integration, or migration to different Large Language Models (LLMs).</p>
@@ -877,8 +889,26 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </orderedlist>
     <p>This Retrieval-Augmented Generation (RAG) approach significantly improves response accuracy while reducing hallucinations.</p>
 
-    <h2>5.6 Large Language Model (LLM) Integration</h2>
-    <p>The architecture is designed to remain independent of any specific AI provider. The backend communicates with LLMs through a thin provider interface, enabling seamless switching between primary and fallback AI providers based on evaluation benchmarks without modifying core application logic.</p>
+    <h2>5.6 Large Language Model (LLM)</h2>
+    <p>The architecture is designed to remain independent of any specific AI provider.</p>
+    <p><b>Primary Provider: Google Gemini</b></p>
+    <p>Reason:</p>
+    <list>
+      <item>Lower operational cost</item>
+      <item>Strong reasoning capability</item>
+      <item>Large context window</item>
+      <item>Suitable for MVP deployment</item>
+    </list>
+    <p><b>Future Option: OpenAI</b></p>
+    <p>If future testing indicates that higher reasoning quality or advanced features are required, the LLM layer can be switched to OpenAI without requiring architectural changes.</p>
+    <p>The abstraction layer ensures that the backend communicates through a common interface regardless of the selected provider.</p>
+    <callout label="LLM ABSTRACTION INTERFACE (PSEUDOCODE)">
+<pre>class BaseLLMProvider(ABC):
+    @abstractmethod
+    async def generate_response(self, prompt: str, context: list) -> str:
+        """Generates a grounded response using the provided context."""
+        pass</pre>
+    </callout>
 
     <h2>5.7 Data Layer</h2>
     <p>The Data Layer stores the knowledge base and, optionally, operational analytics.</p>
@@ -936,10 +966,12 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <item>Simplified backup and maintenance</item>
     </list>
     <p>If future scalability requirements increase, the same Docker architecture can be deployed on cloud platforms with minimal modifications.</p>
+  </sheet>
 
+  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="17">
     <h2>5.10 Component Communication</h2>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
     %% Styling
     classDef client fill:#f4f7f9,stroke:#1c5d8c,color:#0d2b45,stroke-width:2px;
     classDef frontend fill:#e8f1f6,stroke:#1c5d8c,color:#0d2b45,stroke-width:2px;
@@ -1030,22 +1062,9 @@ flowchart TD
     class VD,MS storage;
     class EM,LLM ai;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 5.1: Component Communication</b></p>
 
-    <p>The communication flow between components follows this sequence:</p>
-    <orderedlist>
-      <item>User submits a question through the chatbot.</item>
-      <item>The chatbot widget sends the request to the FastAPI backend.</item>
-      <item>FastAPI validates the request.</item>
-      <item>The embedding model converts the query into a vector.</item>
-      <item>The vector database performs semantic similarity search.</item>
-      <item>Relevant website content is retrieved.</item>
-      <item>The prompt is constructed.</item>
-      <item>The prompt is sent to the configured LLM.</item>
-      <item>The generated response is validated.</item>
-      <item>The response is returned to the frontend.</item>
-      <item>If enabled, analytics and feedback are stored in PostgreSQL.</item>
-    </orderedlist>
-
+    <p>The system components communicate in a strictly sequential flow: the frontend passes user queries to the FastAPI backend, which retrieves semantically similar vectors, constructs a prompt, invokes the LLM, validates the response, and returns the final answer along with source citations.</p>
     <h2>5.11 Scalability Considerations</h2>
     <p>The proposed architecture supports future enhancements without requiring major redesign.</p>
     <p><b>Possible future extensions include:</b></p>
@@ -1061,7 +1080,7 @@ flowchart TD
       <item>Redis Integration</item>
       <item>Multiple LLM Providers</item>
     </list>
-    <p>The modular architecture ensures that new capabilities can be introduced independently while maintaining compatibility with the existing system.</p>
+    <p>This ensures that new capabilities can be introduced independently while maintaining compatibility with the existing system.</p>
 
     <h2>5.12 Key Design Decisions</h2>
     <table>
@@ -1079,105 +1098,151 @@ flowchart TD
 
   <!-- ======================= sec_6.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="10" title="Chapter 6 – Technology Stack">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="18" title="Chapter 6 – Technology Stack">
     <h2>6.1 Introduction</h2>
-    <p>The Theta Chat Bot is a modular AI-powered customer support solution that integrates with the existing Theta Technolabs website without requiring changes to the current Webflow implementation. It follows a service-oriented architecture where the frontend communicates with a FastAPI backend through REST APIs.</p>
-    <p>The technology stack was selected based on four core criteria:</p>
-    <callout><b>Cost:</b> Minimize development, deployment, and operational expenses through open-source components and efficient local models.</callout>
-    <callout><b>Control:</b> Maintain full ownership of application data and infrastructure without vendor lock-in.</callout>
-    <callout><b>Development Velocity:</b> Enable rapid development, testing, and deployment using Python's mature AI ecosystem.</callout>
-    <callout><b>Scalability:</b> Support future enhancements such as analytics, multi-language support, and increased traffic without architectural redesigns.</callout>
-
-    <h2>6.2 Technology Stack Overview</h2>
-    <mermaid-diagram>
-flowchart TD
-    subgraph Client ["Client Layer"]
-        UI["Webflow Chat Widget (JS/CSS)"]
-    end
-    subgraph App ["Application Layer"]
-        N["Nginx Reverse Proxy"]
-        API["FastAPI Backend (Python)"]
-    end
-    subgraph Knowledge ["Knowledge Layer"]
-        EMB["Sentence Transformers"]
-        DB[("Vector DB (Qdrant/PostgreSQL)")]
-    end
-    subgraph Intelligence ["AI Layer"]
-        LLM["Google Gemini / OpenAI"]
-    end
-
-    UI &lt;--&gt;|HTTPS REST API| N
-    N &lt;--&gt; API
-    API --&gt;|Text Chunk| EMB
-    EMB --&gt;|Vector| DB
-    API &lt;--&gt;|Prompt context| LLM
-
-    classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
-    classDef highlight fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c;
-    classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
-    
-    class UI highlight;
-    class N,API,EMB,DB process;
-    class LLM startend;
-    </mermaid-diagram>
-    <p><b>Table 6.1: Technology Stack Summary</b></p>
-    <table>
-      <row header="1"><cell>Layer</cell><cell>Technology</cell><cell>Role &amp; Rationale</cell></row>
-      <row><cell>Chat Interface</cell><cell>Custom JavaScript Widget</cell><cell>Lightweight, framework-agnostic embed for Webflow without structural website changes.</cell></row>
-      <row><cell>Backend API</cell><cell>Python + FastAPI</cell><cell>High-performance asynchronous request handling with automatic OpenAPI documentation.</cell></row>
-      <row><cell>AI Language Model</cell><cell>Google Gemini (Primary) / OpenAI (Fallback)</cell><cell>Provider-agnostic natural language response generation based on retrieved context.</cell></row>
-      <row><cell>Embeddings</cell><cell>Sentence Transformers (Local)</cell><cell>Runs 100% locally on server; zero API token costs, high privacy, offline execution.</cell></row>
-      <row><cell>Vector Database</cell><cell>Qdrant or PostgreSQL + pgvector</cell><cell>Qdrant for lightweight semantic search; Postgres+pgvector for combined analytics &amp; vectors.</cell></row>
-      <row><cell>Containerization &amp; Web</cell><cell>Docker Compose &amp; Nginx</cell><cell>Isolated container deployment, HTTPS termination, and reverse proxy routing.</cell></row>
-      <row><cell>Hosting</cell><cell>On-Premise Linux Server</cell><cell>Secure, controlled, cost-effective hosting keeping conversation data on internal infrastructure.</cell></row>
-    </table>
+    <p>The Theta Chat Bot is a modular AI-powered customer support solution that integrates with the existing Theta Technolabs website without requiring changes to the current Webflow implementation. It follows a service-oriented architecture where the frontend communicates with a FastAPI backend through REST APIs. The backend manages request validation, knowledge retrieval, prompt construction, LLM interaction, and response generation.</p>
+    <p>The technology stack was selected against four criteria:</p>
+    <list>
+      <item><b>Cost</b> – Minimize development, deployment, and operational expenses.</item>
+      <item><b>Control</b> – Maintain ownership of application data and infrastructure.</item>
+      <item><b>Development Velocity</b> – Enable rapid development, testing, and deployment.</item>
+      <item><b>Scalability</b> – Support future enhancements such as multilingual capabilities, analytics, and increased user traffic without requiring major architectural changes.</item>
+    </list>
+    <p>The system is organized into four independent layers — Frontend, Backend, AI &amp; Knowledge Retrieval, and Infrastructure — so each layer can be maintained, scaled, or replaced on its own. Concretely, the architecture is designed to reuse the existing Webflow website, keep infrastructure lightweight and cost-effective, support future AI provider changes, enable modular feature expansion, and simplify deployment using Docker.</p>
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="11">
-    <h2>6.3 Technology Evaluation</h2>
-    <callout label="BACKEND FRAMEWORK — FASTAPI + PYTHON">
-      <b>FastAPI + Python (Selected).</b> High-performance asynchronous request handling, automatic OpenAPI documentation, and native Python AI ecosystem integration. <i>Alternatives evaluated:</i> Flask (limited async), Django (high microservice overhead), Node.js/Express (smaller AI library ecosystem).
-    </callout>
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="19">
+    <h2>6.2 Technology Stack Overview</h2>
+    <p>The Theta Chat Bot is built on a modern, modular technology stack that emphasizes scalability, maintainability, performance, and cost-effectiveness. Each technology was chosen for its suitability for AI application development, ease of integration, community support, and flexibility for future enhancements, so individual components can be upgraded or replaced with minimal impact on the rest of the system.</p>
 
-    <callout label="AI MODEL PROVIDER — GOOGLE GEMINI">
-      <b>Google Gemini (Selected Primary).</b> Cost-effective, large context window, and strong reasoning performance for RAG Q&amp;A. <i>Alternative evaluated:</i> OpenAI (higher per-token pricing, reserved for fallback verification).
-    </callout>
+    <p><b>Table 6.1: Technology Stack Overview</b></p>
+    <table>
+      <row header="1"><cell>Layer</cell><cell>Technology</cell><cell>Role</cell><cell>Reason / Consideration</cell></row>
+      <row><cell>Chat Interface</cell><cell>Custom JavaScript Widget</cell><cell>Provides the chatbot's user interface and communicates with the backend</cell><cell>Lightweight, framework-agnostic, and easily integrated into the existing Webflow website</cell></row>
+      <row><cell>Programming Language</cell><cell>Python</cell><cell>Core backend and AI application development</cell><cell>Rich AI ecosystem, extensive libraries, and strong community support</cell></row>
+      <row><cell>Backend</cell><cell>FastAPI</cell><cell>Handles REST APIs, request validation, AI orchestration, and business logic</cell><cell>High-performance asynchronous framework with native Python integration, well suited for scalable AI applications</cell></row>
+      <row><cell>AI Model</cell><cell>Google Gemini / OpenAI</cell><cell>Generates natural language responses</cell><cell>Modular design allows switching between LLM providers with minimal code changes</cell></row>
+      <row><cell>Embedding Model</cell><cell>Sentence Transformers</cell><cell>Generates vector embeddings for semantic search</cell><cell>Runs locally, eliminating API costs while supporting offline deployment and full control over embedding generation</cell></row>
+      <row><cell>Vector Store / Database</cell><cell>Qdrant or PostgreSQL + pgvector</cell><cell>Stores vector embeddings and performs semantic search for Retrieval-Augmented Generation (RAG)</cell><cell>Qdrant is optimized for high-performance vector search; PostgreSQL with pgvector suits deployments managing both relational and vector data in a single database</cell></row>
+      <row><cell>Knowledge Base</cell><cell>Website Pages + Markdown Documents</cell><cell>Provides company information for retrieval</cell><cell>Easily extendable with additional document sources without modifying the overall architecture</cell></row>
+      <row><cell>Containerization</cell><cell>Docker &amp; Docker Compose</cell><cell>Packages and deploys application services</cell><cell>Ensures consistent environments across development, testing, and production</cell></row>
+      <row><cell>Reverse Proxy</cell><cell>Nginx</cell><cell>Handles HTTPS, routing, and reverse proxy</cell><cell>Provides secure communication and supports future load balancing</cell></row>
+      <row><cell>Version Control</cell><cell>Git</cell><cell>Source code management</cell><cell>Enables version tracking, collaboration, and change management</cell></row>
+      <row><cell>Hosting</cell><cell>Linux Server (On-Premise)</cell><cell>Hosts the chatbot infrastructure</cell><cell>Provides secure, controlled, and cost-effective deployment within the organization's infrastructure</cell></row>
+    </table>
+    
+    <p>Four components in this table — the LLM, the vector store, and the hosting model — have more than one viable option. Rather than repeat the trade-offs here, each is resolved once, with full reasoning, in Section 6.3.</p>
+  </sheet>
 
-    <callout label="VECTOR STORAGE — QDRANT &amp; PGVECTOR">
-      <b>Qdrant (Lightweight) &amp; PostgreSQL + pgvector (Enterprise).</b> Qdrant provides purpose-built, high-speed similarity search with low resource footprint. PostgreSQL with pgvector consolidates vectors and relational application data in a single database.
-    </callout>
+  <!-- ============ SHEET 03 ============ -->
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="20">
+    <h2>6.3 Technology Selection Rationale</h2>
+    <p>Each major component was evaluated against realistic alternatives using performance, scalability, maintainability, operational cost, ease of deployment, and compatibility with AI-based applications — rather than picked by popularity. This section is the single source of truth for <i>why</i> each choice was made; later sections (6.4–6.6) describe <i>how</i> the chosen components fit together and are not repeated here.</p>
 
-    <callout label="HOSTING ARCHITECTURE — ON-PREMISE LINUX">
-      <b>On-Premise Linux Server (Selected Default).</b> Complete control over data privacy, internal infrastructure security, and zero recurring cloud compute fees. <i>Alternative evaluated:</i> Cloud Hosting (AWS/Azure/GCP, supported via Docker Compose for future scaling).
-    </callout>
+    <adr title="Architecture Decision — Retrieval-Augmented Generation (RAG)">
+      <decision>Adopt RAG instead of relying solely on a Large Language Model.</decision>
+      <alternatives>
+        <item>Direct LLM responses without retrieval</item>
+        <item>Manually maintained FAQ database</item>
+        <item>Fine-tuned language model</item>
+      </alternatives>
+      <rationale>Grounds responses in official website content, eliminates frequent retraining, and stays synchronized with website updates.</rationale>
+      <impact pos="higher accuracy, better maintainability, improved trust." neg="adds a retrieval step before generation." />
+    </adr>
 
+    <h2>6.3.1 Backend Framework: FastAPI</h2>
+    <adr title="Architecture Decision — Backend Framework">
+      <decision>Adopt FastAPI for the backend architecture.</decision>
+      <alternatives>
+        <item>Flask (Synchronous by default)</item>
+        <item>Django (Too much overhead)</item>
+        <item>Node.js (Thinner AI/ML ecosystem)</item>
+        <item>Java / .NET (Slower iteration for AI code)</item>
+      </alternatives>
+      <rationale>The workload is fundamentally I/O-bound. FastAPI's async request handling supports many concurrent chats, integrates natively with Python's deep AI ecosystem, and auto-generates API docs.</rationale>
+      <impact pos="high performance, single language across ML and API, self-documenting." neg="requires team familiarity with async Python programming." />
+    </adr>
+
+    <h2>6.3.2 Large Language Model: Google Gemini</h2>
+    <adr title="Architecture Decision — Primary LLM Provider">
+      <decision>Adopt Google Gemini as the initial primary LLM, but maintain a provider-agnostic layer.</decision>
+      <alternatives>
+        <item>OpenAI (Used as a fallback for complex reasoning)</item>
+        <item>Self-hosted Open Source Models (High operational overhead)</item>
+      </alternatives>
+      <rationale>Gemini provides an excellent balance of cost, large context window, and reasoning quality for RAG. Keeping the provider as a configuration value avoids vendor lock-in. A data-driven testing approach dictates falling back to OpenAI only if Gemini fails the quality bar for a specific query.</rationale>
+      <impact pos="cost-effective, easy to swap providers, data-driven." neg="requires maintaining integration with multiple LLM APIs." />
+    </adr>
+  </sheet>
+
+  <!-- ============ SHEET 04 ============ -->
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="21">
+    <h2>6.3.3 Vector Storage: Qdrant, or PostgreSQL + pgvector</h2>
+    <p><b>Option 1 — Dedicated Vector Database (Qdrant).</b> When the chatbot only requires semantic search over the knowledge base and does not need conversation logging, analytics, or an administrative dashboard, Qdrant is the recommended solution. Qdrant is purpose-built for vector similarity search and provides excellent retrieval performance with minimal infrastructure overhead.</p>
+    <p><b>Option 2 — PostgreSQL with pgvector.</b> When the application requires conversation history, user feedback, operational metrics, API logs, or an administrative dashboard, PostgreSQL with the pgvector extension is the recommended architecture. In this approach, PostgreSQL stores both relational application data and vector embeddings using the pgvector extension within a single database system, eliminating the need for a separate vector database.</p>
+    <p>This is the same fork that determines the hosting/monitoring approach in Section 6.3.5 (Option A vs. Option B) — the choice is made once and applies consistently across both.</p>
+
+    <h2>6.3.4 Embeddings: Sentence Transformers (Local)</h2>
+    <adr title="Architecture Decision — Local Embeddings">
+      <decision>Run Sentence Transformers locally instead of using an external embedding API.</decision>
+      <alternatives>
+        <item>OpenAI / Gemini Embedding APIs (Recurring per-token costs)</item>
+      </alternatives>
+      <rationale>Generating embeddings locally eliminates per-token API costs, works entirely offline, keeps data within the organization's infrastructure, and guarantees vectors remain in the same semantic space for both query and document representation.</rationale>
+      <impact pos="zero API cost for embeddings, strong data privacy, offline support." neg="consumes local compute resources." />
+    </adr>
+
+    <h2>6.3.5 Deployment &amp; Hosting: On-Premise, With a Documented Exit Ramp</h2>
+    <adr title="Architecture Decision — Deployment Infrastructure">
+      <decision>Host the chatbot infrastructure on an on-premise Linux server by default.</decision>
+      <alternatives>
+        <item>Managed Cloud Services (Elastic scalability, ongoing recurring costs)</item>
+      </alternatives>
+      <rationale>An on-premise approach avoids recurring cloud compute bills for a steady, non-spiky workload. Internal server management is treated as a one-time setup cost rather than an ongoing operational expense. If compute needs grow, the hosting model can easily shift to the cloud without redesigning the architecture.</rationale>
+      <impact pos="lower long-term cost, maximum data control." neg="requires internal server management and upfront setup." />
+    </adr>
+
+    <h2>6.3.6 Containerization: Docker + Docker Compose</h2>
+    <p>Every service — the FastAPI backend, the vector store, and Nginx — ships as a container, defined once in a <b>docker-compose.yml</b>, so "works on my machine" stops being a risk. This gives identical environments across dev, staging, and production, a one-command startup (<b>docker compose up</b>), and simple rollback by pinning image tags.</p>
+  </sheet>
+
+  <!-- ============ SHEET 05 ============ -->
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="22">
     <h2>6.4 Component Interaction</h2>
-    <steps>
-      <step title="Request Initiation">User submits query via Webflow widget -> sent over HTTPS to Nginx.</step>
-      <step title="Validation &amp; Routing">Nginx routes to FastAPI backend -> validates schema &amp; session state.</step>
-      <step title="Vectorization">FastAPI calls Sentence Transformers -> generates local vector embedding.</step>
-      <step title="Semantic Retrieval">FastAPI queries Vector DB (Qdrant/pgvector) -> fetches Top-K relevant text chunks.</step>
-      <step title="Prompt Construction">Prompt Builder combines retrieved context + question + system instructions.</step>
-      <step title="AI Generation">FastAPI passes prompt to LLM (Gemini or OpenAI) -> receives response.</step>
-      <step title="Response Delivery">FastAPI returns JSON response envelope (answer + sources + confidence) to widget.</step>
-    </steps>
-
+    <p>The Theta Chat Bot follows a modular request-processing workflow in which each component handles one stage of the chatbot lifecycle. User interactions begin through the custom JavaScript chat widget embedded in the existing Webflow website. The widget communicates with the backend through secure REST APIs exposed by the FastAPI application.</p>
+    <p><b>Step-by-step request flow:</b></p>
+    <list>
+      <item><b>Request Initiation:</b> The user submits a query through the JavaScript widget. The request is sent via HTTPS to Nginx.</item>
+      <item><b>Validation:</b> Nginx routes the request to the FastAPI backend.</item>
+      <item><b>Vectorization:</b> The local Sentence Transformers model converts the text into a vector embedding.</item>
+      <item><b>Knowledge Retrieval:</b> The Vector Database performs a semantic similarity search to identify relevant knowledge.</item>
+      <item><b>Prompt Construction:</b> The retrieved segments and user query are combined into a context-aware prompt.</item>
+      <item><b>AI Inference:</b> The LLM generates a natural language response.</item>
+      <item><b>Response Delivery:</b> The generated answer is sent back to the frontend widget.</item>
+    </list>
+    <p>Separating user interaction, business logic, knowledge retrieval, and AI inference into independent components improves maintainability, simplifies testing, enables future technology replacement, and supports incremental enhancements without major architectural changes.</p>
+    
     <mermaid-diagram>
-flowchart TD
+flowchart TB
+
 U([User])
+
 subgraph Frontend
-  WF["Webflow Widget"]
+  WF["Webflow Website / JS Widget"]
 end
+
 subgraph Backend
   N["Nginx"]
   API["FastAPI Backend"]
   PB["Prompt Builder"]
 end
+
 subgraph Knowledge
   EMB["Sentence Transformers"]
-  DB[(Vector DB)]
+  DB[(Qdrant / PostgreSQL + pgvector)]
 end
+
 subgraph AI
   LLM["Google Gemini / OpenAI"]
 end
@@ -1187,13 +1252,14 @@ WF -->|HTTPS| N
 N --> API
 API --> EMB
 EMB --> DB
-DB -->|Relevant Chunks| PB
+DB -->|Relevant Documents| PB
 API -->|User Query| PB
 PB -->|Final Prompt| LLM
 LLM --> API
 API -->|Response| WF
 WF --> U
 
+%% Styling
 classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
 classDef highlight fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c;
 classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
@@ -1203,75 +1269,37 @@ class WF,N,API,PB process;
 class EMB,DB,LLM highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 6.1: Component Interaction Architecture</b></p>
   </sheet>
 
-  <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="12">
-    <h2>6.5 APIs</h2>
+  <!-- ============ SHEET 06 ============ -->
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="23">
+    <h2>6.5 APIs Used</h2>
     <table>
-      <row header="1"><cell>API Endpoint</cell><cell>Type</cell><cell>Purpose</cell></row>
-      <row><cell><b>POST /api/v1/chat</b></cell><cell>Internal REST (FastAPI)</cell><cell>Primary endpoint used by widget to submit query and receive AI answer + sources.</cell></row>
-      <row><cell><b>Gemini API</b></cell><cell>External</cell><cell>Primary LLM provider endpoint for natural-language generation.</cell></row>
-      <row><cell><b>OpenAI API</b></cell><cell>External (Fallback)</cell><cell>Fallback LLM provider endpoint when secondary verification is needed.</cell></row>
-      <row><cell><b>Qdrant REST API</b></cell><cell>Internal (Self-Hosted)</cell><cell>Vector database endpoint for vector indexing and similarity search.</cell></row>
+      <row header="1"><cell>API</cell><cell>Type</cell><cell>Purpose</cell></row>
+      <row><cell><b>Internal — /api/chat</b></cell><cell>REST (FastAPI)</cell><cell>The only endpoint the frontend widget calls; accepts a user message, returns the generated answer + sources</cell></row>
+      <row><cell><b>Gemini API</b></cell><cell>External</cell><cell>Primary LLM — generates the natural-language response from the assembled prompt</cell></row>
+      <row><cell><b>OpenAI API</b> <i>(optional)</i></cell><cell>External</cell><cell>Fallback LLM, used case-by-case when a Gemini response fails the quality bar during testing</cell></row>
+      <row><cell><b>Gemini Embedding API</b></cell><cell>External</cell><cell>Alternative embedding generator to Sentence Transformers, if a hosted embedding service is preferred over running locally</cell></row>
+      <row><cell><b>Qdrant REST API</b></cell><cell>Internal (self-hosted)</cell><cell>Stores vectors, performs similarity search; called by the backend, never by the frontend</cell></row>
     </table>
-    <callout><b>Note:</b> Local Sentence Transformers embeddings run inside the FastAPI process with zero external API calls.</callout>
-
-    <h2>6.6 Frontend</h2>
-    <p>The chatbot frontend is implemented as a lightweight, framework-agnostic embedded JavaScript widget integrated into the existing Webflow website via a single script tag.</p>
+    <callout>This is a basic example of the API surface at the current stage — more internal endpoints (e.g. for feedback, session handling, or an admin dashboard) will be added as the backend grows.</callout>
+    
+    <h2>6.6 Frontend: Integrating with Webflow Using an Embedded Widget</h2>
+    <p>The Theta Technolabs website is already built and maintained on Webflow. To preserve it while adding chatbot functionality, the chatbot is implemented as a lightweight embedded JavaScript widget rather than a rebuild — a single <b>&lt;script&gt;</b> embed, no changes to the existing Webflow structure or design.</p>
+    <p>This gets the project:</p>
     <list>
-      <item>Zero structural changes to existing Webflow pages</item>
-      <item>Customizable floating trigger button and responsive chat drawer</item>
-      <item>Asynchronous HTTPS fetch communication with the backend</item>
-      <item>Support for markdown formatting, clickable links, and source attribution tags</item>
+      <item>Integration with the existing Webflow website without structural changes.</item>
+      <item>Simple deployment via one <b>&lt;script&gt;</b> tag.</item>
+      <item>Preservation of the existing design and content-management workflow.</item>
+      <item>Independent customization of the chatbot's appearance — colors, position, branding — separate from the site itself.</item>
+      <item>The ability to update the chatbot later without touching the website implementation.</item>
     </list>
-
-    <h2>6.7 Backend</h2>
-    <p>The backend is built using <b>Python</b> and <b>FastAPI</b>, providing an asynchronous, high-performance service layer for request handling and AI orchestration.</p>
-    <list>
-      <item>Asynchronous non-blocking I/O for handling high concurrent user sessions</item>
-      <item>Automatic Pydantic request/response schema validation</item>
-      <item>Automatic OpenAPI (Swagger) documentation generation</item>
-      <item>Decoupled pipeline logic separating APIs, retrieval, prompt assembly, and LLM calls</item>
-    </list>
-
-    <h2>6.8 AI Layer</h2>
-    <p>The response-generation layer is provider-agnostic, accessing LLMs through a uniform abstraction interface.</p>
-    <list>
-      <item><b>Primary Model:</b> Google Gemini serves as the default provider for context-grounded response generation.</item>
-      <item><b>Fallback Model:</b> OpenAI serves as the secondary provider when fallback verification is required.</item>
-      <item><b>Provider-Agnostic Interface:</b> LLM selection is controlled via configuration without altering backend pipeline code.</item>
-    </list>
-  </sheet>
-
-  <!-- ============ SHEET 04 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="13">
-    <h2>6.9 Embedding Layer</h2>
-    <p>Vector embeddings are generated using local <b>Sentence Transformers</b> models running directly on the application server.</p>
-    <list>
-      <item><b>Zero Per-Token Cost:</b> 100% free local vector generation for both indexing and query processing.</item>
-      <item><b>Data Privacy:</b> Website content and user queries remain strictly within internal infrastructure.</item>
-      <item><b>Vector Alignment:</b> Identical model used for both document chunks and queries ensures precise semantic matching.</item>
-    </list>
-
-    <h2>6.10 Knowledge Storage</h2>
-    <table>
-      <row header="1"><cell>Storage Option</cell><cell>Primary Advantage</cell><cell>Operational Trade-off</cell></row>
-      <row><cell><b>Qdrant (Vector-Only)</b></cell><cell>Purpose-built for ultra-fast vector search with minimal CPU/RAM footprint</cell><cell>Requires a separate database if structured relational data is needed</cell></row>
-      <row><cell><b>PostgreSQL + pgvector (Unified)</b></cell><cell>Consolidates vector embeddings, chat logs, user feedback, and analytics in one database</cell><cell>Requires higher infrastructure resources than Qdrant alone</cell></row>
-    </table>
-    <decision><b>Decision:</b> Select <b>Qdrant</b> for pure knowledge base retrieval deployments. Select <b>PostgreSQL + pgvector</b> when the deployment requires conversation history, feedback analytics, or an operational admin dashboard.</decision>
-
-    <h2>6.11 Deployment</h2>
-    <p>The system combines containerization, on-premise hosting, and a seamless cloud migration path into a single infrastructure strategy:</p>
-    <p><b>1. Docker Containerization:</b> Every service (Nginx, FastAPI backend, Qdrant/PostgreSQL database) is packaged into isolated Docker containers defined in a <b>docker-compose.yml</b> file, guaranteeing environment parity across development, testing, and production.</p>
-    <p><b>2. On-Premise Hosting:</b> Initial deployment runs on internal Linux servers, ensuring total control over conversation data and eliminating recurring cloud infrastructure bills for steady website workloads.</p>
-    <p><b>3. Cloud Migration Readiness:</b> Because all services run inside standard Docker containers with externalized environment variables, the entire chatbot infrastructure can be migrated to cloud platforms (AWS, Azure, GCP) or managed Kubernetes without code changes.</p>
   </sheet>
 
   <!-- ======================= sec_7.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · API DESIGN" kicker="CHAPTER 7 — API DESIGN" footnum="14" title="Chapter 7 – API Design &amp; Communication Flow">
+  <sheet label="THETA CHATBOT · API DESIGN" kicker="CHAPTER 7 — API DESIGN" footnum="24" title="Chapter 7 – API Design &amp; Communication Flow">
     <h2>7.1 Overview</h2>
 
 
@@ -1282,7 +1310,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <h2>7.2 API Communication Architecture</h2>
     <p>The communication between system components follows the sequence below:</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A[Website Chat Widget]
@@ -1309,6 +1337,7 @@ class B,D process;
 class C,E highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 7.1: API Communication Architecture</b></p>
     <p>Each component has a clearly defined responsibility, ensuring loose coupling and easier maintenance.</p>
 
     <h2>7.3 API Endpoints</h2>
@@ -1376,7 +1405,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </json-block>
     <p>Source references are included to increase transparency and allow users to verify the information directly on the Theta Technolabs website.</p>
 
-    <h2>7.8 Error Handling</h2>
+    <h2>7.7 Error Handling</h2>
     <p>The API returns a standardized error envelope whenever a request cannot be completed successfully. All error responses share the same top-level structure as success responses to simplify client-side parsing.</p>
     <callout><b>Note:</b> Error codes and messages are indicative. Additional error codes may be introduced at runtime as new edge cases are identified during testing and production operation.</callout>
     <p><b>Error Response — Field Schema</b></p>
@@ -1401,7 +1430,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </json-block>
     <p>Providing standardized error codes simplifies debugging and future monitoring.</p>
 
-    <h2>7.9 HTTP Status Codes</h2>
+    <h2>7.8 HTTP Status Codes</h2>
     <json-block type="request" label="HTTP STATUS CODES" badge="reference">
       <jfield key="200" val="OK | Request processed successfully" />
       <jfield key="400" val="Bad Request | Invalid request" />
@@ -1411,7 +1440,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <jfield key="503" val="Service Unavailable | LLM or database temporarily unavailable" />
     </json-block>
 
-    <h2>7.10 Session Management</h2>
+    <h2>7.9 Session Management</h2>
     <p>Although the chatbot is publicly accessible and does not require user authentication, temporary browser sessions are maintained to support conversational context.</p>
     <p>Each visitor receives a unique session identifier when opening the chatbot.</p>
     <p>The session identifier enables:</p>
@@ -1423,7 +1452,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </list>
     <p>No personally identifiable information (PII) is required to create or maintain a session.</p>
 
-    <h2>7.11 Security Considerations</h2>
+    <h2>7.10 Security Considerations</h2>
     <p>To protect the chatbot APIs from misuse, the backend implements multiple validation and security mechanisms.</p>
     <p>These include:</p>
     <list>
@@ -1438,12 +1467,12 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </list>
     <p>Sensitive API credentials are never exposed to the frontend.</p>
 
-    <h2>7.12 API Versioning</h2>
+    <h2>7.11 API Versioning</h2>
     <p>All public endpoints are versioned using URI-based versioning.</p>
     <p>Example: <b>/api/v1/chat</b></p>
     <p>Versioning allows future API enhancements without breaking compatibility with existing frontend integrations.</p>
 
-    <h2>7.13 Key Design Decisions</h2>
+    <h2>7.12 Key Design Decisions</h2>
     <json-block type="success" label="KEY DESIGN DECISIONS" badge="architecture">
       <jfield key="RESTful API" val="Simple, widely supported, and easy to integrate." />
       <jfield key="JSON payloads" val="Lightweight, language-independent communication." />
@@ -1456,10 +1485,10 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
   <!-- ======================= sec_8.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · FRONTEND" kicker="CHAPTER 8 — FRONTEND INTEGRATION" footnum="15" title="Chapter 8 – Frontend Integration">
+  <sheet label="THETA CHATBOT · FRONTEND" kicker="CHAPTER 8 — FRONTEND INTEGRATION" footnum="25" title="Chapter 8 – Frontend Integration">
     <h2>8.1 Overview</h2>
     <mermaid-diagram>
-flowchart LR
+flowchart TB
     %% =========================
     %% User Layer
     %% =========================
@@ -1491,6 +1520,7 @@ flowchart LR
     style FRONTEND fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
     style BACKEND fill:#123a5c,stroke:#7fd0e6,stroke-width:2px,color:#ffffff
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 8.1: Frontend Integration Overview</b></p>
     <p>The Theta Chat Bot will be integrated into the existing Theta Technolabs website without requiring any major modifications to the current frontend architecture. Since the website is developed using a no-code platform (Webflow), the chatbot will be embedded using a lightweight JavaScript widget that communicates with the FastAPI backend through secure REST APIs.</p>
     <p>This approach minimizes development effort while ensuring that the chatbot provides a seamless and consistent user experience across all website pages.</p>
     <p>The frontend is responsible for the following functions:</p>
@@ -1514,12 +1544,12 @@ flowchart LR
       <row><cell><b>API Communication Layer</b></cell><cell>Responsible for communication with the backend.</cell><cell>Send REST API requests, receive JSON responses, handle network failures, retry failed requests (future enhancement)</cell></row>
     </table>
     <p><b>Widget Placement Options:</b> The chatbot interface can be triggered either via the main navigation menu (e.g., "Chat with AI" button) or through a persistent floating widget in the bottom-right corner of the screen, as illustrated below:</p>
-    <diagram id="chatbot-placement" caption="Figure X: Widget Placement Options (Navigation vs. Floating Button)" height="90mm" />
+    <diagram id="chatbot-placement" caption="Figure 8.2: Chatbot Widget Placement Options" height="90mm" />
 
     <h2>8.3 Frontend Request Flow</h2>
     <p>Every user interaction follows the same communication flow:</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 A([User Opens Chatbot])
 B[Types Message]
@@ -1541,6 +1571,7 @@ class C,D,E process;
 class B,F highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 8.3: Frontend Request Flow</b></p>
     <p>This lightweight communication model keeps the frontend simple while allowing the backend to manage all business logic.</p>
 
     <h2>8.4 User Journey</h2>
@@ -1653,7 +1684,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
   <!-- ======================= gradrails.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="16" title="Chapter 9 – AI Guardrails Strategy">
+  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="26" title="Chapter 9 – AI Guardrails Strategy">
     <h2>9.1 Overview</h2>
     <p>To ensure the Theta Chat Bot provides accurate, reliable, and business-appropriate responses, a comprehensive set of AI guardrails is implemented. These guardrails define how the chatbot processes user queries, retrieves information, generates responses, and handles situations where sufficient information is unavailable.</p>
     <p>The primary objective is to ensure that every response is based on the approved Theta Technolabs knowledge base while preventing hallucinations, prompt injection attacks, and responses outside the chatbot's intended scope.</p>
@@ -1661,7 +1692,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <h2>9.2 Guardrail Workflow</h2>
     <p>The chatbot applies multiple validation steps before returning a response to the user.</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
     A([User Question])
     B[Input Validation]
     C[Scope &amp; Security Check]
@@ -1685,6 +1716,7 @@ flowchart TD
     class A,H startend;
     class B,C,D,E,F,G process;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 9.1: Guardrail Workflow</b></p>
 
     <h2>9.3 Scope Guardrail</h2>
     <p>The chatbot is designed exclusively to answer questions related to Theta Technolabs. Before processing a query, the system determines whether it falls within the supported business scope.</p>
@@ -1699,7 +1731,7 @@ flowchart TD
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="17">
+  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="27">
     <h2>9.5 Confidence Guardrail</h2>
     <p>After retrieving relevant content from Qdrant, the system evaluates the similarity score to determine whether there is enough confidence to answer the question.</p>
     <table>
@@ -1708,7 +1740,7 @@ flowchart TD
       <row><cell>0.60 – 0.79</cell><cell>Generate a response using the available context while limiting unsupported details.</cell></row>
       <row><cell>&lt; 0.60</cell><cell>Treat the query as unsupported and return a fallback response.</cell></row>
     </table>
-    <p>This validation reduces the risk of generating incorrect or misleading information.</p>
+    <p>This validation reduces the risk of generating incorrect or misleading information. <i>(See Section 4.9 — Response Validation for the corresponding system behavior for each confidence level).</i></p>
 
     <h2>9.6 Prompt Guardrail</h2>
     <p>The AI model is guided by a predefined system prompt that defines its behavior and limitations, instructing it to answer only using retrieved context and decline out-of-scope queries.</p>
@@ -1724,7 +1756,7 @@ flowchart TD
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="18">
+  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="28">
     <h2>9.9 Security Guardrail</h2>
     <p>The chatbot safely handles requests attempting to manipulate behavior or expose system information (e.g., prompt injection, revealing API keys or system instructions).</p>
 
@@ -1734,7 +1766,7 @@ flowchart TD
     <h2>9.11 Fallback Strategy</h2>
     <p>The chatbot follows a structured decision process whenever sufficient information is not available.</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
     A([User Question])
     B[Search Knowledge Base]
     C{Relevant Context Available?}
@@ -1758,6 +1790,7 @@ flowchart TD
     class B process;
     class C,E decision;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 9.2: Fallback Strategy Decision Process</b></p>
 
     <h2>9.12 Benefits of the Guardrail Strategy</h2>
     <list>
@@ -1770,10 +1803,10 @@ flowchart TD
 
   <!-- ======================= sec_9_10_11.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · DASHBOARD" kicker="CHAPTER 10 — DASHBOARD &amp; ANALYTICS" footnum="19" title="Chapter 10 – Operational Dashboard &amp; Analytics">
+  <sheet label="THETA CHATBOT · DASHBOARD" kicker="CHAPTER 10 — DASHBOARD &amp; ANALYTICS" footnum="29" title="Chapter 10 – Operational Dashboard &amp; Analytics">
     <h2>10.1 Overview</h2>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
     %% ===========================
     %% Application Data
     %% ===========================
@@ -1805,6 +1838,7 @@ flowchart TD
     style DB fill:#0d2b45,stroke:#2f5674,stroke-width:2px,color:#cfe4ee
     style ANALYTICS fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 10.1: Dashboard Architecture Overview</b></p>
     <p>While the chatbot can operate as a standalone lightweight application, organizations often require visibility into system usage, AI performance, operational costs, and user interactions. To address these needs, an optional Operational Dashboard is proposed.</p>
     <p>The dashboard provides centralized monitoring and analytics, enabling administrators to understand how the chatbot is performing, identify knowledge gaps, monitor API usage, and make informed decisions about future improvements.</p>
     <callout>The dashboard is <b>optional</b> and is recommended for production deployments where long-term monitoring and business insights are required.</callout>
@@ -1928,7 +1962,7 @@ flowchart TD
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · SECURITY" kicker="CHAPTER 11 — SECURITY &amp; BOT PREVENTION" footnum="20" title="Chapter 11 – Security &amp; Bot Prevention">
+  <sheet label="THETA CHATBOT · SECURITY" kicker="CHAPTER 11 — SECURITY &amp; BOT PREVENTION" footnum="30" title="Chapter 11 – Security &amp; Bot Prevention">
     <h2>11.1 Overview</h2>
     <p>Although the Theta Chat Bot is publicly accessible and does not require user authentication, security remains a critical aspect of the overall system design. The chatbot communicates with external AI services, processes user input, and retrieves information from the company's knowledge base. Therefore, appropriate security controls must be implemented to ensure system reliability, protect sensitive configurations, and prevent misuse.</p>
     <p>The proposed security strategy follows a <b>defense-in-depth approach</b>, where multiple layers of protection work together to reduce potential risks.</p>
@@ -2020,7 +2054,8 @@ flowchart TD
       <row><cell>Service outage</cell><cell>Return a user-friendly fallback message and log the incident for investigation.</cell></row>
     </table>
 
-    <h2>11.10 Bot Prevention &amp; CAPTCHA Strategy</h2>
+    <h2>11.10 Bot Prevention &amp; CAPTCHA Strategy (Future Scope)</h2>
+    <p><i>Note: The following CAPTCHA and rate-limiting features are planned for future deployment and are not included in the initial release.</i></p>
     <p>To prevent malicious bots and automated scripts from exhausting the AI provider's API budget (Financial DoS) or skewing operational analytics, an invisible CAPTCHA mechanism (e.g., Google reCAPTCHA v3 or Cloudflare Turnstile) is implemented on the frontend.</p>
     <p><b>Technical Flow:</b></p>
     <steps>
@@ -2048,14 +2083,14 @@ flowchart TD
       <row><cell>Backend-only AI communication</cell><cell>Prevents exposure of AI provider credentials to the client.</cell></row>
       <row><cell>Environment-based configuration</cell><cell>Improves security and simplifies deployment across environments.</cell></row>
       <row><cell>Invisible CAPTCHA integration</cell><cell>Protects against API budget drain without harming the user experience.</cell></row>
-      <row><cell>RAG-based response generation</cell><cell>Reduces hallucinations by grounding responses in approved website content.</cell></row>
+      <row><cell>RAG-based response generation</cell><cell>Grounds responses in approved website content.</cell></row>
       <row><cell>Temporary session identifiers</cell><cell>Supports conversational continuity without requiring user authentication.</cell></row>
       <row><cell>Optional enterprise security enhancements</cell><cell>Allows the security model to evolve alongside future business requirements.</cell></row>
     </table>
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · DEPLOYMENT" kicker="CHAPTER 12 — DEPLOYMENT STRATEGY" footnum="21" title="Chapter 12 – Deployment Strategy">
+  <sheet label="THETA CHATBOT · DEPLOYMENT" kicker="CHAPTER 12 — DEPLOYMENT STRATEGY" footnum="31" title="Chapter 12 – Deployment Strategy">
     <h2>12.1 Overview</h2>
     <p>The chatbot is containerized using Docker for consistent, portable deployment across development, testing, and production. Initial deployment is on-premise, hosted within company infrastructure — giving full control, predictable costs, and easier compliance. The architecture remains cloud-ready for future migration to AWS, Azure, or GCP with minimal changes.</p>
 
@@ -2115,13 +2150,13 @@ flowchart TD
   </sheet>
 
   <!-- ======================= sec_12.xml ======================= -->
-<sheet label="THETA CHATBOT · MONITORING" kicker="CHAPTER 13 — MONITORING &amp; LOGGING" footnum="22" title="Chapter 13 – Monitoring &amp; Logging">
+<sheet label="THETA CHATBOT · MONITORING" kicker="CHAPTER 13 — MONITORING &amp; LOGGING" footnum="32" title="Chapter 13 – Monitoring &amp; Logging">
     <h2>13.1 Overview</h2>
     <p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p>
     <p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p>
     
     <mermaid-diagram>
-flowchart LR
+flowchart TB
     %% Application Layer
     subgraph AppLayer ["⚙️ Application Layer"]
         API[FastAPI Backend]
@@ -2160,6 +2195,7 @@ flowchart LR
     class HEALTH,AI,KBM,LOGS obs;
     class DASH admin;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 12.1: Monitoring and Observability Strategy</b></p>
 
     <h2>13.2 Monitoring Objectives</h2>
     <p>The monitoring system is designed to:</p>
@@ -2211,7 +2247,7 @@ flowchart LR
 
   <!-- ======================= appendics.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · TESTING" kicker="CHAPTER 14 — TESTING STRATEGY" footnum="23" title="Chapter 14 – AI System Validation &amp; Testing">
+  <sheet label="THETA CHATBOT · TESTING" kicker="CHAPTER 14 — TESTING STRATEGY" footnum="33" title="Chapter 14 – AI System Validation &amp; Testing">
     <h2>14.1 Overview</h2>
     <p>Unlike traditional software, the Theta Chat Bot requires validating both software functionality <i>and</i> AI response quality. Because it uses a RAG architecture, testing extends beyond API checks to retrieval accuracy, prompt effectiveness, chunking quality, and response reliability — combining manual evaluation with technical verification across the full pipeline.</p>
 
@@ -2254,7 +2290,7 @@ flowchart LR
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · TESTING" kicker="CHAPTER 14 — TESTING STRATEGY" footnum="24">
+  <sheet label="THETA CHATBOT · TESTING" kicker="CHAPTER 14 — TESTING STRATEGY" footnum="34">
     <h2>14.6 Regression &amp; Performance Testing</h2>
     <p>Regression testing runs after any prompt modification, content update, knowledge sync, embedding/LLM provider change, or backend change — using a standardized reference question set covering every major website category (services, technologies, portfolio, careers, contact, general inquiries) for objective before/after comparison.</p>
     <p>Performance is measured via average response time, retrieval latency, LLM generation time, end-to-end processing time, and concurrent request handling.</p>
@@ -2287,7 +2323,7 @@ flowchart LR
 
   <!-- ======================= sec_13.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="25" title="Chapter 15 – Risk Assessment &amp; Mitigation">
+  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="35" title="Chapter 15 – Risk Assessment &amp; Mitigation">
     <h2>15.1 Overview</h2>
     <p>Every software solution introduces technical and operational risks that should be identified during the design phase. Evaluating these risks early enables the team to define appropriate mitigation strategies and reduces the likelihood of unexpected issues during deployment or production.</p>
     <p>The following table summarizes the primary risks identified for the Theta Chat Bot project.</p>
@@ -2302,7 +2338,9 @@ flowchart LR
       <row><cell>Vector database corruption or failure</cell><cell>High</cell><cell>Low</cell><cell>Maintain regular database backups and validate restoration procedures.</cell></row>
       <row><cell>Unexpected application failures</cell><cell>High</cell><cell>Low</cell><cell>Implement structured logging, health monitoring, and automated alerting.</cell></row>
     </table>
+  </sheet>
 
+  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="36">
     <h2>15.3 Technical Risks</h2>
     <p>Several technical risks are associated with AI-powered chatbot systems.</p>
 
@@ -2372,7 +2410,7 @@ flowchart LR
 
   <!-- ======================= SEC_14.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="26" title="Chapter 16 – Future Roadmap">
+  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="37" title="Chapter 16 – Future Roadmap">
     <h2>16.1 Overview</h2>
     <p>The Theta Chat Bot has been designed using a modular and extensible architecture that supports future enhancements with minimal changes to the existing system. While the initial implementation focuses on delivering accurate website-based responses using a Retrieval-Augmented Generation (RAG) architecture, the proposed design enables the chatbot to evolve incrementally as business requirements grow.</p>
     <p>The roadmap below outlines the planned evolution of the chatbot while maintaining scalability, maintainability, and deployment flexibility.</p>
@@ -2388,8 +2426,10 @@ flowchart LR
       <row><cell><b>Frontend</b></cell><cell>Webflow chatbot integration with session-based conversation memory.</cell></row>
       <row><cell><b>User Experience</b></cell><cell>Source-aware responses and confidence-based fallback handling.</cell></row>
     </table>
-    <p><b>Objective:</b> Deliver a production-ready chatbot capable of providing accurate, context-aware responses using the official Theta Technolabs knowledge base while establishing the foundation for future monitoring and analytics.</p>
-          <h2>16.3 Phase 2 – Monitoring &amp; Analytics</h2>
+  </sheet>
+  
+  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="38">
+    <h2>16.3 Phase 2 – Monitoring &amp; Analytics</h2>
     <p>Following the initial deployment, the focus shifts toward improving operational visibility, monitoring, and performance analysis.</p>
     <table>
       <row header="1"><cell>Focus Area</cell><cell>Feature Deliverable</cell></row>
@@ -2398,6 +2438,7 @@ flowchart LR
       <row><cell><b>System Monitoring</b></cell><cell>Performance monitoring and continuous usage analytics tracking.</cell></row>
       <row><cell><b>Knowledge Auditing</b></cell><cell>Knowledge synchronization history and automated audit trails.</cell></row>
       <row><cell><b>AI Insights</b></cell><cell>AI-powered conversation summaries and direct user feedback collection.</cell></row>
+      <row><cell><b>Security Controls</b></cell><cell>Implementation of CAPTCHA and API rate-limiting.</cell></row>
     </table>
     <p><b>Objective:</b> Improve operational monitoring and provide actionable insights into chatbot usage, conversation trends, and overall system performance.</p>
           <h2>16.4 Phase 3 – User Experience Enhancements</h2>
@@ -2410,9 +2451,11 @@ flowchart LR
       <row><cell><b>Advanced Memory</b></cell><cell>Enhanced conversation memory mapping for long-running contexts.</cell></row>
       <row><cell><b>Accessibility</b></cell><cell>Continued and targeted accessibility improvements for all users.</cell></row>
     </table>
-    <p><b>Objective:</b> Improve usability, accessibility, and the overall conversational experience for website visitors.</p>
-          <h2>16.5 Long-Term Vision</h2>
-    <p>The long-term vision is to continuously enhance the Theta Chat Bot by improving response quality, user experience, and operational efficiency while preserving its modular architecture. Future enhancements will focus on increasing system performance, simplifying maintenance, and supporting evolving business requirements without requiring significant architectural changes.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="39">
+    <h2>16.5 Long-Term Vision</h2>
+    <p>The long-term vision is to continuously enhance the Theta Chat Bot by improving response quality, user experience, and operational efficiency. Future enhancements will focus on increasing system performance, simplifying maintenance, and supporting evolving business requirements without requiring significant architectural changes.</p>
     <table>
       <row header="1"><cell>Strategic Area</cell><cell>Roadmap Deliverable</cell></row>
       <row><cell><b>Enterprise Scaling</b></cell><cell>Multi-website support and continuous backend performance optimization.</cell></row>
@@ -2421,7 +2464,7 @@ flowchart LR
       <row><cell><b>Response Quality</b></cell><cell>Improved algorithmic response quality evaluation processes.</cell></row>
       <row><cell><b>Data Automation</b></cell><cell>Fully automated knowledge synchronization pipelines.</cell></row>
     </table>
-    <p>The modular architecture proposed in this project provides the flexibility to incorporate these enhancements incrementally while maintaining system stability and maintainability.</p>
+    <p>This design provides the flexibility to incorporate these enhancements incrementally while maintaining system stability.</p>
           <h2>16.6 Roadmap Summary</h2>
     <table>
       <row header="1"><cell>Phase</cell><cell>Primary Objective</cell></row>
@@ -2430,12 +2473,12 @@ flowchart LR
       <row><cell><b>Phase 3</b></cell><cell>Enhance user experience and accessibility</cell></row>
       <row><cell><b>Long-Term Vision</b></cell><cell>Expand the chatbot through continuous improvements and support for future business requirements</cell></row>
     </table>
-    <p>The phased roadmap enables incremental development while minimizing implementation risk. Each phase builds upon the existing modular architecture, allowing the Theta Chat Bot to evolve into a scalable, maintainable, and intelligent customer support solution without requiring a complete system redesign.</p>
+    <p>The phased roadmap enables incremental development while minimizing implementation risk. Each phase builds upon the existing foundation, allowing the Theta Chat Bot to evolve into a scalable, intelligent customer support solution without requiring a complete system redesign.</p>
   </sheet>
 
   <!-- ======================= llm_cost.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX A — LLM COST COMPARISON" footnum="27" title="Appendix A – LLM Cost Comparison">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX A — LLM COST COMPARISON" footnum="40" title="Appendix A – LLM Cost Comparison">
     <h2>A.1 Overview</h2>
     <p>This appendix provides a comprehensive financial and operational cost breakdown for Large Language Model (LLM) providers and local embedding models evaluated for the Theta Chat Bot.</p>
 
@@ -2443,20 +2486,20 @@ flowchart LR
     <p>The table below details current market pricing (USD per 1 Million tokens) for the primary and fallback LLM candidate models.</p>
     <table>
       <row header="1"><cell>Model</cell><cell>Provider</cell><cell>Input Cost (/1M)</cell><cell>Output Cost (/1M)</cell><cell>Suitability</cell></row>
-      <row><cell><b>Gemini 3.1 Flash Lite</b></cell><cell>Google</cell><cell>$0.25</cell><cell>$1.50</cell><cell>Default choice for high-speed RAG Q&amp;A</cell></row>
-      <row><cell><b>GPT-5.4 mini</b></cell><cell>OpenAI</cell><cell>$0.75</cell><cell>$4.50</cell><cell>Secondary comparison &amp; fallback model</cell></row>
-      <row><cell><b>Gemini 3.5 Flash</b></cell><cell>Google</cell><cell>$1.50</cell><cell>$9.00</cell><cell>Advanced reasoning &amp; multi-turn context</cell></row>
-      <row><cell><b>GPT-5.6 Luna</b></cell><cell>OpenAI</cell><cell>$1.00</cell><cell>$6.00</cell><cell>Enterprise fallback model</cell></row>
+      <row><cell><b>Gemini 3.1 Flash Lite</b></cell><cell>Google</cell><cell>$0.25 (₹24.08)</cell><cell>$1.50 (₹144.50)</cell><cell>Default choice for high-speed RAG Q&amp;A</cell></row>
+      <row><cell><b>GPT-5.4 mini</b></cell><cell>OpenAI</cell><cell>$0.75 (₹72.25)</cell><cell>$4.50 (₹433.49)</cell><cell>Secondary comparison &amp; fallback model</cell></row>
+      <row><cell><b>Gemini 3.5 Flash</b></cell><cell>Google</cell><cell>$1.50 (₹144.50)</cell><cell>$9.00 (₹866.97)</cell><cell>Advanced reasoning &amp; multi-turn context</cell></row>
+      <row><cell><b>GPT-5.6 Luna</b></cell><cell>OpenAI</cell><cell>$1.00 (₹96.33)</cell><cell>$6.00 (₹577.98)</cell><cell>Enterprise fallback model</cell></row>
     </table>
 
     <h2>A.3 Per-Conversation Cost Calculation</h2>
-    <p>Assuming an average user interaction consists of 2,000 input tokens (retrieved website context + prompt + question) and generates a 300-token response:</p>
+    <p>Assuming an average user interaction consists of 2,000 input tokens (retrieved website context + prompt + question) and generates a 500-token response:</p>
     <list>
       <item><b>Input Cost:</b> 2,000 tokens × $0.25 / 1,000,000 = <b>$0.0005</b></item>
-      <item><b>Output Cost:</b> 300 tokens × $1.50 / 1,000,000 = <b>$0.00045</b></item>
-      <item><b>Total Cost per Conversation:</b> <b>~$0.00095 USD</b></item>
+      <item><b>Output Cost:</b> 500 tokens × $1.50 / 1,000,000 = <b>$0.00075</b></item>
+      <item><b>Total Cost per Conversation:</b> <b>~$0.00125 USD (₹0.12 INR)</b></item>
     </list>
-    <callout label="ROI IMPACT">At this rate, <b>1,000 complete customer conversations cost approximately $0.95 in AI API fees</b>, ensuring extremely low operational expenses.</callout>
+    <callout label="ROI IMPACT">At this rate, <b>1,000 complete customer conversations cost approximately $1.25 USD (₹120.41 INR) in AI API fees</b>, ensuring extremely low operational expenses.</callout>
 
     <h2>A.4 Cost Reduction Strategies</h2>
     <table>
@@ -2470,48 +2513,56 @@ flowchart LR
 
   <!-- ======================= req_question.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="28" title="Appendix B – Requirement Gathering Questions">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" title="Requirement Gathering Questions" footnum="41">
     
+    <h2>B.1 Project Scope</h2>
     <p><b>Q1: Which website(s) should the chatbot support (e.g., only thetatechnolabs.in or multiple domains such as .com and .ca)?</b></p>
     <why>This determines the overall scope of the chatbot's knowledge base and helps define how the data should be organized and stored. Supporting multiple websites may require separate knowledge collections, metadata management, or a scalable storage architecture to efficiently manage content from different domains.</why>
 
-    <p><b>Q2: How frequently is the website content updated (e.g., service pages, portfolios, case studies)?</b></p>
+    <h2>B.2 Website Content &amp; Knowledge Base</h2>
+    <p><b>Q1: How frequently is the website content updated (e.g., service pages, portfolios, case studies)?</b></p>
     <why>The frequency of website updates helps determine how often the knowledge base should be refreshed to ensure users receive accurate and up-to-date information.</why>
     
-    <p><b>Q3: How often are new blogs or articles published?</b></p>
+    <p><b>Q2: How often are new blogs or articles published?</b></p>
     <why>Blogs are often updated independently of core website pages. Understanding their publishing frequency helps define an appropriate synchronization schedule for blog content.</why>
     
-    <p><b>Q4: Will someone notify the team about content updates, or can we automate the knowledge base update process using the existing website CMS?</b></p>
+    <p><b>Q3: Will someone notify the team about content updates, or can we automate the knowledge base update process using the existing website CMS?</b></p>
     <why>This helps determine whether the chatbot's knowledge base should rely on manual updates or whether it can be automatically synchronized whenever content is published or modified through the existing CMS. If CMS automation is available, it can reduce manual effort, keep the knowledge base synchronized with the latest website content, and minimize ongoing maintenance.</why>
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="29">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="42">
 
-    <p><b>Q5: The existing website already has a manual inquiry chat widget on the right side of the website. Are conversation details such as user queries, responses, timestamps, and other interaction data currently being stored? If yes, where is this data stored, and can I access it?</b></p>
+    <h2>B.3 Existing Chatbot</h2>
+    <p><b>Q1: The existing website already has a manual inquiry chat widget on the right side of the website. Are conversation details such as user queries, responses, timestamps, and other interaction data currently being stored? If yes, where is this data stored, and can I access it?</b></p>
     <why>Understanding whether the existing inquiry chat stores conversation data helps identify if valuable historical information is already available. Access to this data can provide insights into the most frequently asked questions, common user inquiries, recurring issues, and user behavior. It also helps determine whether the existing chat platform can be used as a source for analytics, reporting, and improving the new chatbot's knowledge base, while understanding where the data is stored (e.g., database, CRM, third-party service, or CMS) helps assess integration and migration possibilities.</why>
     
-    <p><b>Q6: Who is the primary audience for the chatbot (e.g., potential clients, existing clients, job seekers, or general website visitors)?</b></p>
+    <h2>B.4 Target Audience</h2>
+    <p><b>Q1: Who is the primary audience for the chatbot (e.g., potential clients, existing clients, job seekers, or general website visitors)?</b></p>
     <why>Understanding the target audience helps define the chatbot's communication style, response depth, supported use cases, and the type of information that should be prioritized.</why>
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="30">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="43">
 
-    <p><b>Q7: Should the chatbot be available on every page of the website or only on selected pages?</b></p>
+    <h2>B.5 Chatbot Placement</h2>
+    <p><b>Q1: Should the chatbot be available on every page of the website or only on selected pages?</b></p>
     <why>The chatbot's placement affects user accessibility, frontend integration, user experience, and whether context-specific behavior is required for different sections of the website.</why>
     
-    <p><b>Q8: Does the existing server have sufficient CPU, RAM, and storage to host the chatbot and its supporting services?</b></p>
+    <h2>B.6 Infrastructure</h2>
+    <p><b>Q1: Does the existing server have sufficient CPU, RAM, and storage to host the chatbot and its supporting services?</b></p>
     <why>This helps determine whether the existing infrastructure is capable of hosting the chatbot and its supporting services. If the available resources are insufficient, cloud deployment or additional infrastructure planning may be required to ensure reliable performance and future scalability.</why>
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="31">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="44">
 
-    <p><b>Q9: Is an admin dashboard required for managing the knowledge base, chatbot configuration, or analytics?</b></p>
+    <h2>B.7 Administration</h2>
+    <p><b>Q1: Is an admin dashboard required for managing the knowledge base, chatbot configuration, or analytics?</b></p>
     <why>This helps identify the required administrative capabilities and provides a better understanding of future system requirements. It also helps determine the most suitable database architecture (for example, PostgreSQL with pgvector or a dedicated vector database) based on future needs such as analytics, conversation history, reporting, and scalability.</why>
     
-    <p><b>Q10: Is there a monthly budget limit for AI API usage?</b></p>
+    <h2>B.8 AI Usage &amp; Budget</h2>
+    <p><b>Q1: Is there a monthly budget limit for AI API usage?</b></p>
     <why>Understanding the available budget influences the selection of AI models, response generation strategy, token usage optimization, and long-term operational cost planning.</why>
   </sheet>
 

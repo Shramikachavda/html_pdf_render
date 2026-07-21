@@ -4,7 +4,7 @@
   <sheet label="THETA CHATBOT · FRONTEND" kicker="CHAPTER 8 — FRONTEND INTEGRATION" footnum="01" title="Chapter 8 – Frontend Integration">
     <h2>8.1 Overview</h2>
     <mermaid-diagram>
-flowchart LR
+flowchart TB
     %% =========================
     %% User Layer
     %% =========================
@@ -36,6 +36,7 @@ flowchart LR
     style FRONTEND fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
     style BACKEND fill:#123a5c,stroke:#7fd0e6,stroke-width:2px,color:#ffffff
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 8.1: Frontend Integration Overview</b></p>
     <p>The Theta Chat Bot will be integrated into the existing Theta Technolabs website without requiring any major modifications to the current frontend architecture. Since the website is developed using a no-code platform (Webflow), the chatbot will be embedded using a lightweight JavaScript widget that communicates with the FastAPI backend through secure REST APIs.</p>
     <p>This approach minimizes development effort while ensuring that the chatbot provides a seamless and consistent user experience across all website pages.</p>
     <p>The frontend is responsible for the following functions:</p>
@@ -59,12 +60,12 @@ flowchart LR
       <row><cell><b>API Communication Layer</b></cell><cell>Responsible for communication with the backend.</cell><cell>Send REST API requests, receive JSON responses, handle network failures, retry failed requests (future enhancement)</cell></row>
     </table>
     <p><b>Widget Placement Options:</b> The chatbot interface can be triggered either via the main navigation menu (e.g., "Chat with AI" button) or through a persistent floating widget in the bottom-right corner of the screen, as illustrated below:</p>
-    <diagram id="chatbot-placement" caption="Figure X: Widget Placement Options (Navigation vs. Floating Button)" height="90mm" />
+    <diagram id="chatbot-placement" caption="Figure 8.2: Chatbot Widget Placement Options" height="90mm" />
 
     <h2>8.3 Frontend Request Flow</h2>
     <p>Every user interaction follows the same communication flow:</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 A([User Opens Chatbot])
 B[Types Message]
@@ -86,6 +87,7 @@ class C,D,E process;
 class B,F highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 8.3: Frontend Request Flow</b></p>
     <p>This lightweight communication model keeps the frontend simple while allowing the backend to manage all business logic.</p>
 
     <h2>8.4 User Journey</h2>

@@ -9,7 +9,7 @@
     <h2>9.2 Guardrail Workflow</h2>
     <p>The chatbot applies multiple validation steps before returning a response to the user.</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
     A([User Question])
     B[Input Validation]
     C[Scope &amp; Security Check]
@@ -33,6 +33,7 @@ flowchart TD
     class A,H startend;
     class B,C,D,E,F,G process;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 9.1: Guardrail Workflow</b></p>
 
     <h2>9.3 Scope Guardrail</h2>
     <p>The chatbot is designed exclusively to answer questions related to Theta Technolabs. Before processing a query, the system determines whether it falls within the supported business scope.</p>
@@ -56,7 +57,7 @@ flowchart TD
       <row><cell>0.60 – 0.79</cell><cell>Generate a response using the available context while limiting unsupported details.</cell></row>
       <row><cell>&lt; 0.60</cell><cell>Treat the query as unsupported and return a fallback response.</cell></row>
     </table>
-    <p>This validation reduces the risk of generating incorrect or misleading information.</p>
+    <p>This validation reduces the risk of generating incorrect or misleading information. <i>(See Section 4.9 — Response Validation for the corresponding system behavior for each confidence level).</i></p>
 
     <h2>9.6 Prompt Guardrail</h2>
     <p>The AI model is guided by a predefined system prompt that defines its behavior and limitations, instructing it to answer only using retrieved context and decline out-of-scope queries.</p>
@@ -82,7 +83,7 @@ flowchart TD
     <h2>9.11 Fallback Strategy</h2>
     <p>The chatbot follows a structured decision process whenever sufficient information is not available.</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
     A([User Question])
     B[Search Knowledge Base]
     C{Relevant Context Available?}
@@ -106,6 +107,7 @@ flowchart TD
     class B process;
     class C,E decision;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 9.2: Fallback Strategy Decision Process</b></p>
 
     <h2>9.12 Benefits of the Guardrail Strategy</h2>
     <list>

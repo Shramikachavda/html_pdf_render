@@ -12,7 +12,7 @@
     <h2>7.2 API Communication Architecture</h2>
     <p>The communication between system components follows the sequence below:</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A[Website Chat Widget]
@@ -39,6 +39,7 @@ class B,D process;
 class C,E highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 7.1: API Communication Architecture</b></p>
     <p>Each component has a clearly defined responsibility, ensuring loose coupling and easier maintenance.</p>
 
     <h2>7.3 API Endpoints</h2>
@@ -106,7 +107,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </json-block>
     <p>Source references are included to increase transparency and allow users to verify the information directly on the Theta Technolabs website.</p>
 
-    <h2>7.8 Error Handling</h2>
+    <h2>7.7 Error Handling</h2>
     <p>The API returns a standardized error envelope whenever a request cannot be completed successfully. All error responses share the same top-level structure as success responses to simplify client-side parsing.</p>
     <callout><b>Note:</b> Error codes and messages are indicative. Additional error codes may be introduced at runtime as new edge cases are identified during testing and production operation.</callout>
     <p><b>Error Response — Field Schema</b></p>
@@ -131,7 +132,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </json-block>
     <p>Providing standardized error codes simplifies debugging and future monitoring.</p>
 
-    <h2>7.9 HTTP Status Codes</h2>
+    <h2>7.8 HTTP Status Codes</h2>
     <json-block type="request" label="HTTP STATUS CODES" badge="reference">
       <jfield key="200" val="OK | Request processed successfully" />
       <jfield key="400" val="Bad Request | Invalid request" />
@@ -141,7 +142,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <jfield key="503" val="Service Unavailable | LLM or database temporarily unavailable" />
     </json-block>
 
-    <h2>7.10 Session Management</h2>
+    <h2>7.9 Session Management</h2>
     <p>Although the chatbot is publicly accessible and does not require user authentication, temporary browser sessions are maintained to support conversational context.</p>
     <p>Each visitor receives a unique session identifier when opening the chatbot.</p>
     <p>The session identifier enables:</p>
@@ -153,7 +154,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </list>
     <p>No personally identifiable information (PII) is required to create or maintain a session.</p>
 
-    <h2>7.11 Security Considerations</h2>
+    <h2>7.10 Security Considerations</h2>
     <p>To protect the chatbot APIs from misuse, the backend implements multiple validation and security mechanisms.</p>
     <p>These include:</p>
     <list>
@@ -168,12 +169,12 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     </list>
     <p>Sensitive API credentials are never exposed to the frontend.</p>
 
-    <h2>7.12 API Versioning</h2>
+    <h2>7.11 API Versioning</h2>
     <p>All public endpoints are versioned using URI-based versioning.</p>
     <p>Example: <b>/api/v1/chat</b></p>
     <p>Versioning allows future API enhancements without breaking compatibility with existing frontend integrations.</p>
 
-    <h2>7.13 Key Design Decisions</h2>
+    <h2>7.12 Key Design Decisions</h2>
     <json-block type="success" label="KEY DESIGN DECISIONS" badge="architecture">
       <jfield key="RESTful API" val="Simple, widely supported, and easy to integrate." />
       <jfield key="JSON payloads" val="Lightweight, language-independent communication." />

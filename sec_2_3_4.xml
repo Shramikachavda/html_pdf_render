@@ -4,7 +4,7 @@
   <!-- ============ SHEET 02 ============ -->
   <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="02" title="Chapter 2 – Solution Overview">
     <h2>2.1 Solution Overview</h2>
-    <p>The Theta Chat Bot is designed as an AI-powered Retrieval-Augmented Generation (RAG) system that delivers accurate, context-aware responses using information exclusively retrieved from the Theta Technolabs website.</p>
+    <p>The Theta Chat Bot is designed as an AI-powered Retrieval-Augmented Generation (RAG) system that delivers accurate responses using information exclusively retrieved from the Theta Technolabs website.</p>
     <p>Rather than storing predefined question-answer pairs or training a custom language model, the chatbot dynamically retrieves the most relevant website content and uses it as contextual input for the Large Language Model (LLM). This enables the chatbot to answer user queries naturally while remaining grounded in verified company information.</p>
     <p>The chatbot follows a modular architecture consisting of five primary stages:</p>
     <list>
@@ -15,6 +15,9 @@
       <item><b>Response Delivery</b> – The generated answer is returned to the user through the website chat interface.</item>
     </list>
     <p>This architecture separates knowledge storage from language generation, allowing website content to be updated independently without retraining the AI model.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="02">
     <h2>2.2 Why Retrieval-Augmented Generation (RAG)?</h2>
     <p>Several architectural approaches were evaluated before selecting the final solution. The following table compares the available options.</p>
     <table>
@@ -28,8 +31,11 @@
       <p><b>1. Single Source of Truth</b><br/>The Theta website is the primary source of truth and will evolve over time as new services, case studies, blogs, or technologies are added.</p>
       <p><b>2. Reduced Operational Overhead</b><br/>Fine-tuning a language model whenever website content changes would introduce unnecessary operational overhead and increased costs.</p>
       <p><b>3. Seamless Updates</b><br/>RAG eliminates this challenge by separating knowledge management from language generation. Website content can be re-indexed whenever updates occur, allowing the chatbot to access the latest information without retraining the underlying LLM.</p>
-      <p><b>4. Accuracy and Flexibility</b><br/>This approach reduces hallucinations by grounding responses in retrieved website content, improves maintainability, and provides flexibility to switch between different LLM providers.</p>
+      <p><b>4. Accuracy and Flexibility</b><br/>This approach grounds responses in retrieved website content, improves maintainability, and provides flexibility to switch between different LLM providers.</p>
     </decision>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="02">
     <h2>2.3 System Workflow</h2>
     <mermaid-diagram>
 flowchart TB
@@ -104,16 +110,20 @@ style M fill:#1c5d8c,stroke:#0d2b45,color:#ffffff
 
 style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 2.1: System Workflow</b></p>
     <p>The workflow is divided into three core phases:</p>
     <list>
       <item><b>Query Processing:</b> Converts the user's natural language input into mathematical embeddings.</item>
       <item><b>Knowledge Retrieval:</b> Searches the vector database for the most relevant website content based on semantic similarity.</item>
       <item><b>Response Generation:</b> Combines the retrieved knowledge with the user query to construct an accurate, grounded response via the LLM.</item>
     </list>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="02">
     <h2>2.4 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Rationale</cell></row>
-      <row><cell>Website as the single source of truth</cell><cell>Ensures responses remain aligned with official company information.</cell></row>
+      <row><cell>Website as the primary knowledge base</cell><cell>Ensures responses remain aligned with official company information.</cell></row>
       <row><cell>RAG instead of fine-tuning</cell><cell>Simplifies updates and reduces operational costs.</cell></row>
       <row><cell>FastAPI backend</cell><cell>High performance, asynchronous request handling, and excellent AI ecosystem support.</cell></row>
       <row><cell>Gemini as the initial LLM</cell><cell>Cost-effective with strong reasoning capabilities for MVP deployment.</cell></row>
@@ -126,7 +136,7 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
   <!-- ============ SHEET 03 ============ -->
   <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="03" title="Chapter 3 – Knowledge Management Pipeline">
     <h2>3.1 Overview</h2>
-    <p>The success of the Theta Chat Bot depends on the quality, accuracy, and freshness of its knowledge source. To ensure reliable and consistent responses, the chatbot uses the Theta Technolabs website as its single source of truth. Every response generated by the chatbot is based exclusively on publicly available information published on the official website.</p>
+    <p>The success of the Theta Chat Bot depends on the quality, accuracy, and freshness of its knowledge source. To ensure reliable and consistent responses, the chatbot uses the official website data exclusively. Every response generated by the chatbot is based on publicly available information published on the site.</p>
     <p>Website content is transformed into a structured semantic knowledge base that can be efficiently searched during every user interaction.</p>
     <p>The Knowledge Management Pipeline consists of the following stages:</p>
     <list>
@@ -138,6 +148,9 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <item>Knowledge Synchronization</item>
     </list>
     <p>Each stage is independent and modular, allowing future improvements without affecting the rest of the system.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="03">
     <h2>3.2 Content Acquisition</h2>
     <p>The first stage is responsible for collecting publicly available content from the Theta Technolabs website. The crawler indexes only pages that provide meaningful business information.</p>
     <table>
@@ -150,10 +163,12 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <row><cell>Portfolio / Case Studies</cell><cell>✅</cell></row>
       <row><cell>Blogs</cell><cell>✅</cell></row>
       <row><cell>Careers</cell><cell>✅</cell></row>
-      <row><cell>Contact Information</cell><cell>✅</cell></row>
-      <row><cell>FAQ (If Available)</cell><cell>✅</cell></row>
+      <row><cell>Contact Information , FAQ</cell><cell>✅</cell></row>
     </table>
     <p>Pages such as privacy policies, cookie notices, legal disclaimers, or other pages that do not contribute to answering user queries may be excluded from indexing.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="00">
     <h2>3.3 Content Extraction &amp; Cleaning</h2>
     <p>Before any information is stored within the knowledge base, the website content undergoes a preprocessing pipeline to ensure that only meaningful and relevant information is indexed.</p>
     <p>The extraction and cleaning process includes:</p>
@@ -170,6 +185,9 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <item>Validation to discard empty or low-quality content</item>
     </list>
     <p>Only clean, structured, and meaningful textual content proceeds to the embedding stage, ensuring high-quality semantic retrieval and reducing irrelevant search results.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="00">
     <h2>3.4 Content Chunking</h2>
     <p>Since modern language models and vector databases perform better with smaller, focused contextual units, each webpage is divided into multiple semantic chunks before embeddings are generated.</p>
     <p>The system utilizes a <b>Sliding Window Overlap Chunking Strategy</b>. A <b>500-token chunk size</b> (approx. 350–400 words) with a <b>50–100 token overlap</b> is used as a baseline example in this document. Note that the exact chunk size and character/token boundaries are fully configurable and will be adjusted dynamically at runtime based on the document type, content density, and model context window optimization.</p>
@@ -181,6 +199,10 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <item><b>Heading Context Preservation</b>: Keeps headings attached to their respective body text chunks.</item>
       <item><b>Metadata Attachment</b>: Stores URL, page title, section name, and chunk index with every vector record.</item>
     </list>
+    <decision label="CHUNKING STRATEGY JUSTIFICATION">
+      <p><b>1. Context Cohesion (500 Tokens):</b> Smaller chunks (e.g., 100-200 tokens) often lose the broader context, forcing the LLM to guess connections. 500 tokens provide enough surrounding text to fully answer multi-part questions while remaining granular enough for accurate vector search.</p>
+      <p><b>2. Edge-Case Prevention (Overlap):</b> The 50–100 token overlapping window prevents critical information from being split across two separate chunks, ensuring the retrieval engine doesn't miss a fact that spans a boundary.</p>
+    </decision>
     <p>Example (Baseline Configuration):</p>
     <table>
       <row header="1"><cell>Chunk ID</cell><cell>Page</cell><cell>Section</cell><cell>Description</cell></row>
@@ -259,7 +281,7 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
     </table>
     <p><b>Synchronization Workflow</b></p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A([Content Update Detected])
@@ -288,19 +310,8 @@ class B,C,D process;
 class E,F highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
-    <p>Whenever website content changes, the following pipeline is executed:</p>
-    <steps>
-      <step>Detect the newly created or modified webpage.</step>
-      <step>Retrieve the latest page content.</step>
-      <step>Parse and clean the HTML.</step>
-      <step>Remove navigation menus, headers, footers, scripts, banners, and duplicate elements.</step>
-      <step>Normalize the extracted text.</step>
-      <step>Divide the content into semantic chunks.</step>
-      <step>Generate embeddings only for the updated chunks.</step>
-      <step>Replace the existing vectors in the vector database.</step>
-      <step>Update metadata such as indexing timestamp, page version, and source URL.</step>
-    </steps>
-    <p>All other website pages remain untouched.</p>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 3.1: Synchronization Workflow</b></p>
+    <p>Whenever website content changes, the pipeline detects the newly modified pages, cleans the HTML, divides it into semantic chunks, generates fresh embeddings, and replaces only the updated vectors in the database. All other website pages remain untouched.</p>
     <p>This approach significantly reduces processing time, minimizes embedding generation costs, and ensures the chatbot always retrieves the most recent website information without reprocessing the complete knowledge base.</p>
     <h2>3.8 Metadata Management</h2>
     <p>Every indexed content chunk stores metadata to improve retrieval quality, enable source attribution, and support future analytics.</p>
@@ -319,7 +330,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <h2>3.9 Knowledge Lifecycle</h2>
     <p>The complete knowledge processing lifecycle converts raw website pages into search-ready vector embeddings through the following structured flow:</p>
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A([Raw Website Data])
@@ -348,10 +359,11 @@ class B,C,D process;
 class E,F highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 3.2: Knowledge Lifecycle</b></p>
     <h2>3.10 Key Design Decisions</h2>
     <table>
       <row header="1"><cell>Decision</cell><cell>Justification</cell></row>
-      <row><cell>Official website as the single source of truth</cell><cell>Ensures responses remain accurate and aligned with company information.</cell></row>
+      <row><cell>Official website as primary domain</cell><cell>Ensures responses remain accurate and aligned with company information.</cell></row>
       <row><cell>Comprehensive content cleaning</cell><cell>Removes irrelevant website elements before indexing.</cell></row>
       <row><cell>Semantic chunking</cell><cell>Improves retrieval precision and contextual relevance.</cell></row>
       <row><cell>Event-Driven Incremental Synchronization</cell><cell>Updates only modified content, reducing processing overhead.</cell></row>
@@ -365,7 +377,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="04" title="Chapter 4 – Retrieval &amp; Response Generation">
     <h2>4.1 Overview</h2>
     <p>The Retrieval &amp; Response Generation Pipeline is the core processing layer of the Theta Chat Bot. It is responsible for transforming a user's natural language query into an accurate, context-aware response by retrieving relevant website content and providing it to the Large Language Model (LLM).</p>
-    <p>Instead of relying solely on the language model's pre-trained knowledge, the system first searches the organization's indexed knowledge base. Only the retrieved content is supplied to the LLM, ensuring that responses remain grounded in official Theta Technolabs information while significantly reducing hallucinations.</p>
+    <p>Instead of relying solely on the language model's pre-trained knowledge, the system first searches the organization's indexed knowledge base. Only the retrieved content is supplied to the LLM, ensuring that responses remain grounded in official Theta Technolabs information.</p>
     <p>The complete processing pipeline consists of the following stages:</p>
     <list>
       <item>User Query Reception</item>
@@ -412,6 +424,7 @@ sequenceDiagram
     API--&gt;&gt;CW: Chat Response
     CW--&gt;&gt;User: Display Response
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 4.1: Request Processing Sequence</b></p>
     <h2>4.2 User Query Reception</h2>
     <p>A visitor submits a question through the chatbot interface embedded within the Theta Technolabs website.</p>
     <p>Example: <i>"What AI Development services does Theta Technolabs provide?"</i></p>
@@ -442,9 +455,13 @@ sequenceDiagram
       <row header="1"><cell>Parameter</cell><cell>Value</cell></row>
       <row><cell>Retrieval Method</cell><cell>Semantic Search</cell></row>
       <row><cell>Similarity Metric</cell><cell>Cosine Similarity</cell></row>
-      <row><cell>Retrieved Chunks</cell><cell>Top 5 (Configurable)</cell></row>
-      <row><cell>Minimum Similarity Threshold</cell><cell>Configurable</cell></row>
+      <row><cell>Retrieved Chunks (Top-K)</cell><cell>Top 3 to 5 chunks</cell></row>
+      <row><cell>Minimum Similarity Threshold</cell><cell>0.60 (Strict cutoff)</cell></row>
     </table>
+    <decision label="RETRIEVAL PARAMETERS JUSTIFICATION">
+      <p><b>1. Top-K Selection (3 to 5):</b> Retrieving more than 5 chunks increases the context window size, which drives up API costs and can dilute the LLM's focus (the "lost in the middle" phenomenon). Top-K=5 ensures maximum relevant context without overwhelming the prompt.</p>
+      <p><b>2. Similarity Threshold (0.60):</b> Queries matching below 0.60 are mathematically distant from the official knowledge base. This strict cutoff acts as the first line of defense against out-of-scope questions or hallucination risks.</p>
+    </decision>
     <p>Only highly relevant chunks are forwarded to the language model.</p>
 
     <h2>4.5 Context Construction</h2>
@@ -477,7 +494,7 @@ sequenceDiagram
     </callout>
 
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A[Question]
@@ -510,6 +527,7 @@ class E,F highlight;
 class G,H startend;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 4.2: Prompt Assembly Flow</b></p>
 
     <h2>4.7 Response Generation</h2>
     <p>The constructed prompt is submitted to the configured Large Language Model (LLM Engine). The architecture remains provider-independent, allowing seamless deployment with high-performance or cost-effective AI model providers without changing the backend logic.</p>
@@ -559,7 +577,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <item>Response completeness</item>
       <item>Supported knowledge domain</item>
     </list>
-    <p>Depending on the confidence level, different actions are taken.</p>
+    <p>Depending on the confidence level, different actions are taken. <i>(Note: The specific scoring thresholds underlying these confidence levels are detailed in Section 9.5 – Confidence Guardrail).</i></p>
     <table>
       <row header="1"><cell>Confidence Level</cell><cell>System Behavior</cell></row>
       <row><cell>High</cell><cell>Return the answer normally.</cell></row>
@@ -578,12 +596,14 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <item>Contact or Inquiry action when required</item>
     </list>
     <p>This provides users with a consistent and intuitive conversational experience.</p>
+  </sheet>
 
+  <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="04">
     <h2>4.11 Complete Processing Flow</h2>
     <p>The complete end-to-end request handling workflow illustrates how a user's question travels from the frontend floating widget through validation, semantic retrieval, prompt assembly, LLM inference, and response delivery:</p>
 
     <mermaid-diagram>
-flowchart TD
+flowchart TB
 
 %% Nodes
 A([1. User Submits Query])
@@ -618,20 +638,9 @@ class B,C,E,F,H,I process;
 class D,G highlight;
 linkStyle default stroke:#0d2b45,stroke-width:2px;
     </mermaid-diagram>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 4.3: End-to-End Query Handling</b></p>
 
-    <p><b>Detailed Step-by-Step Processing Breakdown</b></p>
-    <steps>
-      <step title="User Query Submission">The visitor types a question in the floating website widget. The frontend packages the query with active session headers and transmits it via HTTPS POST to the REST API backend.</step>
-      <step title="API Security &amp; Pre-Validation">The FastAPI API gateway sanitizes the input text, enforces client rate limiting, and screens for invalid or malformed requests.</step>
-      <step title="Query Embedding Generation">The text query is passed to the embedding model, transforming natural language into a high-dimensional mathematical vector representation.</step>
-      <step title="Semantic Vector Search">The query vector is matched against indexed knowledge base embeddings using Cosine Similarity in the vector store.</step>
-      <step title="Chunk Extraction &amp; Metadata Retrieval">The Top 3–5 most relevant content chunks are retrieved along with source page titles, URLs, and section headings.</step>
-      <step title="Contextual Prompt Construction">The backend injects system instructions, strict guardrails, session memory, and retrieved website chunks into a single structured prompt.</step>
-      <step title="LLM Engine Processing">The LLM Engine receives the grounded context prompt and generates a concise, accurate response strictly grounded in the provided website data.</step>
-      <step title="Response Validation &amp; Quality Check">The backend checks the output against confidence thresholds to ensure responses remain on-topic and free of unsupported claims.</step>
-      <step title="Citation &amp; Reference Formatting">The validated response is formatted into clean markdown text, appending direct webpage reference links for transparent user verification.</step>
-      <step title="Response Delivery to Widget">The final JSON payload is transmitted back to the frontend widget, rendering the conversational answer and clickable source links.</step>
-    </steps>
+
 
     <h2>4.12 Key Design Decisions</h2>
     <table>
