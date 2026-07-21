@@ -64,7 +64,7 @@ flowchart TB
 
     <h2>8.3 Frontend Request Flow</h2>
     <p>Every user interaction follows the same communication flow:</p>
-    <mermaid-diagram>
+    <mermaid-diagram height="250px">
 flowchart TB
 
 A([User Opens Chatbot])

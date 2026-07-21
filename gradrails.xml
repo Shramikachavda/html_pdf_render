@@ -8,7 +8,7 @@
 
     <h2>9.2 Guardrail Workflow</h2>
     <p>The chatbot applies multiple validation steps before returning a response to the user.</p>
-    <mermaid-diagram>
+    <mermaid-diagram height="300px">
 flowchart TB
     A([User Question])
     B[Input Validation]
@@ -32,7 +32,7 @@ flowchart TB
 
     class A,H startend;
     class B,C,D,E,F,G process;
-    </mermaid-diagram>
+    </mermaid-diagram height="400px">
     <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 9.1: Guardrail Workflow</b></p>
 
     <h2>9.3 Scope Guardrail</h2>

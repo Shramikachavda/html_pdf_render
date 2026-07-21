@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+@page { size: A4; margin: 25mm 20mm; }
+body { font-family: "DejaVu Sans", Arial, sans-serif; }
+</style>
+</head>
+<body>
+<div class="mermaid">
+flowchart TB
+A([User Query]) --> B[Query Processing]
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    fontFamily: '"DejaVu Sans", Arial, sans-serif',
+    flowchart: { htmlLabels: false }
+});
+</script>
+</body>
+</html>

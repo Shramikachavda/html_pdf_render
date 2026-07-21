@@ -38,7 +38,9 @@ CSS = """
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size: 10.1pt; line-height: 1.52; background: #fff; overflow-wrap: break-word; word-wrap: break-word; }
-img, svg, pre, table { max-width: 100%; }
+img, pre, table { max-width: 100%; }
+svg { max-width: 100%; }
+.mermaid.fixed-height svg { width: 100%; height: 100%; }
 .mono { font-family: "DejaVu Sans Mono", monospace; }
 .chapter { page-break-after: always; }
 .cover { background:#0d2b45; color:#e8f1f6; padding:0; box-sizing: border-box; min-height: 100vh; page-break-after: always; }
@@ -261,7 +263,18 @@ def render_block(el):
         return (el.text or "").strip()
     if t == "mermaid-diagram":
         diagram_code = (el.text or "").strip()
-        return f'<div class="mermaid" style="text-align:center; margin: 20px 0;">\n{diagram_code}\n</div>'
+        height = el.get("height")
+        width = el.get("width")
+        
+        style = "text-align:center; margin: 20px 0;"
+        cls = "mermaid"
+        if height:
+            style += f" height: {height};"
+            cls += " fixed-height"
+        if width:
+            style += f" width: {width};"
+            
+        return f'<div class="{cls}" style="{style}">\n{diagram_code}\n</div>'
     return ""
 
 
@@ -348,9 +361,16 @@ def build_docs(xml_path):
 {''.join(cover_parts)}
 {''.join(content_parts)}
 
-<script type="module">
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-mermaid.initialize({{ startOnLoad: true }});
+<script src="https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({{
+    startOnLoad: true,
+    fontFamily: '"DejaVu Sans", Arial, sans-serif',
+    flowchart: {{ htmlLabels: false }},
+    themeVariables: {{
+        fontFamily: '"DejaVu Sans", Arial, sans-serif'
+    }}
+}});
 </script>
 </body></html>"""
 
@@ -375,30 +395,17 @@ def main():
     from playwright.sync_api import sync_playwright
     import os
     import urllib.parse
-    import base64
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        # Use a high device scale factor for crisp PNGs
-        page = browser.new_page(viewport={"width": 1920, "height": 3000}, device_scale_factor=3)
+        # Using a standard viewport; Mermaid scales SVGs to 100% max-width anyway.
+        page = browser.new_page()
         
         file_url = "file://" + urllib.parse.quote(os.path.abspath(html_path))
         page.goto(file_url, wait_until="networkidle")
         
         # Wait for all mermaid diagrams to be processed
         page.wait_for_function('() => document.querySelectorAll(".mermaid:not([data-processed=\\"true\\"])").length === 0')
-        
-        # Convert each Mermaid SVG to a high-res PNG
-        mermaids = page.locator(".mermaid").all()
-        for el in mermaids:
-            svg_locator = el.locator("svg")
-            if svg_locator.count() > 0:
-                # Screenshot the SVG
-                image_bytes = svg_locator.first.screenshot(omit_background=True)
-                b64 = base64.b64encode(image_bytes).decode('utf-8')
-                data_uri = f"data:image/png;base64,{b64}"
-                # Replace the content with the image
-                el.evaluate('(node, uri) => node.innerHTML = `<img src="${uri}" style="max-width: 100%;" alt="Mermaid Diagram" />`', data_uri)
         
         rendered_html = page.content()
         browser.close()

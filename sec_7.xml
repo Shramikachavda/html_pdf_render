@@ -11,7 +11,7 @@
 
     <h2>7.2 API Communication Architecture</h2>
     <p>The communication between system components follows the sequence below:</p>
-    <mermaid-diagram>
+    <mermaid-diagram height="350px">
 flowchart TB
 
 %% Nodes

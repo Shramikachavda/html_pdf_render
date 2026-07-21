@@ -196,7 +196,7 @@
 
   <sheet label="THETA CHATBOT · PIPELINES" kicker="CHAPTER 2 — PIPELINES" footnum="08">
     <h2>2.3 System Workflow</h2>
-    <mermaid-diagram>
+    <mermaid-diagram height="750px">
 flowchart TB
 
 %% ===========================
@@ -437,7 +437,7 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <row><cell>Event-Driven Incremental Synchronization (Recommended)</cell><cell>Triggered whenever website content is created, modified, or deleted. Only affected pages are reprocessed.</cell><cell>Efficient, scalable, faster updates, and reduced infrastructure cost.</cell><cell>Requires integration with the website publishing workflow or CMS.</cell></row>
     </table>
     <p><b>Synchronization Workflow</b></p>
-    <mermaid-diagram>
+    <mermaid-diagram height="400px">
 flowchart TB
 
 %% Nodes
@@ -486,7 +486,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <p>Metadata enables future capabilities such as source citations, document versioning, analytics, debugging, and knowledge auditing.</p>
     <h2>3.9 Knowledge Lifecycle</h2>
     <p>The complete knowledge processing lifecycle converts raw website pages into search-ready vector embeddings through the following structured flow:</p>
-    <mermaid-diagram>
+    <mermaid-diagram height="400px">
 flowchart TB
 
 %% Nodes
@@ -548,7 +548,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
       <item>Response Delivery</item>
     </list>
 
-    <mermaid-diagram>
+    <mermaid-diagram height="400px">
 sequenceDiagram
     autonumber
     actor User
@@ -650,7 +650,7 @@ sequenceDiagram
       <b>4.</b> User Question
     </callout>
 
-    <mermaid-diagram>
+    <mermaid-diagram height="350px">
 flowchart TB
 
 %% Nodes
@@ -759,7 +759,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <h2>4.11 Complete Processing Flow</h2>
     <p>The complete end-to-end request handling workflow illustrates how a user's question travels from the frontend floating widget through validation, semantic retrieval, prompt assembly, LLM inference, and response delivery:</p>
 
-    <mermaid-diagram>
+    <mermaid-diagram height="600px">
 flowchart TB
 
 %% Nodes
@@ -1224,7 +1224,7 @@ flowchart TB
     </list>
     <p>Separating user interaction, business logic, knowledge retrieval, and AI inference into independent components improves maintainability, simplifies testing, enables future technology replacement, and supports incremental enhancements without major architectural changes.</p>
     
-    <mermaid-diagram>
+    <mermaid-diagram height="600px">
 flowchart TB
 
 U([User])
@@ -1310,7 +1310,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
     <h2>7.2 API Communication Architecture</h2>
     <p>The communication between system components follows the sequence below:</p>
-    <mermaid-diagram>
+    <mermaid-diagram height="350px">
 flowchart TB
 
 %% Nodes
@@ -1549,7 +1549,7 @@ flowchart TB
 
     <h2>8.3 Frontend Request Flow</h2>
     <p>Every user interaction follows the same communication flow:</p>
-    <mermaid-diagram>
+    <mermaid-diagram height="250px">
 flowchart TB
 
 A([User Opens Chatbot])
@@ -1692,7 +1692,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
     <h2>9.2 Guardrail Workflow</h2>
     <p>The chatbot applies multiple validation steps before returning a response to the user.</p>
-    <mermaid-diagram>
+    <mermaid-diagram height="300px">
 flowchart TB
     A([User Question])
     B[Input Validation]
