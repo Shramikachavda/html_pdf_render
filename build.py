@@ -43,7 +43,7 @@ svg { max-width: 100%; }
 .mermaid.fixed-height svg { width: 100%; height: 100%; }
 .mono { font-family: "DejaVu Sans Mono", monospace; }
 .chapter { page-break-after: always; }
-.cover { background:#0d2b45; color:#e8f1f6; padding:0; box-sizing: border-box; min-height: 100vh; page-break-after: always; }
+.cover { background:#0d2b45; color:#e8f1f6; padding:0; box-sizing: border-box; height: 297mm; page-break-after: always; }
 .cover .kicker2 { font-family:"DejaVu Sans Mono",monospace; color:#bfe3ef; letter-spacing:4px; font-size:9.5pt; margin-bottom:10mm; text-transform: uppercase; font-weight: bold; }
 .cover h1 { font-size:36pt; color:#ffffff; line-height:1.15; margin-bottom:6mm; border-bottom:none; font-weight: 800; letter-spacing: -1px; }
 .cover .subtitle { font-size:14pt; color:#bfe3ef; max-width:135mm; margin-bottom:40mm; font-weight: 500; }

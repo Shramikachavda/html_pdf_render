@@ -29,7 +29,7 @@ svg { max-width: 100%; }
 .mermaid.fixed-height svg { width: 100%; height: 100%; }
 .mono { font-family: "DejaVu Sans Mono", monospace; }
 .chapter { page-break-after: always; }
-.cover { background:#0d2b45; color:#e8f1f6; padding:0; box-sizing: border-box; min-height: 100vh; page-break-after: always; }
+.cover { background:#0d2b45; color:#e8f1f6; padding:0; box-sizing: border-box; height: 297mm; page-break-after: always; }
 .cover .kicker2 { font-family:"DejaVu Sans Mono",monospace; color:#bfe3ef; letter-spacing:4px; font-size:9.5pt; margin-bottom:10mm; text-transform: uppercase; font-weight: bold; }
 .cover h1 { font-size:36pt; color:#ffffff; line-height:1.15; margin-bottom:6mm; border-bottom:none; font-weight: 800; letter-spacing: -1px; }
 .cover .subtitle { font-size:14pt; color:#bfe3ef; max-width:135mm; margin-bottom:40mm; font-weight: 500; }
@@ -523,13 +523,13 @@ flowchart TB
     classDef ai fill:#7f1d1d,stroke:#7f1d1d,color:#ffffff,stroke-width:2px;
     
     %% Client Layer
-    subgraph ClientLayer ["👤 Client Layer"]
+    subgraph Client_Layer
         V[Website Visitor] --> B[Browser]
         B <--> CW[Chat Widget]
     end
 
     %% Frontend Layer
-    subgraph FrontendLayer ["💻 Frontend Layer"]
+    subgraph Frontend_Layer
         SM[Session Manager]
         AC[API Client]
     end
@@ -537,13 +537,13 @@ flowchart TB
     SM --> AC
 
     %% AI Layer
-    subgraph AILayer ["🧠 AI Layer"]
+    subgraph AI_Layer
         EM[Embedding Model]
         LLM[LLM Provider]
     end
 
     %% Application Layer
-    subgraph AppLayer ["⚙️ Application Layer"]
+    subgraph Application_Layer
         API[REST API]
         IV[Input Validation]
         SL[Security Layer]
@@ -557,7 +557,7 @@ flowchart TB
     end
 
     %% Storage & Knowledge Base
-    subgraph KBLayer ["📚 Knowledge Base"]
+    subgraph Knowledge_Base
         WP[Website Pages]
         S[Services]
         BL[Blogs]
@@ -565,7 +565,7 @@ flowchart TB
         CS[Case Studies]
     end
 
-    subgraph StorageLayer ["📦 Storage Layer"]
+    subgraph Storage_Layer
         VD[(Vector Database)]
         MS[(Metadata Store)]
     end
@@ -689,7 +689,7 @@ flowchart TB
 <div class="chapter">
   <div class="kicker">CHAPTER 6 — TECHNOLOGY STACK</div>
   <h1 class="section-title"></h1>
-  <h2>6.4 Component Interaction</h2><p>The Theta Chat Bot follows a modular request-processing workflow in which each component handles one stage of the chatbot lifecycle. User interactions begin through the custom JavaScript chat widget embedded in the existing Webflow website. The widget communicates with the backend through secure REST APIs exposed by the FastAPI application.</p><p><strong>Step-by-step request flow:</strong></p><ul><li><strong>Request Initiation:</strong> The user submits a query through the JavaScript widget. The request is sent via HTTPS to Nginx.</li><li><strong>Validation:</strong> Nginx routes the request to the FastAPI backend.</li><li><strong>Vectorization:</strong> The local Sentence Transformers model converts the text into a vector embedding.</li><li><strong>Knowledge Retrieval:</strong> The Vector Database performs a semantic similarity search to identify relevant knowledge.</li><li><strong>Prompt Construction:</strong> The retrieved segments and user query are combined into a context-aware prompt.</li><li><strong>AI Inference:</strong> The LLM generates a natural language response.</li><li><strong>Response Delivery:</strong> The generated answer is sent back to the frontend widget.</li></ul><p>Separating user interaction, business logic, knowledge retrieval, and AI inference into independent components improves maintainability, simplifies testing, enables future technology replacement, and supports incremental enhancements without major architectural changes.</p><div class="mermaid fixed-height" style="text-align:center; margin: 20px 0; height: 600px;">
+  <h2>6.4 Component Interaction</h2><p>The Theta Chat Bot follows a modular request-processing workflow in which each component handles one stage of the chatbot lifecycle. User interactions begin through the custom JavaScript chat widget embedded in the existing Webflow website. The widget communicates with the backend through secure REST APIs exposed by the FastAPI application.</p><p><strong>Step-by-step request flow:</strong></p><ul><li><strong>Request Initiation:</strong> The user submits a query through the JavaScript widget. The request is sent via HTTPS to Nginx.</li><li><strong>Validation:</strong> Nginx routes the request to the FastAPI backend.</li><li><strong>Vectorization:</strong> The local Sentence Transformers model converts the text into a vector embedding.</li><li><strong>Knowledge Retrieval:</strong> The Vector Database performs a semantic similarity search to identify relevant knowledge.</li><li><strong>Prompt Construction:</strong> The retrieved segments and user query are combined into a context-aware prompt.</li><li><strong>AI Inference:</strong> The LLM generates a natural language response.</li><li><strong>Response Delivery:</strong> The generated answer is sent back to the frontend widget.</li></ul><p>Separating user interaction, business logic, knowledge retrieval, and AI inference into independent components improves maintainability, simplifies testing, enables future technology replacement, and supports incremental enhancements without major architectural changes.</p><div class="mermaid fixed-height" style="text-align:center; margin: 20px 0; height: 550px;">
 flowchart TB
 
 U([User])
@@ -784,14 +784,14 @@ flowchart TB
     %% =========================
     %% User Layer
     %% =========================
-    subgraph USER["🌍 User Layer"]
+    subgraph USER
         U["👤 Website Visitor"]
     end
 
     %% =========================
     %% Presentation Layer
     %% =========================
-    subgraph FRONTEND["💻 Presentation Layer"]
+    subgraph FRONTEND
         WEB["🌐 Theta Website<br/>(Webflow)"]
         CHAT["💬 AI Chat Widget"]
     end
@@ -799,7 +799,7 @@ flowchart TB
     %% =========================
     %% Application Layer
     %% =========================
-    subgraph BACKEND["⚙️ Application Layer"]
+    subgraph BACKEND
         API["FastAPI REST API"]
     end
 
@@ -848,7 +848,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 <div class="chapter">
   <div class="kicker">CHAPTER 9 — AI GUARDRAILS STRATEGY</div>
   <h1 class="section-title">Chapter 9 – AI Guardrails Strategy</h1>
-  <h2>9.1 Overview</h2><p>To ensure the Theta Chat Bot provides accurate, reliable, and business-appropriate responses, a comprehensive set of AI guardrails is implemented. These guardrails define how the chatbot processes user queries, retrieves information, generates responses, and handles situations where sufficient information is unavailable.</p><p>The primary objective is to ensure that every response is based on the approved Theta Technolabs knowledge base while preventing hallucinations, prompt injection attacks, and responses outside the chatbot's intended scope.</p><h2>9.2 Guardrail Workflow</h2><p>The chatbot applies multiple validation steps before returning a response to the user.</p><div class="mermaid fixed-height" style="text-align:center; margin: 20px 0; height: 300px;">
+  <h2>9.1 Overview</h2><p>To ensure the Theta Chat Bot provides accurate, reliable, and business-appropriate responses, a comprehensive set of AI guardrails is implemented. These guardrails define how the chatbot processes user queries, retrieves information, generates responses, and handles situations where sufficient information is unavailable.</p><p>The primary objective is to ensure that every response is based on the approved Theta Technolabs knowledge base while preventing hallucinations, prompt injection attacks, and responses outside the chatbot's intended scope.</p><h2>9.2 Guardrail Workflow</h2><p>The chatbot applies multiple validation steps before returning a response to the user.</p><div class="mermaid fixed-height" style="text-align:center; margin: 20px 0; height: 400px;">
 flowchart TB
     A([User Question])
     B[Input Validation]
@@ -889,7 +889,7 @@ flowchart TB
 <div class="chapter">
   <div class="kicker">CHAPTER 9 — AI GUARDRAILS STRATEGY</div>
   <h1 class="section-title"></h1>
-  <h2>9.9 Security Guardrail</h2><p>The chatbot safely handles requests attempting to manipulate behavior or expose system information (e.g., prompt injection, revealing API keys or system instructions).</p><h2>9.10 Unsupported Query Handling</h2><p>Topics unrelated to Theta Technolabs (sports, weather, politics, general coding) are politely declined with a standard scope clarification.</p><h2>9.11 Fallback Strategy</h2><p>The chatbot follows a structured decision process whenever sufficient information is not available.</p><div class="mermaid" style="text-align:center; margin: 20px 0;">
+  <h2>9.9 Security Guardrail</h2><p>The chatbot safely handles requests attempting to manipulate behavior or expose system information (e.g., prompt injection, revealing API keys or system instructions).</p><h2>9.10 Unsupported Query Handling</h2><p>Topics unrelated to Theta Technolabs (sports, weather, politics, general coding) are politely declined with a standard scope clarification.</p><h2>9.11 Fallback Strategy</h2><p>The chatbot follows a structured decision process whenever sufficient information is not available.</p><div class="mermaid fixed-height" style="text-align:center; margin: 20px 0; height: 600px;">
 flowchart TB
     A([User Question])
     B[Search Knowledge Base]
@@ -901,10 +901,10 @@ flowchart TB
 
     A --> B
     B --> C
-    C --|Yes|--> D
-    C --|No|--> E
-    E --|Yes|--> F
-    E --|No|--> G
+    C -->|Yes| D
+    C -->|No| E
+    E -->|Yes| F
+    E -->|No| G
 
     classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
     classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
@@ -919,26 +919,26 @@ flowchart TB
 <div class="chapter">
   <div class="kicker">CHAPTER 10 — DASHBOARD &amp; ANALYTICS</div>
   <h1 class="section-title">Chapter 10 – Operational Dashboard &amp; Analytics</h1>
-  <h2>10.1 Overview</h2><div class="mermaid" style="text-align:center; margin: 20px 0;">
+  <h2>10.1 Overview</h2><div class="mermaid fixed-height" style="text-align:center; margin: 20px 0; height: 400px;">
 flowchart TB
     %% ===========================
     %% Application Data
     %% ===========================
-    subgraph APP["⚙️ Backend System"]
+    subgraph APP
         API["FastAPI Backend<br/>(Metrics & Logs)"]
     end
 
     %% ===========================
     %% Storage
     %% ===========================
-    subgraph DB["📦 Enterprise Storage"]
+    subgraph DB
         PG["PostgreSQL Database<br/>+ pgvector"]
     end
 
     %% ===========================
     %% Analytics
     %% ===========================
-    subgraph ANALYTICS["📊 Monitoring"]
+    subgraph ANALYTICS
         DASH["Operational Dashboard"]
         ADMIN(["Administrators"])
     end
@@ -984,16 +984,16 @@ flowchart TB
 <div class="chapter">
   <div class="kicker">CHAPTER 13 — MONITORING &amp; LOGGING</div>
   <h1 class="section-title">Chapter 13 – Monitoring &amp; Logging</h1>
-  <h2>13.1 Overview</h2><p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p><p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p><div class="mermaid" style="text-align:center; margin: 20px 0;">
+  <h2>13.1 Overview</h2><p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p><p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p><div class="mermaid fixed-height" style="text-align:center; margin: 20px 0; height: 350px;">
 flowchart TB
     %% Application Layer
-    subgraph AppLayer ["⚙️ Application Layer"]
+    subgraph AppLayer
         API[FastAPI Backend]
         SYNC[Knowledge Sync]
     end
 
     %% Observability Layer
-    subgraph Observability ["📊 Observability & Logging"]
+    subgraph Observability
         HEALTH[Health Metrics]
         AI[AI Performance Metrics]
         KBM[Knowledge Base Metrics]
@@ -1001,7 +1001,7 @@ flowchart TB
     end
 
     %% Admin Layer
-    subgraph AdminLayer ["👤 Administration"]
+    subgraph AdminLayer
         DASH[Operational Dashboard]
     end
 
@@ -1023,7 +1023,7 @@ flowchart TB
     class API,SYNC app;
     class HEALTH,AI,KBM,LOGS obs;
     class DASH admin;
-</div><p><strong>Figure 12.1: Monitoring and Observability Strategy</strong></p><h2>13.2 Monitoring Objectives</h2><p>The monitoring system is designed to:</p><ul><li>Ensure high application availability.</li><li>Detect operational issues early.</li><li>Monitor chatbot performance.</li><li>Measure AI response quality.</li><li>Track operational costs.</li><li>Support troubleshooting and maintenance.</li></ul><h2>13.3 Application Health</h2><p>Monitoring application health involves tracking several key metrics.</p><table class="spec"><tr><th>Metric</th><th>Purpose</th></tr><tr><td>API Availability</td><td>Verify backend uptime</td></tr><tr><td>Response Time</td><td>Measure request latency</td></tr><tr><td>Error Rate</td><td>Detect application failures</td></tr><tr><td>Active Sessions</td><td>Monitor current usage</td></tr><tr><td>Request Volume</td><td>Measure traffic patterns</td></tr></table><h2>13.4 AI Performance</h2><p>AI performance is tracked to evaluate cost and quality. Metrics include: total AI requests, average generation time, token consumption, estimated API cost, retrieval confidence, and LLM provider utilization.</p><h2>13.5 Knowledge Base Monitoring</h2><table class="spec"><tr><th>Metric</th><th>Description</th></tr><tr><td>Total Indexed Pages</td><td>Pages currently indexed</td></tr><tr><td>Total Content Chunks</td><td>Semantic chunks in the KB</td></tr><tr><td>Last Synchronization</td><td>Most recent successful update</td></tr><tr><td>Failed Synchronizations</td><td>Sync errors</td></tr><tr><td>Knowledge Version</td><td>Current indexed version</td></tr></table><h2>13.6 Logging Strategy</h2><p>Logs capture API requests, AI requests, synchronization events, warnings, and errors — using standard levels (INFO, WARNING, ERROR, CRITICAL) to keep noise low while enabling fast troubleshooting. API keys, tokens, and other credentials must never be written to logs.</p><h2>13.7 Key Design Decisions</h2><table class="spec"><tr><th>Decision</th><th>Justification</th></tr><tr><td>Continuous health monitoring</td><td>Ensures reliable availability</td></tr><tr><td>Structured logging</td><td>Simplifies troubleshooting</td></tr><tr><td>AI performance monitoring</td><td>Supports cost and quality optimization</td></tr><tr><td>Knowledge sync monitoring</td><td>Ensures responses stay current</td></tr></table>
+</div><p><strong>Figure 13.1: Monitoring and Observability Strategy</strong></p><h2>13.2 Monitoring Objectives</h2><p>The monitoring system is designed to:</p><ul><li>Ensure high application availability.</li><li>Detect operational issues early.</li><li>Monitor chatbot performance.</li><li>Measure AI response quality.</li><li>Track operational costs.</li><li>Support troubleshooting and maintenance.</li></ul><h2>13.3 Application Health</h2><p>Monitoring application health involves tracking several key metrics.</p><table class="spec"><tr><th>Metric</th><th>Purpose</th></tr><tr><td>API Availability</td><td>Verify backend uptime</td></tr><tr><td>Response Time</td><td>Measure request latency</td></tr><tr><td>Error Rate</td><td>Detect application failures</td></tr><tr><td>Active Sessions</td><td>Monitor current usage</td></tr><tr><td>Request Volume</td><td>Measure traffic patterns</td></tr></table><h2>13.4 AI Performance</h2><p>AI performance is tracked to evaluate cost and quality. Metrics include: total AI requests, average generation time, token consumption, estimated API cost, retrieval confidence, and LLM provider utilization.</p><h2>13.5 Knowledge Base Monitoring</h2><table class="spec"><tr><th>Metric</th><th>Description</th></tr><tr><td>Total Indexed Pages</td><td>Pages currently indexed</td></tr><tr><td>Total Content Chunks</td><td>Semantic chunks in the KB</td></tr><tr><td>Last Synchronization</td><td>Most recent successful update</td></tr><tr><td>Failed Synchronizations</td><td>Sync errors</td></tr><tr><td>Knowledge Version</td><td>Current indexed version</td></tr></table><h2>13.6 Logging Strategy</h2><p>Logs capture API requests, AI requests, synchronization events, warnings, and errors — using standard levels (INFO, WARNING, ERROR, CRITICAL) to keep noise low while enabling fast troubleshooting. API keys, tokens, and other credentials must never be written to logs.</p><h2>13.7 Key Design Decisions</h2><table class="spec"><tr><th>Decision</th><th>Justification</th></tr><tr><td>Continuous health monitoring</td><td>Ensures reliable availability</td></tr><tr><td>Structured logging</td><td>Simplifies troubleshooting</td></tr><tr><td>AI performance monitoring</td><td>Supports cost and quality optimization</td></tr><tr><td>Knowledge sync monitoring</td><td>Ensures responses stay current</td></tr></table>
 </div>
 
 <div class="chapter">

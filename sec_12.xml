@@ -5,16 +5,16 @@
     <p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p>
     <p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p>
     
-    <mermaid-diagram>
+    <mermaid-diagram height="350px">
 flowchart TB
     %% Application Layer
-    subgraph AppLayer ["⚙️ Application Layer"]
+    subgraph AppLayer
         API[FastAPI Backend]
         SYNC[Knowledge Sync]
     end
 
     %% Observability Layer
-    subgraph Observability ["📊 Observability &amp; Logging"]
+    subgraph Observability
         HEALTH[Health Metrics]
         AI[AI Performance Metrics]
         KBM[Knowledge Base Metrics]
@@ -22,7 +22,7 @@ flowchart TB
     end
 
     %% Admin Layer
-    subgraph AdminLayer ["👤 Administration"]
+    subgraph AdminLayer
         DASH[Operational Dashboard]
     end
 
@@ -45,7 +45,7 @@ flowchart TB
     class HEALTH,AI,KBM,LOGS obs;
     class DASH admin;
     </mermaid-diagram>
-    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 12.1: Monitoring and Observability Strategy</b></p>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 13.1: Monitoring and Observability Strategy</b></p>
 
     <h2>13.2 Monitoring Objectives</h2>
     <p>The monitoring system is designed to:</p>

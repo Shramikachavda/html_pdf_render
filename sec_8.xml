@@ -8,14 +8,14 @@ flowchart TB
     %% =========================
     %% User Layer
     %% =========================
-    subgraph USER["🌍 User Layer"]
+    subgraph USER
         U["👤 Website Visitor"]
     end
 
     %% =========================
     %% Presentation Layer
     %% =========================
-    subgraph FRONTEND["💻 Presentation Layer"]
+    subgraph FRONTEND
         WEB["🌐 Theta Website&lt;br/&gt;(Webflow)"]
         CHAT["💬 AI Chat Widget"]
     end
@@ -23,7 +23,7 @@ flowchart TB
     %% =========================
     %% Application Layer
     %% =========================
-    subgraph BACKEND["⚙️ Application Layer"]
+    subgraph BACKEND
         API["FastAPI REST API"]
     end
 

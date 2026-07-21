@@ -979,13 +979,13 @@ flowchart TB
     classDef ai fill:#7f1d1d,stroke:#7f1d1d,color:#ffffff,stroke-width:2px;
     
     %% Client Layer
-    subgraph ClientLayer ["👤 Client Layer"]
+    subgraph Client_Layer
         V[Website Visitor] --&gt; B[Browser]
         B &lt;--&gt; CW[Chat Widget]
     end
 
     %% Frontend Layer
-    subgraph FrontendLayer ["💻 Frontend Layer"]
+    subgraph Frontend_Layer
         SM[Session Manager]
         AC[API Client]
     end
@@ -993,13 +993,13 @@ flowchart TB
     SM --&gt; AC
 
     %% AI Layer
-    subgraph AILayer ["🧠 AI Layer"]
+    subgraph AI_Layer
         EM[Embedding Model]
         LLM[LLM Provider]
     end
 
     %% Application Layer
-    subgraph AppLayer ["⚙️ Application Layer"]
+    subgraph Application_Layer
         API[REST API]
         IV[Input Validation]
         SL[Security Layer]
@@ -1013,7 +1013,7 @@ flowchart TB
     end
 
     %% Storage &amp; Knowledge Base
-    subgraph KBLayer ["📚 Knowledge Base"]
+    subgraph Knowledge_Base
         WP[Website Pages]
         S[Services]
         BL[Blogs]
@@ -1021,7 +1021,7 @@ flowchart TB
         CS[Case Studies]
     end
 
-    subgraph StorageLayer ["📦 Storage Layer"]
+    subgraph Storage_Layer
         VD[(Vector Database)]
         MS[(Metadata Store)]
     end
@@ -1224,7 +1224,7 @@ flowchart TB
     </list>
     <p>Separating user interaction, business logic, knowledge retrieval, and AI inference into independent components improves maintainability, simplifies testing, enables future technology replacement, and supports incremental enhancements without major architectural changes.</p>
     
-    <mermaid-diagram height="600px">
+    <mermaid-diagram height="550px">
 flowchart TB
 
 U([User])
@@ -1493,14 +1493,14 @@ flowchart TB
     %% =========================
     %% User Layer
     %% =========================
-    subgraph USER["🌍 User Layer"]
+    subgraph USER
         U["👤 Website Visitor"]
     end
 
     %% =========================
     %% Presentation Layer
     %% =========================
-    subgraph FRONTEND["💻 Presentation Layer"]
+    subgraph FRONTEND
         WEB["🌐 Theta Website&lt;br/&gt;(Webflow)"]
         CHAT["💬 AI Chat Widget"]
     end
@@ -1508,7 +1508,7 @@ flowchart TB
     %% =========================
     %% Application Layer
     %% =========================
-    subgraph BACKEND["⚙️ Application Layer"]
+    subgraph BACKEND
         API["FastAPI REST API"]
     end
 
@@ -1692,7 +1692,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
     <h2>9.2 Guardrail Workflow</h2>
     <p>The chatbot applies multiple validation steps before returning a response to the user.</p>
-    <mermaid-diagram height="300px">
+    <mermaid-diagram height="400px">
 flowchart TB
     A([User Question])
     B[Input Validation]
@@ -1766,7 +1766,7 @@ flowchart TB
 
     <h2>9.11 Fallback Strategy</h2>
     <p>The chatbot follows a structured decision process whenever sufficient information is not available.</p>
-    <mermaid-diagram>
+    <mermaid-diagram height="600px">
 flowchart TB
     A([User Question])
     B[Search Knowledge Base]
@@ -1778,10 +1778,10 @@ flowchart TB
 
     A --&gt; B
     B --&gt; C
-    C --|Yes|--&gt; D
-    C --|No|--&gt; E
-    E --|Yes|--&gt; F
-    E --|No|--&gt; G
+    C --&gt;|Yes| D
+    C --&gt;|No| E
+    E --&gt;|Yes| F
+    E --&gt;|No| G
 
     classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
     classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
@@ -1806,26 +1806,26 @@ flowchart TB
 <!-- ============ SHEET 01 ============ -->
   <sheet label="THETA CHATBOT · DASHBOARD" kicker="CHAPTER 10 — DASHBOARD &amp; ANALYTICS" footnum="31" title="Chapter 10 – Operational Dashboard &amp; Analytics">
     <h2>10.1 Overview</h2>
-    <mermaid-diagram>
+    <mermaid-diagram height="400px">
 flowchart TB
     %% ===========================
     %% Application Data
     %% ===========================
-    subgraph APP["⚙️ Backend System"]
+    subgraph APP
         API["FastAPI Backend&lt;br/&gt;(Metrics &amp; Logs)"]
     end
 
     %% ===========================
     %% Storage
     %% ===========================
-    subgraph DB["📦 Enterprise Storage"]
+    subgraph DB
         PG["PostgreSQL Database&lt;br/&gt;+ pgvector"]
     end
 
     %% ===========================
     %% Analytics
     %% ===========================
-    subgraph ANALYTICS["📊 Monitoring"]
+    subgraph ANALYTICS
         DASH["Operational Dashboard"]
         ADMIN(["Administrators"])
     end
@@ -2156,16 +2156,16 @@ flowchart TB
     <p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p>
     <p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p>
     
-    <mermaid-diagram>
+    <mermaid-diagram height="350px">
 flowchart TB
     %% Application Layer
-    subgraph AppLayer ["⚙️ Application Layer"]
+    subgraph AppLayer
         API[FastAPI Backend]
         SYNC[Knowledge Sync]
     end
 
     %% Observability Layer
-    subgraph Observability ["📊 Observability &amp; Logging"]
+    subgraph Observability
         HEALTH[Health Metrics]
         AI[AI Performance Metrics]
         KBM[Knowledge Base Metrics]
@@ -2173,7 +2173,7 @@ flowchart TB
     end
 
     %% Admin Layer
-    subgraph AdminLayer ["👤 Administration"]
+    subgraph AdminLayer
         DASH[Operational Dashboard]
     end
 
@@ -2196,7 +2196,7 @@ flowchart TB
     class HEALTH,AI,KBM,LOGS obs;
     class DASH admin;
     </mermaid-diagram>
-    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 12.1: Monitoring and Observability Strategy</b></p>
+    <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 13.1: Monitoring and Observability Strategy</b></p>
 
     <h2>13.2 Monitoring Objectives</h2>
     <p>The monitoring system is designed to:</p>

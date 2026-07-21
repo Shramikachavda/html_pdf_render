@@ -3,26 +3,26 @@
   <!-- ============ SHEET 01 ============ -->
   <sheet label="THETA CHATBOT · DASHBOARD" kicker="CHAPTER 10 — DASHBOARD &amp; ANALYTICS" footnum="01" title="Chapter 10 – Operational Dashboard &amp; Analytics">
     <h2>10.1 Overview</h2>
-    <mermaid-diagram>
+    <mermaid-diagram height="400px">
 flowchart TB
     %% ===========================
     %% Application Data
     %% ===========================
-    subgraph APP["⚙️ Backend System"]
+    subgraph APP
         API["FastAPI Backend&lt;br/&gt;(Metrics &amp; Logs)"]
     end
 
     %% ===========================
     %% Storage
     %% ===========================
-    subgraph DB["📦 Enterprise Storage"]
+    subgraph DB
         PG["PostgreSQL Database&lt;br/&gt;+ pgvector"]
     end
 
     %% ===========================
     %% Analytics
     %% ===========================
-    subgraph ANALYTICS["📊 Monitoring"]
+    subgraph ANALYTICS
         DASH["Operational Dashboard"]
         ADMIN(["Administrators"])
     end

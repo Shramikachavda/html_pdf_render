@@ -167,13 +167,13 @@ flowchart TB
     classDef ai fill:#7f1d1d,stroke:#7f1d1d,color:#ffffff,stroke-width:2px;
     
     %% Client Layer
-    subgraph ClientLayer ["👤 Client Layer"]
+    subgraph Client_Layer
         V[Website Visitor] --&gt; B[Browser]
         B &lt;--&gt; CW[Chat Widget]
     end
 
     %% Frontend Layer
-    subgraph FrontendLayer ["💻 Frontend Layer"]
+    subgraph Frontend_Layer
         SM[Session Manager]
         AC[API Client]
     end
@@ -181,13 +181,13 @@ flowchart TB
     SM --&gt; AC
 
     %% AI Layer
-    subgraph AILayer ["🧠 AI Layer"]
+    subgraph AI_Layer
         EM[Embedding Model]
         LLM[LLM Provider]
     end
 
     %% Application Layer
-    subgraph AppLayer ["⚙️ Application Layer"]
+    subgraph Application_Layer
         API[REST API]
         IV[Input Validation]
         SL[Security Layer]
@@ -201,7 +201,7 @@ flowchart TB
     end
 
     %% Storage &amp; Knowledge Base
-    subgraph KBLayer ["📚 Knowledge Base"]
+    subgraph Knowledge_Base
         WP[Website Pages]
         S[Services]
         BL[Blogs]
@@ -209,7 +209,7 @@ flowchart TB
         CS[Case Studies]
     end
 
-    subgraph StorageLayer ["📦 Storage Layer"]
+    subgraph Storage_Layer
         VD[(Vector Database)]
         MS[(Metadata Store)]
     end
