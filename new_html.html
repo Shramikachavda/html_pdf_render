@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Theta ChatBot Technical Design Document</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size: 10.1pt; line-height: 1.5; background: #fff; }
+img, svg { max-width: 100%; }
+.mono { font-family: "DejaVu Sans Mono", monospace; }
+.chapter { page-break-after: always; }
+.chapter:last-child { page-break-after: auto; }
+.cover { background:#0d2b45; color:#e8f1f6; padding:0; box-sizing:border-box; height: 285mm; page-break-after: always; position: relative; }
+.cover-inner { padding: 40mm 20mm; }
+.cover .kicker2 { font-family:"DejaVu Sans Mono",monospace; color:#bfe3ef; letter-spacing:4px; font-size:9.5pt; margin-bottom:10mm; text-transform: uppercase; font-weight: bold; }
+.cover h1 { font-size:34pt; color:#ffffff; line-height:1.15; margin-bottom:6mm; font-weight: 800; letter-spacing: -1px; }
+.cover .subtitle { font-size:13.5pt; color:#bfe3ef; max-width:135mm; margin-bottom:36mm; font-weight: 500; }
+table.revtable { width:100%; border-collapse:collapse; margin-top:4mm; font-family:"DejaVu Sans Mono",monospace; font-size:8.5pt; }
+table.revtable th, table.revtable td { border:0.5pt solid rgba(255,255,255,0.15); padding:2.5mm 3mm; color:#cfe4ee; text-align:left; }
+table.revtable th { background:rgba(0,0,0,0.15); color:#7fd0e6; letter-spacing:1px; font-weight:bold; }
+tr { page-break-inside: avoid; }
+table { page-break-inside: avoid; break-inside: avoid; }
+h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
+.kicker { font-family:"DejaVu Sans Mono",monospace; font-size:8pt; letter-spacing:2.5px; color:#1c5d8c; font-weight:bold; margin-bottom:2mm; }
+h1.section-title { font-size:19pt; color:#0d2b45; border-bottom:2pt solid #0d2b45; padding-bottom:3mm; margin-bottom:6mm; }
+h2 { font-size:12.3pt; color:#0d2b45; margin-top:6mm; margin-bottom:3mm; padding-left:3mm; border-left:3pt solid #e8a33d; }
+h3 { font-size:10.2pt; color:#1c5d8c; margin-top:4mm; margin-bottom:2mm; font-family:"DejaVu Sans Mono",monospace; letter-spacing:0.5px; }
+p { margin-bottom:2.6mm; text-align:justify; }
+ul, ol { margin:2mm 0 3mm 5mm; padding-left: 5mm; }
+li { margin-bottom:1.2mm; }
+strong { color:#0d2b45; }
+table.spec { width:100%; border-collapse:collapse; margin:3mm 0 5mm 0; font-size:8.6pt; }
+table.spec th { background:#0d2b45; color:#fff; text-align:left; padding:2mm 3mm; font-family:"DejaVu Sans Mono",monospace; font-size:7.6pt; letter-spacing:0.5px; }
+table.spec td { padding:2mm 3mm; border-bottom:0.5pt solid #d8dfe4; vertical-align:top; }
+table.spec tr:nth-child(even) td { background:#f4f7f9; }
+.callout { background:#f4f7f9; border-left:3pt solid #1c5d8c; padding:3mm 4mm; margin:3.5mm 0; font-size:9pt; page-break-inside: avoid; }
+.callout .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.3pt; letter-spacing:2px; color:#1c5d8c; font-weight:bold; display:block; margin-bottom:1.5mm; }
+.decision { background:#fdf6ea; border-left:3pt solid #e8a33d; padding:3mm 4mm; margin:3.5mm 0; font-size:9pt; page-break-inside: avoid; }
+.decision .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.3pt; letter-spacing:2px; color:#b5791c; font-weight:bold; display:block; margin-bottom:1.5mm; }
+.tag { display:inline-block; font-family:"DejaVu Sans Mono",monospace; font-size:7.1pt; letter-spacing:1px; color:#1c5d8c; background:#f4f7f9; border:0.5pt solid #1c5d8c; padding:0.6mm 2mm; border-radius:3px; margin-right:1.6mm; margin-bottom:1.5mm; }
+.tag-danger { color:#7f1d1d; background:#fef2f2; border:0.5pt solid #fecaca; }
+.diagram-box { background-color:#f8fafc; padding:5mm; border-radius:3px; border:0.5pt solid #e2e8f0; margin:4mm 0; text-align:center; page-break-inside: avoid; }
+.diagram-box svg { max-height: 145mm; }
+.fig-caption { text-align:center; font-size:8.4pt; font-weight:bold; color:#1c5d8c; margin-bottom:4mm; margin-top: -1mm; }
+.steps { margin:3mm 0; }
+.step { position:relative; padding:1.8mm 0 1.8mm 11mm; border-bottom:0.4pt dotted #c7d2da; page-break-inside: avoid; }
+.step:last-child { border-bottom:none; }
+.step .n { position:absolute; left:0; top:1.8mm; width:6.5mm; height:6.5mm; background:#0d2b45; color:#bfe3ef; font-family:"DejaVu Sans Mono",monospace; font-size:7.6pt; font-weight:bold; text-align:center; line-height:6.5mm; }
+.step .t { font-weight:bold; color:#0d2b45; font-size:9.1pt; }
+.step .d { font-size:8.7pt; color:#3a4954; }
+.adr { border: 0.6pt solid #d8dfe4; margin: 3.5mm 0 5mm 0; page-break-inside: avoid; }
+.adr-head { background: #0d2b45; color: #bfe3ef; font-family: "DejaVu Sans Mono", monospace; font-size: 9pt; font-weight: bold; padding: 2.2mm 4mm; letter-spacing: 0.5px; }
+.adr-body { padding: 3mm 4mm; font-size: 8.8pt; }
+.adr-row { margin-bottom: 2mm; }
+.adr-row .k { font-family: "DejaVu Sans Mono", monospace; font-size: 7.6pt; letter-spacing: 1px; color: #1c5d8c; font-weight: bold; display: block; margin-bottom: 0.6mm; }
+.impact-pos { color: #1c7c4d; }
+.impact-neg { color: #b5791c; }
+.toc-row { display:block; padding:1.8mm 0; border-bottom:0.4pt dotted #c7d2da; page-break-inside: avoid; }
+.toc-row .tn { font-family:"DejaVu Sans Mono",monospace; color:#1c5d8c; font-weight:bold; display:inline-block; width:12mm; }
+.toc-row .tt { font-size:10pt; color:#0d2b45; font-weight:bold; }
+.toc-row .td { font-size:8.3pt; color:#6b7a86; display:block; margin-left:12mm; }
+.jblock { margin: 3.5mm 0; page-break-inside: avoid; border-radius: 4px; border: 0.6pt solid #d8dfe4; background: #fafcff; overflow: hidden; font-family:"DejaVu Sans Mono", monospace; font-size:8.3pt; }
+.jblock .jhead { background:#0d2b45; color:#e8a33d; padding: 2mm 4mm; font-weight:bold; font-size:7.6pt; letter-spacing:1px; }
+.jblock .jbody { padding: 3mm 4mm; color:#5a6b7c; white-space: pre-wrap; }
+.jblock .jkey { color:#1c5d8c; font-weight:bold; }
+.jblock .jval { color:#40a070; }
+.two-col { display:flex; gap:6mm; }
+.two-col > div { flex:1; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-inner">
+    <div class="kicker2">TECHNICAL DESIGN DOCUMENT</div>
+    <h1>Theta Chat Bot</h1>
+    <div class="subtitle">Architecture, API, and AI Guardrails Strategy</div>
+    <table class="revtable"><tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Project Name</td><td>Theta Chat Bot</td></tr>
+    <tr><td>Prepared For</td><td>Theta Technolabs</td></tr>
+    <tr><td>Author</td><td>Shramika Chavda</td></tr>
+    <tr><td>Document Version</td><td>2.0 (Condensed)</td></tr>
+    <tr><td>Document Status</td><td>Internal Use Only</td></tr>
+    <tr><td>Date</td><td>July 2026</td></tr></table>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="chapter">
+  <div class="kicker">DOCUMENT INDEX</div>
+  <h1 class="section-title">Table of Contents</h1>
+  <span class="toc-row"><span class="tn">01</span><span class="tt">Executive Summary</span><span class="td">Overview, goals, scope, and key features</span></span>
+  <span class="toc-row"><span class="tn">02</span><span class="tt">Solution Architecture &amp; RAG Approach</span><span class="td">Why RAG, system workflow, design decisions</span></span>
+  <span class="toc-row"><span class="tn">03</span><span class="tt">Knowledge Management Pipeline</span><span class="td">Acquisition, cleaning, chunking, storage, sync</span></span>
+  <span class="toc-row"><span class="tn">04</span><span class="tt">Retrieval &amp; Response Generation</span><span class="td">Query processing, prompt engineering, validation</span></span>
+  <span class="toc-row"><span class="tn">05</span><span class="tt">System Architecture</span><span class="td">Layers, LLM abstraction, data &amp; infrastructure</span></span>
+  <span class="toc-row"><span class="tn">06</span><span class="tt">Technology Stack &amp; Design Rationale</span><span class="td">Stack overview and architecture decisions</span></span>
+  <span class="toc-row"><span class="tn">07</span><span class="tt">API Design &amp; Communication Flow</span><span class="td">Endpoints, schemas, error handling, security</span></span>
+  <span class="toc-row"><span class="tn">08</span><span class="tt">Frontend Integration</span><span class="td">Widget architecture, user journey, UI states</span></span>
+  <span class="toc-row"><span class="tn">09</span><span class="tt">AI Guardrails Strategy</span><span class="td">Scope, confidence, prompt &amp; hallucination controls</span></span>
+  <span class="toc-row"><span class="tn">10</span><span class="tt">Operational Dashboard &amp; Analytics</span><span class="td">Modules, KPIs, database design</span></span>
+  <span class="toc-row"><span class="tn">11</span><span class="tt">Security &amp; Bot Prevention</span><span class="td">Objectives, controls, CAPTCHA, risk mitigation</span></span>
+  <span class="toc-row"><span class="tn">12</span><span class="tt">Deployment Strategy</span><span class="td">Environments, containers, workflow</span></span>
+  <span class="toc-row"><span class="tn">13</span><span class="tt">Monitoring &amp; Logging</span><span class="td">Observability and health metrics</span></span>
+  <span class="toc-row"><span class="tn">14</span><span class="tt">AI System Validation &amp; Testing</span><span class="td">Testing strategy and evaluation scorecard</span></span>
+  <span class="toc-row"><span class="tn">15</span><span class="tt">Risk Assessment &amp; Mitigation</span><span class="td">Risk register across technical, operational, business</span></span>
+  <span class="toc-row"><span class="tn">16</span><span class="tt">Future Roadmap</span><span class="td">Phased evolution and long-term vision</span></span>
+  <span class="toc-row"><span class="tn">A1</span><span class="tt">Appendix A — LLM Cost Comparison</span><span class="td">Pricing, per-conversation cost, savings strategies</span></span>
+  <span class="toc-row"><span class="tn">B1</span><span class="tt">Appendix B — Requirement Gathering Questions</span><span class="td">Project scope and discovery questions</span></span>
+</div>
+
+<!-- 01 EXEC SUMMARY -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 01 — EXECUTIVE SUMMARY</div>
+  <h1 class="section-title">1. Executive Summary</h1>
+
+  <h2>1.1 Introduction</h2>
+  <p>The <strong>Theta Chat Bot</strong> is a modular, AI-powered virtual assistant for the <strong>Theta Technolabs website</strong>. It provides instant, accurate responses based exclusively on the company's publicly available content — services, portfolios, case studies, careers, and blogs — using a <strong>Retrieval-Augmented Generation (RAG)</strong> architecture. User queries are matched against indexed website content before a Large Language Model (LLM) generates a grounded response, keeping the system model-agnostic and free to use high-performance or cost-effective providers as needed.</p>
+  <p>Two deployment models support different business needs: a <strong>Lightweight Architecture</strong> (async API + vector database + LLM) for fast, low-overhead deployment, and an <strong>Enterprise Architecture</strong> (async API + relational &amp; vector database + admin dashboard) for advanced analytics and operational monitoring. The chatbot is embedded as a floating widget on the existing website and fully containerized for on-premise or cloud deployment.</p>
+
+  <h2>1.2 Why This Solution &amp; Project Goals</h2>
+  <p>Website visitors expect conversational interfaces that interpret natural language and deliver concise answers, rather than manually curated FAQs. The chatbot dynamically retrieves relevant content and generates human-like, grounded responses. Business advantages include reduced support workload, higher engagement, automatic alignment with website updates (no retraining needed), and a scalable foundation for dashboards and analytics.</p>
+  <p>Core project goals: deliver 24/7 conversational assistance; automate common inquiries for sales/support; increase engagement and conversion by guiding users to relevant pages; ensure high accuracy grounded strictly in approved content; and establish an extensible AI platform.</p>
+
+  <h2>1.3 Key Features</h2>
+  <ul>
+    <li><strong>Semantic Search</strong> — understands intent beyond exact keyword matching.</li>
+    <li><strong>Context-Aware Answering</strong> — retrieves relevant chunks before generating a response.</li>
+    <li><strong>Source Citations</strong> — direct page references for transparent verification.</li>
+    <li><strong>Session-Based Memory</strong> — maintains context across follow-up questions.</li>
+    <li><strong>Fallback Handling</strong> — politely declines off-topic queries and redirects to contact channels.</li>
+    <li><strong>Embeddable UI Widget</strong> — floating chat interface across all website pages.</li>
+  </ul>
+
+  <h2>1.4 Scope</h2>
+  <table class="spec"><tr><th style="width:50%">In Scope</th><th style="width:50%">Out of Scope</th></tr>
+  <tr><td>Company information, AI/Mobile/Web Development, IoT, Blockchain, Cloud, UI/UX, Case Studies, Blogs, Careers, Contact, Technologies, FAQs</td>
+  <td>Personal opinions, medical/legal/financial advice, current news, general internet search, information unrelated to Theta Technolabs</td></tr></table>
+
+  <h2>1.5 High-Level Solution</h2>
+  <p>For every query, the chatbot executes four steps: <strong>(1) User Query Processing</strong> — validates natural language input; <strong>(2) Semantic Knowledge Retrieval</strong> — searches the vector database for relevant chunks; <strong>(3) Contextual Prompt Construction</strong> — injects retrieved content and guardrails into a structured prompt; <strong>(4) Grounded Response Delivery</strong> — returns a concise, source-referenced answer.</p>
+  <div class="callout"><span class="lbl">EXAMPLE INTERACTION</span><strong>Visitor:</strong> "Do you develop AI Agents?"<br><strong>Chatbot:</strong> "Yes. Theta Technolabs develops custom AI agents, conversational AI solutions, LLM applications, and intelligent automation systems tailored to business needs." — with a link to the AI Development Services page.</div>
+</div>
+
+<!-- 02 SOLUTION ARCHITECTURE -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 02 — SOLUTION ARCHITECTURE</div>
+  <h1 class="section-title">2. Solution Architecture &amp; RAG Approach</h1>
+
+  <h2>2.1 Overview</h2>
+  <p>The chatbot dynamically retrieves relevant website content and supplies it as context to the LLM, rather than storing predefined Q&amp;A pairs or training a custom model. Five modular stages make up the architecture: <strong>Knowledge Acquisition</strong> (content collected and prepared), <strong>Knowledge Storage</strong> (indexed in a vector database), <strong>Query Processing</strong> (user questions analyzed and matched), <strong>Response Generation</strong> (context + query sent to the LLM), and <strong>Response Delivery</strong> (answer returned via the widget). Separating knowledge storage from language generation lets content update independently of the model.</p>
+
+  <h2>2.2 Why Retrieval-Augmented Generation?</h2>
+  <table class="spec"><tr><th>Approach</th><th>Limitation</th></tr>
+  <tr><td>Rule-Based Chatbot</td><td>Difficult to maintain, poor scalability</td></tr>
+  <tr><td>FAQ Matching</td><td>Cannot answer complex or unseen questions</td></tr>
+  <tr><td>Fine-Tuned LLM</td><td>Expensive, requires retraining on every content change</td></tr>
+  <tr><td><strong>RAG (Selected)</strong></td><td>Requires a retrieval pipeline and vector database — accepted trade-off for accuracy and maintainability</td></tr></table>
+  <div class="decision"><span class="lbl">WHY RAG?</span>The website is a single source of truth that evolves continuously; fine-tuning on every change would add unnecessary cost and operational overhead. RAG separates knowledge from generation — content is re-indexed as it changes, with no LLM retraining — improving accuracy, maintainability, and provider flexibility.</div>
+
+  <h2>2.3 System Workflow</h2>
+  {{DIAGRAM_WORKFLOW}}
+  <p>The pipeline runs in three phases: <strong>Query Processing</strong> converts the input into embeddings; <strong>Knowledge Retrieval</strong> searches the vector database by semantic similarity; <strong>Response Generation</strong> combines retrieved knowledge with the query to produce a grounded answer via the LLM.</p>
+
+  <h2>2.4 Key Design Decisions</h2>
+  <table class="spec"><tr><th>Decision</th><th>Rationale</th></tr>
+  <tr><td>Website as primary knowledge base</td><td>Keeps responses aligned with official company information</td></tr>
+  <tr><td>RAG instead of fine-tuning</td><td>Simplifies updates, reduces operational cost</td></tr>
+  <tr><td>FastAPI backend</td><td>High-performance async handling, strong AI ecosystem</td></tr>
+  <tr><td>Gemini as initial LLM</td><td>Cost-effective with strong reasoning for MVP</td></tr>
+  <tr><td>Modular architecture</td><td>LLM, vector database, or frontend replaceable independently</td></tr>
+  <tr><td>Docker deployment</td><td>Simplifies deployment, portability, on-premise hosting</td></tr>
+  <tr><td>Optional PostgreSQL dashboard</td><td>Enables analytics without affecting core chatbot function</td></tr></table>
+</div>
+
+<!-- 03 KNOWLEDGE PIPELINE -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 03 — KNOWLEDGE MANAGEMENT PIPELINE</div>
+  <h1 class="section-title">3. Knowledge Management Pipeline</h1>
+
+  <h2>3.1 Content Acquisition &amp; Cleaning</h2>
+  <p>The chatbot is grounded exclusively in publicly available Theta Technolabs website content: Home, About, Services, Technologies, Industry Solutions, Portfolio/Case Studies, Blogs, Careers, and Contact/FAQ pages. Privacy policies, cookie notices, and legal disclaimers are excluded from indexing.</p>
+  <p>Before indexing, content passes through a preprocessing pipeline: HTML parsing and structured text extraction; removal of navigation, headers/footers, cookie banners, and script/style elements; de-duplication and whitespace normalization; preservation of headings and document hierarchy; metadata extraction (page title, URL, section); and validation to discard empty or low-quality content.</p>
+
+  <h2>3.2 Content Chunking</h2>
+  <p>Webpages are split using a <strong>Sliding Window Overlap Chunking Strategy</strong> — a <strong>500-token baseline</strong> with <strong>50–100 token overlap</strong>, adjustable at runtime by document type and density. The strategy preserves paragraph/sentence boundaries and keeps headings attached to their body text, with URL, page title, section, and chunk index stored as metadata on every vector record. This improves retrieval precision by returning only the relevant section rather than an entire page.</p>
+
+  <h2>3.3 Embedding Generation</h2>
+  <p>Each chunk is converted into a numerical vector embedding that captures semantic meaning rather than exact wording — so "Do you build AI chatbots?" correctly matches content describing "intelligent conversational AI solutions" despite different phrasing.</p>
+
+  <h2>3.4 Knowledge Storage</h2>
+  <table class="spec"><tr><th>Requirement Scope</th><th>Recommended Architecture</th><th>Rationale</th></tr>
+  <tr><td>Knowledge retrieval only</td><td><strong>Qdrant</strong> (dedicated vector DB)</td><td>Lightweight, purpose-built for high-speed semantic search with minimal infrastructure overhead. Limitation: no relational storage — a separate DB is needed for logs/analytics.</td></tr>
+  <tr><td>Retrieval + logging, analytics, dashboard</td><td><strong>PostgreSQL + pgvector</strong> (unified DB)</td><td>Stores relational and vector data in one system, enabling analytics/reporting and enterprise dashboards without a second database. Trade-off: higher resource demands and more admin overhead than Qdrant alone.</td></tr></table>
+
+  <h2>3.5 Knowledge Synchronization</h2>
+  <p>Since content changes only when pages are published or updated, scheduled re-crawling would waste compute reprocessing unchanged data. The chatbot instead uses <strong>Event-Driven Incremental Synchronization</strong>: whenever content is created, modified, or deleted, only the affected pages are re-cleaned, re-chunked, re-embedded, and updated in the vector database — reducing processing time and embedding costs while keeping the knowledge base current.</p>
+  <table class="spec"><tr><th>Strategy</th><th>Trade-off</th></tr>
+  <tr><td>Manual Refresh</td><td>Simple but time-consuming, depends on manual action</td></tr>
+  <tr><td>Scheduled Synchronization</td><td>Automated but reprocesses unchanged content unnecessarily</td></tr>
+  <tr><td><strong>Event-Driven Incremental (Recommended)</strong></td><td>Efficient and fast; requires CMS/publishing-workflow integration</td></tr></table>
+
+  <h2>3.6 Metadata &amp; Key Design Decisions</h2>
+  <p>Every chunk stores: Chunk ID, Page URL, Page Title, Section Heading, Content Category, Last Indexed Date, Version, and Vector ID — enabling source citations, versioning, analytics, and auditing.</p>
+  <table class="spec"><tr><th>Decision</th><th>Justification</th></tr>
+  <tr><td>Semantic chunking with overlap</td><td>Improves retrieval precision and contextual relevance</td></tr>
+  <tr><td>Event-driven sync</td><td>Updates only modified content, reducing overhead</td></tr>
+  <tr><td>Qdrant for lightweight / PostgreSQL+pgvector for enterprise</td><td>Matches infrastructure to actual analytics and dashboard needs</td></tr></table>
+</div>
+
+<!-- 04 RETRIEVAL & RESPONSE -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 04 — RETRIEVAL &amp; RESPONSE GENERATION</div>
+  <h1 class="section-title">4. Retrieval &amp; Response Generation</h1>
+
+  <h2>4.1 Overview &amp; Request Sequence</h2>
+  <p>This pipeline transforms a user's question into a grounded, accurate response. Only retrieved knowledge-base content is supplied to the LLM — the pipeline covers query reception, validation, embedding, semantic retrieval, context construction, prompt engineering, generation, response validation, and delivery.</p>
+  {{DIAGRAM_SEQUENCE}}
+
+  <h2>4.2 Query Reception &amp; Embedding</h2>
+  <p>The frontend sends the query via REST to FastAPI, which validates it (empty-message checks, max length, unsupported characters, security filtering, rate limiting) before converting it into a semantic vector using the embedding model — capturing meaning and intent rather than literal keywords.</p>
+
+  <h2>4.3 Semantic Retrieval</h2>
+  <table class="spec"><tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Similarity Metric</td><td>Cosine Similarity</td></tr>
+  <tr><td>Retrieved Chunks (Top-K)</td><td>Top 3 to 5</td></tr>
+  <tr><td>Minimum Similarity Threshold</td><td>0.60 (strict cutoff)</td></tr></table>
+  <div class="decision"><span class="lbl">RETRIEVAL PARAMETER RATIONALE</span><strong>Top-K (3–5):</strong> more chunks inflates cost and dilutes LLM focus ("lost in the middle"); five balances context against noise. <strong>Threshold (0.60):</strong> matches below this are mathematically distant from the knowledge base and are treated as unsupported — the first line of defense against hallucination and out-of-scope queries.</div>
+
+  <h2>4.4 Prompt Engineering &amp; Context Construction</h2>
+  <p>The backend assembles a structured context (retrieved content, source page info, user question, session history if enabled, system instructions) into a prompt ordered as: <strong>1)</strong> System Instructions, <strong>2)</strong> Retrieved Context, <strong>3)</strong> Conversation Context (optional), <strong>4)</strong> User Question. The system prompt instructs the LLM to answer only from provided content, avoid unsupported claims or speculation, state clearly when information is unavailable, stay concise and professional, and prefer Theta's official terminology.</p>
+
+  <h2>4.5 Conversation Memory</h2>
+  <p><strong>Session-Based Conversation Memory</strong> is the recommended approach — the chatbot remembers prior messages for the active browser session only, discarding history when the session expires. This supports follow-up questions and better contextual understanding at the cost of slightly higher token usage, compared to a simpler stateless mode that cannot handle follow-ups but uses fewer tokens and no session storage.</p>
+
+  <h2>4.6 Response Validation &amp; Delivery</h2>
+  <p>Before returning an answer, the backend evaluates retrieval confidence, context relevance, and completeness (thresholds detailed in Section 9.5):</p>
+  <table class="spec"><tr><th>Confidence Level</th><th>System Behavior</th></tr>
+  <tr><td>High</td><td>Return the answer normally</td></tr>
+  <tr><td>Medium</td><td>Return the answer with a related page reference</td></tr>
+  <tr><td>Low</td><td>State that sufficient information was not found; recommend contacting Theta Technolabs</td></tr>
+  <tr><td>Out of Scope</td><td>Explain the chatbot's scope and redirect to Contact/Inquiry page</td></tr></table>
+  <p>The validated response is returned to the frontend as JSON containing the answer, optional source reference, feedback controls (future), and a contact/inquiry action when required.</p>
+
+  <h2>4.7 Key Design Decisions</h2>
+  <table class="spec"><tr><th>Decision</th><th>Justification</th></tr>
+  <tr><td>Semantic search over keyword search</td><td>Better natural-language understanding</td></tr>
+  <tr><td>Session-based memory</td><td>Supports follow-ups without permanent storage</td></tr>
+  <tr><td>Confidence-based validation</td><td>Prevents unsupported or misleading answers</td></tr>
+  <tr><td>Provider-independent LLM layer</td><td>Enables migration between Gemini and OpenAI with minimal effort</td></tr></table>
+</div>
+
+<!-- 05 SYSTEM ARCHITECTURE -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 05 — SYSTEM ARCHITECTURE</div>
+  <h1 class="section-title">5. System Architecture</h1>
+
+  <h2>5.1 Architecture Layers</h2>
+  <p>The system separates concerns into six layers, each independently upgradeable: <strong>Presentation</strong> (embedded JS widget on the existing Webflow site — captures input, displays responses/sources/fallbacks, manages session IDs); <strong>API</strong> (FastAPI REST endpoints — validates requests, routes to the AI pipeline, returns structured JSON); <strong>Business Logic</strong> (orchestrates validation, session management, prompting, error handling, logging); <strong>AI &amp; Retrieval</strong> (embedding, semantic search, context construction, prompt engineering, confidence validation); <strong>Data</strong> (knowledge base and optional analytics store); and <strong>Infrastructure</strong> (Docker containers for portability and on-premise hosting).</p>
+
+  <h2>5.2 Component Communication</h2>
+  {{DIAGRAM_COMPONENTS}}
+  <p>Components communicate in a strictly sequential flow: the widget passes queries to FastAPI, which retrieves semantically similar vectors, constructs a prompt, invokes the LLM, validates the response, and returns the answer with source citations.</p>
+
+  <h2>5.3 LLM Abstraction Layer</h2>
+  <p>The AI layer is provider-independent. <strong>Primary: Google Gemini</strong> — lower operational cost, strong reasoning, large context window, suited to MVP deployment. <strong>Future option: OpenAI</strong>, swappable without architectural change if testing shows a need for higher reasoning quality. A common interface abstracts the provider:</p>
+  <div class="callout"><span class="lbl">LLM ABSTRACTION INTERFACE (PSEUDOCODE)</span><span class="mono">class BaseLLMProvider(ABC):<br>&nbsp;&nbsp;@abstractmethod<br>&nbsp;&nbsp;async def generate_response(self, prompt, context) -&gt; str:<br>&nbsp;&nbsp;&nbsp;&nbsp;"""Generates a grounded response using the provided context."""</span></div>
+
+  <h2>5.4 Data &amp; Infrastructure Layer</h2>
+  <p><strong>Architecture A (Lightweight):</strong> Qdrant only — stores embeddings, performs similarity search, returns relevant content. Recommended when only chatbot functionality is required.<br><strong>Architecture B (Enterprise):</strong> PostgreSQL + pgvector — stores embeddings plus conversation logs, feedback, API usage, token consumption, dashboard metrics, and configuration. Recommended when an admin dashboard and reporting are required.</p>
+  <p>The entire solution is containerized with Docker for consistent environments across development, testing, and production. Containers may include the FastAPI app, Nginx reverse proxy, Qdrant or PostgreSQL+pgvector, and pgAdmin (enterprise). Deployment defaults to an on-premise Docker environment for infrastructure control, data management, and lower long-term cost, with the same architecture portable to the cloud if scalability demands increase.</p>
+
+  <h2>5.5 Scalability &amp; Key Design Decisions</h2>
+  <p>Possible future extensions include an admin dashboard, CRM integration, multilingual support, a voice-based chatbot, multi-website knowledge bases, document upload support, hybrid (semantic + keyword) search, response caching/Redis, and multiple LLM providers — all addable without major redesign due to the layered, modular architecture.</p>
+  <table class="spec"><tr><th>Decision</th><th>Justification</th></tr>
+  <tr><td>Modular layered architecture</td><td>Simplifies maintenance and future enhancement</td></tr>
+  <tr><td>Existing website integration</td><td>Eliminates the need to rebuild the frontend</td></tr>
+  <tr><td>On-premise Docker deployment</td><td>Infrastructure control with lower long-term operational cost</td></tr>
+  <tr><td>Dual database strategy</td><td>Matches lightweight or enterprise deployments to actual requirements</td></tr></table>
+</div>
+
+<!-- 06 TECH STACK -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 06 — TECHNOLOGY STACK</div>
+  <h1 class="section-title">6. Technology Stack &amp; Design Rationale</h1>
+
+  <h2>6.1 Selection Criteria</h2>
+  <p>The stack was chosen against four criteria: <strong>Cost</strong> (minimize development, deployment, and operational expense), <strong>Control</strong> (retain ownership of application data and infrastructure), <strong>Development Velocity</strong> (rapid development, testing, and deployment), and <strong>Scalability</strong> (support future multilingual, analytics, and traffic growth without major redesign). The architecture is organized into four independent layers — Frontend, Backend, AI &amp; Knowledge Retrieval, and Infrastructure — reusing the existing Webflow site and keeping infrastructure lightweight and cost-effective.</p>
+
+  <h2>6.2 Technology Stack Overview</h2>
+  <table class="spec"><tr><th>Layer</th><th>Technology</th><th>Role</th></tr>
+  <tr><td>Chat Interface</td><td>Custom JavaScript Widget</td><td>UI, communicates with backend via REST — lightweight, framework-agnostic</td></tr>
+  <tr><td>Language / Backend</td><td>Python + FastAPI</td><td>Async REST APIs, AI orchestration, business logic; rich AI ecosystem</td></tr>
+  <tr><td>AI Model</td><td>Google Gemini / OpenAI</td><td>Natural language response generation; swappable with minimal code change</td></tr>
+  <tr><td>Embedding Model</td><td>Sentence Transformers</td><td>Local vector generation — no per-token API cost, works offline</td></tr>
+  <tr><td>Vector Store</td><td>Qdrant or PostgreSQL + pgvector</td><td>Semantic search for RAG (see 3.4 for selection logic)</td></tr>
+  <tr><td>Knowledge Base</td><td>Website pages + Markdown docs</td><td>Extendable source content for retrieval</td></tr>
+  <tr><td>Containerization</td><td>Docker &amp; Docker Compose</td><td>Consistent environments dev → staging → production</td></tr>
+  <tr><td>Reverse Proxy</td><td>Nginx</td><td>HTTPS termination, routing, future load balancing</td></tr>
+  <tr><td>Hosting</td><td>Linux Server (On-Premise)</td><td>Secure, controlled, cost-effective within company infrastructure</td></tr></table>
+
+  <h2>6.3 Architecture Decisions</h2>
+  <div class="adr"><div class="adr-head">ADR — Backend Framework: FastAPI</div><div class="adr-body">
+    <div class="adr-row"><span class="k">ALTERNATIVES</span>Flask (sync by default), Django (too much overhead), Node.js (thinner AI ecosystem), Java/.NET (slower AI iteration)</div>
+    <div class="adr-row"><span class="k">RATIONALE</span>The workload is I/O-bound; FastAPI's async handling supports many concurrent chats, integrates natively with Python's AI ecosystem, and auto-generates API docs.</div>
+    <div class="adr-row"><span class="k">IMPACT</span><span class="impact-pos">Positive:</span> high performance, one language across ML and API. <span class="impact-neg">Trade-off:</span> requires team familiarity with async Python.</div>
+  </div></div>
+  <div class="adr"><div class="adr-head">ADR — Primary LLM: Google Gemini</div><div class="adr-body">
+    <div class="adr-row"><span class="k">ALTERNATIVES</span>OpenAI (fallback for complex reasoning), self-hosted open-source models (high operational overhead)</div>
+    <div class="adr-row"><span class="k">RATIONALE</span>Gemini balances cost, context window, and reasoning quality for RAG; keeping the provider as a config value avoids lock-in, with a data-driven fallback to OpenAI when Gemini fails the quality bar.</div>
+    <div class="adr-row"><span class="k">IMPACT</span><span class="impact-pos">Positive:</span> cost-effective, easy to swap providers. <span class="impact-neg">Trade-off:</span> maintaining multiple LLM API integrations.</div>
+  </div></div>
+  <div class="adr"><div class="adr-head">ADR — Local Embeddings: Sentence Transformers</div><div class="adr-body">
+    <div class="adr-row"><span class="k">ALTERNATIVES</span>OpenAI/Gemini embedding APIs (recurring per-token cost)</div>
+    <div class="adr-row"><span class="k">RATIONALE</span>Local generation eliminates per-token cost, works offline, keeps data in-house, and guarantees query/document vectors share the same semantic space.</div>
+    <div class="adr-row"><span class="k">IMPACT</span><span class="impact-pos">Positive:</span> zero embedding API cost, strong data privacy. <span class="impact-neg">Trade-off:</span> consumes local compute.</div>
+  </div></div>
+  <div class="adr"><div class="adr-head">ADR — Deployment: On-Premise, With a Documented Exit Ramp</div><div class="adr-body">
+    <div class="adr-row"><span class="k">ALTERNATIVES</span>Managed cloud services (elastic scale, ongoing recurring cost)</div>
+    <div class="adr-row"><span class="k">RATIONALE</span>On-premise avoids recurring cloud bills for a steady, non-spiky workload; server management is a one-time setup cost. The same Docker architecture can shift to cloud later without redesign.</div>
+    <div class="adr-row"><span class="k">IMPACT</span><span class="impact-pos">Positive:</span> lower long-term cost, maximum data control. <span class="impact-neg">Trade-off:</span> requires internal server management.</div>
+  </div></div>
+  <p>Vector storage (Qdrant vs. PostgreSQL+pgvector) follows the same fork described in Section 3.4, and applies consistently to hosting and monitoring choices. Every service (FastAPI, vector store, Nginx) ships as a container defined once in <span class="mono">docker-compose.yml</span>, giving identical dev/staging/production environments, one-command startup, and simple rollback by pinning image tags.</p>
+
+  <h2>6.4 APIs Used</h2>
+  <table class="spec"><tr><th>API</th><th>Type</th><th>Purpose</th></tr>
+  <tr><td><strong>/api/chat</strong></td><td>REST (FastAPI)</td><td>Only endpoint the widget calls — accepts a message, returns answer + sources</td></tr>
+  <tr><td><strong>Gemini API</strong></td><td>External</td><td>Primary LLM — generates the response from the assembled prompt</td></tr>
+  <tr><td><strong>OpenAI API</strong> (optional)</td><td>External</td><td>Fallback LLM, used case-by-case when Gemini fails the quality bar</td></tr>
+  <tr><td><strong>Qdrant REST API</strong></td><td>Internal (self-hosted)</td><td>Vector storage and similarity search — called only by the backend</td></tr></table>
+
+  <h2>6.5 Frontend Integration Approach</h2>
+  <p>Since the website is built on Webflow, the chatbot is delivered as a lightweight embedded JavaScript widget — a single <span class="mono">&lt;script&gt;</span> tag, with no changes to the existing structure or design. This preserves the current content-management workflow, allows independent styling of the chatbot, and permits future updates without touching the website itself.</p>
+</div>
+
+<!-- 07 API DESIGN -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 07 — API DESIGN</div>
+  <h1 class="section-title">7. API Design &amp; Communication Flow</h1>
+
+  <h2>7.1 Overview</h2>
+  <p>The chatbot widget communicates with FastAPI over secure HTTPS REST endpoints using JSON payloads — lightweight, language-independent, and easy to integrate. FastAPI validates requests, retrieves knowledge, communicates with the LLM, and returns structured responses. Flow: <span class="mono">Widget → REST API → Retrieval Engine → Vector DB → Prompt Builder → Gemini API → JSON Response → Widget</span>.</p>
+
+  <h2>7.2 Representative Endpoints</h2>
+  <p><em>Note: representative examples — actual endpoints and payloads may expand as the backend grows.</em></p>
+  <div class="jblock"><div class="jhead">PROPOSED EXAMPLE ENDPOINTS</div><div class="jbody"><span class="jkey">POST /api/v1/chat</span> — <span class="jval">process user queries, generate chatbot responses</span>
+<span class="jkey">POST /api/v1/feedback</span> — <span class="jval">submit helpful/unhelpful feedback</span>
+<span class="jkey">GET  /api/v1/health</span> — <span class="jval">health check for monitoring/deployment</span>
+<span class="jkey">POST /api/v1/sync</span> — <span class="jval">trigger knowledge base sync (admin)</span>
+<span class="jkey">GET  /api/v1/analytics</span> — <span class="jval">retrieve usage/operational stats (admin)</span>
+<span class="jkey">GET  /api/v1/config</span> — <span class="jval">retrieve chatbot configuration / feature flags</span></div></div>
+
+  <h2>7.3 Request &amp; Response Schema</h2>
+  <p><strong>POST /api/v1/chat</strong> request body: <span class="mono">session_id</span> (string, required — browser session identifier), <span class="mono">message</span> (string, required — user's question), <span class="mono">timestamp</span> (ISO 8601, optional).</p>
+  <div class="jblock"><div class="jhead">SAMPLE SUCCESS RESPONSE — 200 OK</div><div class="jbody">{
+  <span class="jkey">"status"</span>: <span class="jval">"success"</span>,
+  <span class="jkey">"session_id"</span>: <span class="jval">"c9a3d9b7-f21a-4b8e"</span>,
+  <span class="jkey">"response"</span>: <span class="jval">"Theta Technolabs provides AI Development, Machine Learning..."</span>,
+  <span class="jkey">"source"</span>: <span class="jval">[{"title": "AI Development Services", "url": "..."}]</span>,
+  <span class="jkey">"confidence"</span>: <span class="jval">"High"</span>,
+  <span class="jkey">"processing_time_ms"</span>: <span class="jval">842</span>
+}</div></div>
+  <p>Success responses always include status, echoed session ID, the generated answer, optional source array, a confidence classification (High/Medium/Low), and processing time — improving transparency and letting users verify answers on the website.</p>
+
+  <h2>7.4 Error Handling</h2>
+  <div class="jblock"><div class="jhead">SAMPLE ERROR RESPONSE — 404 / 500</div><div class="jbody">{
+  <span class="jkey">"status"</span>: <span class="jval">"error"</span>,
+  <span class="jkey">"error_code"</span>: <span class="jval">"KB_404"</span>,
+  <span class="jkey">"message"</span>: <span class="jval">"Relevant information could not be found within the current knowledge base."</span>
+}</div></div>
+  <table class="spec"><tr><th>Error Code</th><th>Meaning</th></tr>
+  <tr><td>INVALID_REQUEST</td><td>Invalid or incomplete request payload</td></tr>
+  <tr><td>SESSION_EXPIRED</td><td>Session is no longer valid</td></tr>
+  <tr><td>KB_404</td><td>No relevant knowledge found</td></tr>
+  <tr><td>LLM_TIMEOUT</td><td>Language model request timed out</td></tr>
+  <tr><td>API_LIMIT</td><td>API rate limit exceeded</td></tr>
+  <tr><td>INTERNAL_ERROR</td><td>Unexpected server error</td></tr></table>
+  <p>HTTP status codes follow standard conventions: 200 OK, 400 Bad Request, 404 Not Found, 429 Too Many Requests, 500 Internal Server Error, 503 Service Unavailable (LLM/DB temporarily down).</p>
+
+  <h2>7.5 Session Management &amp; Security</h2>
+  <p>No authentication or PII is required; each visitor receives a temporary session identifier enabling follow-up context, conversation memory, and optional analytics. API protections include HTTPS, input validation/sanitization, max message length, CORS configuration, environment-based API key management, and secure server-side LLM communication — credentials are never exposed to the frontend. All public endpoints use URI-based versioning (e.g. <span class="mono">/api/v1/chat</span>) to allow future changes without breaking existing integrations.</p>
+</div>
+
+<!-- 08 FRONTEND -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 08 — FRONTEND INTEGRATION</div>
+  <h1 class="section-title">8. Frontend Integration</h1>
+
+  <h2>8.1 Widget Architecture</h2>
+  <p>The chatbot is embedded into the existing Webflow website via a lightweight JavaScript widget communicating with FastAPI over REST — no AI logic lives in the frontend; all retrieval, prompting, and generation happen on the backend.</p>
+  <table class="spec"><tr><th>Component</th><th>Responsibilities</th></tr>
+  <tr><td>Chat Launcher</td><td>Floating action button on every page; opens/closes the widget, preserves session state</td></tr>
+  <tr><td>Chat Window</td><td>Conversation history, input, typing indicators, AI responses, source references, fallback options</td></tr>
+  <tr><td>API Communication Layer</td><td>Sends REST requests, receives JSON, handles network failures, retries (future)</td></tr></table>
+  <p>The launcher can sit in the main navigation ("Chat with AI") or as a persistent floating button in the bottom-right corner.</p>
+
+  <h2>8.2 User Journey &amp; UI States</h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><span class="t">Discover</span><span class="d">Visitor opens the website; the chatbot launcher appears bottom-right.</span></div>
+    <div class="step"><span class="n">2</span><span class="t">Open</span><span class="d">Clicking the icon shows a welcome message: "Hello! 👋 I'm the Theta AI Assistant. How can I help you today?"</span></div>
+    <div class="step"><span class="n">3</span><span class="t">Ask</span><span class="d">The visitor enters a question; the frontend sends it to the backend.</span></div>
+    <div class="step"><span class="n">4</span><span class="t">Wait</span><span class="d">A typing indicator displays while the backend processes the request.</span></div>
+    <div class="step"><span class="n">5</span><span class="t">Respond</span><span class="d">The AI-generated answer displays, with a related page reference if available.</span></div>
+    <div class="step"><span class="n">6</span><span class="t">Continue</span><span class="d">The user continues the conversation or closes the chatbot.</span></div>
+  </div>
+  <p>The widget supports distinct states — Welcome, Idle, Typing, Loading, Response, Error, No Result, and Out of Scope — each giving clear visual feedback.</p>
+
+  <h2>8.3 Fallback Experience</h2>
+  <div class="callout"><span class="lbl">LOW CONFIDENCE</span>"I couldn't find enough verified information to answer your question accurately. You may find more details on our website or contact our team for further assistance." — Actions: View Related Services · Contact Us · Submit Inquiry</div>
+  <div class="callout"><span class="lbl">OUT OF SCOPE</span>"I'm designed to answer questions related to Theta Technolabs, including our services, technologies, portfolio, careers, and company information. I can't assist with unrelated topics." — Actions: Visit Services · Contact Sales · Submit Inquiry</div>
+
+  <h2>8.4 Responsive Design, Accessibility &amp; Key Decisions</h2>
+  <p>The interface targets a consistent experience across desktop, tablet, and mobile with responsive layout, scrollable history, touch-friendly controls, and an adaptive window size. Accessibility practices include keyboard navigation, screen reader compatibility, sufficient color contrast, readable typography, visible focus indicators, and accessible button labels. Future enhancements under consideration: voice interaction, file upload, multi-language interface, rich response cards, appointment booking, conversation export, and suggested questions on load.</p>
+  <table class="spec"><tr><th>Decision</th><th>Justification</th></tr>
+  <tr><td>Embedded JS widget</td><td>Seamless integration without redeveloping the website</td></tr>
+  <tr><td>Backend-driven AI processing</td><td>Keeps the frontend lightweight and secure</td></tr>
+  <tr><td>Confidence-based fallback</td><td>Prevents misleading responses, improves trust</td></tr></table>
+</div>
+
+<!-- 09 GUARDRAILS -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 09 — AI GUARDRAILS STRATEGY</div>
+  <h1 class="section-title">9. AI Guardrails Strategy</h1>
+
+  <h2>9.1 Guardrail Workflow</h2>
+  <p>Every response passes through multiple validation steps before reaching the user, ensuring answers are grounded in the approved knowledge base and preventing hallucinations, prompt injection, and out-of-scope replies.</p>
+  {{DIAGRAM_GUARDRAIL}}
+
+  <h2>9.2 Scope &amp; Knowledge Base Guardrails</h2>
+  <p>The chatbot only answers questions about Theta Technolabs — company information, services, technologies, AI solutions, mobile/web development, careers, contact info, blogs, and case studies. Everything else is treated as out-of-scope.</p>
+  <div class="callout"><span class="lbl">EXAMPLE</span><strong>User:</strong> Who won the FIFA World Cup?<br><strong>Bot:</strong> "I'm designed to answer questions related to Theta Technolabs and its services. For information outside this scope, please refer to an appropriate external source."</div>
+  <p>Every response must be based on retrieved knowledge-base content; the chatbot never attempts to guess an answer when no relevant content is available.</p>
+
+  <h2>9.3 Confidence Guardrail</h2>
+  <table class="spec"><tr><th>Similarity Score</th><th>Action</th></tr>
+  <tr><td>≥ 0.80</td><td>Generate a confident response using the retrieved context</td></tr>
+  <tr><td>0.60 – 0.79</td><td>Generate a response while limiting unsupported details</td></tr>
+  <tr><td>&lt; 0.60</td><td>Treat as unsupported; return a fallback response</td></tr></table>
+  <p>This directly maps to the response-validation behavior described in Section 4.6.</p>
+
+  <h2>9.4 Prompt &amp; Hallucination Guardrails</h2>
+  <div class="callout"><span class="lbl">EXAMPLE SYSTEM PROMPT</span>"You are the official Theta Technolabs assistant. Answer only using the provided context. Do not invent information. Do not answer unrelated questions. If the requested information is unavailable, politely state that you cannot find it and recommend visiting the official website."</div>
+  <p>The model must never fabricate information (pricing, commitments, unlisted services) that is not in the approved knowledge base — a standard fallback message is returned instead. Responses follow a consistent structure: direct answer, concise explanation, and a link to the relevant webpage (target 150–250 words).</p>
+
+  <h2>9.5 Security &amp; Fallback Strategy</h2>
+  <p>The chatbot safely handles attempts to manipulate its behavior or expose system internals (prompt injection, API keys, system instructions), and politely declines unrelated topics (sports, weather, politics, general coding) with a standard scope clarification.</p>
+  {{DIAGRAM_FALLBACK}}
+  <p>Benefits: responses stay grounded in approved information; hallucinations and prompt-injection risk are reduced; communication stays consistent and verifiable; and out-of-scope or low-confidence queries get predictable fallback handling.</p>
+</div>
+
+<!-- 10 DASHBOARD -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 10 — DASHBOARD &amp; ANALYTICS</div>
+  <h1 class="section-title">10. Operational Dashboard &amp; Analytics</h1>
+
+  <h2>10.1 Overview &amp; Architecture</h2>
+  <p>An <strong>optional</strong> Operational Dashboard gives administrators visibility into usage, AI performance, cost, and interactions — recommended for production deployments needing long-term monitoring and business insight. When enabled, PostgreSQL + pgvector is the primary database, storing both embeddings and operational data (conversation metadata, feedback, API requests, token usage, response time, error logs, sync history, dashboard config) in a single platform.</p>
+
+  <h2>10.2 Dashboard Modules</h2>
+  <div class="callout"><span class="lbl">A. CONVERSATION ANALYTICS</span>Total conversations, volume trends, average length/response time, active sessions — measures adoption and engagement.</div>
+  <div class="callout"><span class="lbl">B. KNOWLEDGE ANALYTICS</span>Most accessed pages/services, FAQs, low-confidence and unanswered queries, out-of-scope requests — flags content gaps.</div>
+  <div class="callout"><span class="lbl">C. AI USAGE ANALYTICS</span>API requests, input/output/total tokens, estimated cost, processing time, active LLM provider — controls operational expense.</div>
+  <div class="callout"><span class="lbl">D. USER FEEDBACK ANALYTICS</span>Helpful/Not Helpful ratios, trends, comments, most disliked responses — supports continuous quality improvement.</div>
+  <div class="callout"><span class="lbl">E. SYSTEM HEALTH MONITORING</span>API availability, error rate, latency, sync status, container health, DB connectivity, storage utilization.</div>
+
+  <h2>10.3 Database Design &amp; Example KPIs</h2>
+  <table class="spec"><tr><th>Table</th><th>Purpose</th></tr>
+  <tr><td>conversations</td><td>Session-level conversation information</td></tr>
+  <tr><td>messages</td><td>Individual chatbot and user messages</td></tr>
+  <tr><td>feedback</td><td>User feedback records</td></tr>
+  <tr><td>api_usage</td><td>API request statistics and token usage</td></tr>
+  <tr><td>sync_history</td><td>Knowledge synchronization history</td></tr>
+  <tr><td>error_logs</td><td>Application and API errors</td></tr></table>
+  <p>Homepage KPIs: total conversations, messages today, average response time, knowledge coverage (% of queries answered from indexed content), API cost, positive feedback %, failed requests, and last synchronization timestamp.</p>
+
+  <h2>10.4 Availability &amp; Key Design Decisions</h2>
+  <table class="spec"><tr><th>Deployment</th><th>Dashboard Included</th></tr>
+  <tr><td>Lightweight (Qdrant)</td><td>Not included</td></tr>
+  <tr><td>Enterprise (PostgreSQL + pgvector)</td><td>Included</td></tr></table>
+  <p>Organizations needing only chatbot functionality can deploy without analytics and adopt the enterprise architecture later without changing the overall chatbot design. Future enhancements include real-time/interactive charts, geographic and device reports, CRM integration, lead-generation analytics, exports, email reports, and role-based access control.</p>
+</div>
+
+<!-- 11 SECURITY -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 11 — SECURITY &amp; BOT PREVENTION</div>
+  <h1 class="section-title">11. Security &amp; Bot Prevention</h1>
+
+  <h2>11.1 Security Objectives &amp; Communication Security</h2>
+  <p>Although the chatbot requires no authentication, it follows a <strong>defense-in-depth</strong> approach: protect backend services from unauthorized access, secure all inter-component communication, prevent public API abuse, protect AI provider credentials, maintain knowledge base integrity, and ensure reliable operation. All frontend-to-backend traffic uses HTTPS with automatic HTTP→HTTPS redirection.</p>
+
+  <h2>11.2 API &amp; Credential Security</h2>
+  <p>Public APIs apply request validation, input sanitization, maximum message length, request timeouts, rate limiting (production), CORS configuration, and versioning. Credentials for Gemini and OpenAI follow strict handling: stored in environment variables, never hardcoded, rotated periodically, permission-restricted where supported, and kept separate per environment (dev/test/prod) — all AI requests originate from the backend so credentials never reach the frontend.</p>
+
+  <h2>11.3 Privacy &amp; Logging</h2>
+  <p>No login or PII is required by default; only temporary session identifiers are used, expiring after inactivity (future CRM/forms integration would require a privacy review). Logs record API requests, processing time, errors, sync events, and AI provider status — but API keys, tokens, and confidential configuration values must never be written to logs.</p>
+
+  <h2>11.4 Security Risk Mitigation</h2>
+  <table class="spec"><tr><th>Risk</th><th>Mitigation</th></tr>
+  <tr><td>Prompt injection</td><td>Restrict responses to retrieved KB content; enforce system prompt rules</td></tr>
+  <tr><td>API abuse</td><td>Rate limiting and request validation</td></tr>
+  <tr><td>API key exposure</td><td>Server-side environment variables only</td></tr>
+  <tr><td>Malicious/invalid input</td><td>Sanitize and validate all input before processing</td></tr>
+  <tr><td>Hallucinated responses</td><td>RAG with confidence-based validation</td></tr>
+  <tr><td>Service outage</td><td>User-friendly fallback message; log incident for investigation</td></tr></table>
+
+  <h2>11.5 Bot Prevention &amp; CAPTCHA (Future Scope)</h2>
+  <p><em>Planned for a future release, not included in the initial deployment.</em> An invisible CAPTCHA (e.g., reCAPTCHA v3 or Cloudflare Turnstile) protects the AI provider budget from automated abuse: the widget silently generates a <span class="mono">captcha_token</span>, submitted with each chat request; FastAPI verifies it with the provider before invoking retrieval; a bot-like score returns <span class="mono">403 Forbidden</span> without ever calling the LLM, incurring zero API cost. As a second layer, IP-based rate limiting (e.g., max 20 messages per 10 minutes) guards against manual or distributed spam even if CAPTCHA is bypassed.</p>
+  <table class="spec"><tr><th>Decision</th><th>Justification</th></tr>
+  <tr><td>HTTPS everywhere</td><td>Protects data in transit</td></tr>
+  <tr><td>Backend-only AI communication</td><td>Prevents credential exposure to the client</td></tr>
+  <tr><td>Invisible CAPTCHA (future)</td><td>Protects API budget without harming UX</td></tr>
+  <tr><td>Temporary session identifiers</td><td>Conversational continuity without requiring authentication</td></tr></table>
+</div>
+
+<!-- 12 DEPLOYMENT -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 12 — DEPLOYMENT STRATEGY</div>
+  <h1 class="section-title">12. Deployment Strategy</h1>
+
+  <h2>12.1 Environments &amp; Containers</h2>
+  <p>The chatbot is containerized with Docker for consistent, portable deployment across three environments: <strong>Development</strong> (feature work, local testing), <strong>Testing/UAT</strong> (validation before release), and <strong>Production</strong> (live traffic). Initial hosting is on-premise for full control, predictable cost, and easier compliance, while remaining cloud-ready (AWS/Azure/GCP) with minimal changes if needed.</p>
+  <table class="spec"><tr><th>Container</th><th>Responsibility</th></tr>
+  <tr><td>Nginx</td><td>Reverse proxy, SSL termination, routing</td></tr>
+  <tr><td>FastAPI</td><td>REST APIs and chatbot business logic</td></tr>
+  <tr><td>Qdrant (Lightweight)</td><td>Vector storage and semantic search</td></tr>
+  <tr><td>PostgreSQL + pgvector (Enterprise)</td><td>Vector storage, analytics, operational data</td></tr>
+  <tr><td>pgAdmin (Optional)</td><td>PostgreSQL administration</td></tr></table>
+
+  <h2>12.2 Deployment Options</h2>
+  <div class="callout"><span class="lbl">OPTION A — LIGHTWEIGHT</span>FastAPI + Qdrant + Nginx + Docker. Best for minimal resources, fast setup, low maintenance, no conversation storage.</div>
+  <div class="callout"><span class="lbl">OPTION B — ENTERPRISE</span>Adds PostgreSQL + pgvector + pgAdmin for conversation analytics, token/cost tracking, feedback analysis, and an operational dashboard.</div>
+
+  <h2>12.3 Configuration, Backup &amp; Workflow</h2>
+  <p>All configuration — API keys, DB connection strings, LLM provider, ports, logging, session timeout — is externalized via environment variables, never hardcoded. Scheduled backups cover PostgreSQL/Qdrant data, config files, and source code, with periodic restore testing. Since the knowledge base derives from the live website, embeddings can be fully regenerated if lost — it is not a single point of failure.</p>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><span class="d">Pull the latest source code.</span></div>
+    <div class="step"><span class="n">2</span><span class="d">Update configuration files and environment variables.</span></div>
+    <div class="step"><span class="n">3</span><span class="d">Build Docker images and start with <span class="mono">docker compose up</span>.</span></div>
+    <div class="step"><span class="n">4</span><span class="d">Verify database and AI provider connectivity.</span></div>
+    <div class="step"><span class="n">5</span><span class="d">Run API health checks (<span class="mono">/api/v1/health</span>) and trigger knowledge sync.</span></div>
+    <div class="step"><span class="n">6</span><span class="d">Validate chatbot functionality end-to-end and release to production traffic.</span></div>
+  </div>
+</div>
+
+<!-- 13 MONITORING -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 13 — MONITORING &amp; LOGGING</div>
+  <h1 class="section-title">13. Monitoring &amp; Logging</h1>
+
+  <h2>13.1 Objectives &amp; Coverage</h2>
+  <p>Monitoring targets three areas — <strong>Application Health</strong>, <strong>AI Performance</strong>, and <strong>Knowledge Base Freshness</strong> — to ensure availability, catch issues early, measure response quality, track cost, and support troubleshooting.</p>
+
+  <h2>13.2 Metrics</h2>
+  <table class="spec"><tr><th>Category</th><th>Key Metrics</th></tr>
+  <tr><td>Application Health</td><td>API availability, response time, error rate, active sessions, request volume</td></tr>
+  <tr><td>AI Performance</td><td>Total AI requests, generation time, token consumption, estimated cost, retrieval confidence, provider utilization</td></tr>
+  <tr><td>Knowledge Base</td><td>Total indexed pages/chunks, last sync, failed syncs, knowledge version</td></tr></table>
+
+  <h2>13.3 Logging Strategy &amp; Key Decisions</h2>
+  <p>Logs capture API requests, AI requests, synchronization events, warnings, and errors using standard levels (INFO, WARNING, ERROR, CRITICAL) to keep noise low while enabling fast troubleshooting. API keys, tokens, and credentials must never be written to logs.</p>
+  <table class="spec"><tr><th>Decision</th><th>Justification</th></tr>
+  <tr><td>Continuous health monitoring</td><td>Ensures reliable availability</td></tr>
+  <tr><td>Structured logging</td><td>Simplifies troubleshooting</td></tr>
+  <tr><td>Knowledge sync monitoring</td><td>Ensures responses stay current</td></tr></table>
+</div>
+
+<!-- 14 TESTING -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 14 — TESTING STRATEGY</div>
+  <h1 class="section-title">14. AI System Validation &amp; Testing</h1>
+
+  <h2>14.1 Scope &amp; Approach</h2>
+  <p>Because the chatbot uses a RAG architecture, testing extends beyond API checks to retrieval accuracy, prompt effectiveness, chunking quality, and response reliability — combining manual evaluation with technical verification across: content processing, chunking pipeline, embedding generation, vector database retrieval, prompt builder, LLM response quality, backend logic, and end-to-end frontend integration.</p>
+  <p><strong>Manual retrieval validation:</strong> prepare test questions covering all major website sections, submit each through the chatbot, inspect retrieved chunks before generation, verify relevance, and log issues for follow-up. <strong>Chunking</strong> is reviewed for logical boundaries, complete ideas, and minimal duplication — poor chunking degrades quality even when retrieval works. <strong>Prompt changes</strong> trigger full regression testing before deployment.</p>
+
+  <h2>14.2 Response Accuracy Criteria</h2>
+  <table class="spec"><tr><th>Criterion</th><th>Description</th></tr>
+  <tr><td>Accuracy</td><td>Response matches website content</td></tr>
+  <tr><td>Completeness</td><td>No important information omitted</td></tr>
+  <tr><td>Relevance</td><td>Directly addresses the question</td></tr>
+  <tr><td>Consistency</td><td>Similar questions get consistent answers</td></tr>
+  <tr><td>Grounding</td><td>Supported by retrieved content</td></tr></table>
+
+  <h2>14.3 Regression, Performance &amp; Fallback Testing</h2>
+  <p>Regression testing runs after any prompt modification, content update, sync, provider change, or backend change, using a standardized reference question set spanning every major website category. Performance is measured via average response time, retrieval latency, generation time, and concurrent request handling. Fallback behavior is tested against unrelated questions, incomplete/invalid/empty input, and no-match queries — the expected behavior is to never fabricate an answer, but state that information is unavailable and recommend the relevant page or contact channel.</p>
+
+  <h2>14.4 Evaluation Scorecard</h2>
+  <p>Each test question is scored across pipeline stages rather than simple pass/fail, so a failure points to exactly where it occurred:</p>
+  <table class="spec"><tr><th>Test ID</th><th>Question</th><th>Retrieved?</th><th>Prompt OK?</th><th>Grounded?</th><th>Status</th></tr>
+  <tr><td class="mono">TC-001</td><td>AI services offered?</td><td>✅</td><td>✅</td><td>✅</td><td>Pass</td></tr>
+  <tr><td class="mono">TC-002</td><td>Flutter app development?</td><td>✅</td><td>✅</td><td>✅</td><td>Pass</td></tr>
+  <tr><td class="mono">TC-003</td><td>Who is the CEO of Google?</td><td>N/A</td><td>✅</td><td>✅ (Fallback)</td><td>Pass</td></tr></table>
+  <p>The chatbot is deployment-ready when content is fully indexed, retrieval consistently returns relevant results, chunk/prompt quality is verified, responses accurately reflect website information, fallback behavior works correctly, performance meets targets, and no critical defects remain. Validation continues after deployment as the knowledge base evolves.</p>
+</div>
+
+<!-- 15 RISK -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 15 — RISK ASSESSMENT</div>
+  <h1 class="section-title">15. Risk Assessment &amp; Mitigation</h1>
+
+  <h2>15.1 Risk Register</h2>
+  <table class="spec"><tr><th>Risk</th><th>Impact</th><th>Probability</th><th>Mitigation</th></tr>
+  <tr><td>Website content becomes outdated</td><td>High</td><td>Medium</td><td>Event-driven incremental synchronization</td></tr>
+  <tr><td>AI hallucination</td><td>High</td><td>Medium</td><td>RAG grounding restricted to retrieved content</td></tr>
+  <tr><td>API provider downtime</td><td>High</td><td>Low</td><td>Fallback message, provider monitoring, future multi-provider support</td></tr>
+  <tr><td>Increased API costs</td><td>Medium</td><td>Medium</td><td>Token monitoring, prompt/retrieval optimization</td></tr>
+  <tr><td>Low-confidence retrieval</td><td>Medium</td><td>Medium</td><td>Confidence thresholds; redirect to Contact/Inquiry</td></tr>
+  <tr><td>Vector database corruption/failure</td><td>High</td><td>Low</td><td>Regular backups, restore validation</td></tr>
+  <tr><td>Unexpected application failures</td><td>High</td><td>Low</td><td>Structured logging, health monitoring, alerting</td></tr></table>
+
+  <h2>15.2 Technical, Operational &amp; Business Risks</h2>
+  <table class="spec"><tr><th>Category</th><th>Risk</th><th>Mitigation</th></tr>
+  <tr><td>Technical</td><td>Retrieved content doesn't closely match the question</td><td>Semantic embeddings, chunk tuning, threshold tuning, continuous evaluation</td></tr>
+  <tr><td>Technical</td><td>Changes in external AI API performance/availability</td><td>Provider-independent abstraction, timeouts, structured error handling</td></tr>
+  <tr><td>Operational</td><td>Insufficient server resources</td><td>Containerized deployment, resource monitoring, flexible hosting upgrades</td></tr>
+  <tr><td>Operational</td><td>Database service disruption</td><td>Connection pooling, automated restarts, regular backups</td></tr>
+  <tr><td>Business</td><td>Incorrect answers eroding user trust</td><td>RAG grounding, source links, conservative confidence thresholds</td></tr>
+  <tr><td>Business</td><td>Unpredictable API costs at scale</td><td>Token tracking, prompt optimization, optional rate limiting</td></tr></table>
+
+  <h2>15.3 Risk Review Process</h2>
+  <p>Risks are reviewed periodically during development and after deployment: <strong>1)</strong> analyze API cost, token usage, and latency metrics; <strong>2)</strong> review user feedback (helpful/unhelpful, comments); <strong>3)</strong> audit failed, unanswered, or low-confidence queries; <strong>4)</strong> assess accuracy and hallucination rate; <strong>5)</strong> expand knowledge base coverage to address identified gaps.</p>
+</div>
+
+<!-- 16 ROADMAP -->
+<div class="chapter">
+  <div class="kicker">CHAPTER 16 — FUTURE ROADMAP</div>
+  <h1 class="section-title">16. Future Roadmap</h1>
+
+  <h2>16.1 Phased Evolution</h2>
+  <table class="spec"><tr><th>Phase</th><th>Objective</th><th>Key Deliverables</th></tr>
+  <tr><td><strong>Phase 1 — MVP</strong></td><td>Production-ready RAG chatbot</td><td>Website-based retrieval, Gemini integration (OpenAI as tested alternative), local Sentence Transformer embeddings, FastAPI + Docker, PostgreSQL + pgvector, Webflow widget with session memory, source-aware fallback handling</td></tr>
+  <tr><td><strong>Phase 2 — Monitoring &amp; Analytics</strong></td><td>Operational visibility</td><td>Admin dashboard, request/response/conversation logging, performance and usage monitoring, knowledge sync auditing, AI-powered conversation summaries, user feedback collection, CAPTCHA and rate limiting</td></tr>
+  <tr><td><strong>Phase 3 — UX Enhancements</strong></td><td>Richer, more accessible interaction</td><td>Voice interaction and file uploads, rich response cards, suggested follow-up questions, multi-language support, enhanced conversation memory, continued accessibility improvements</td></tr>
+  <tr><td><strong>Long-Term Vision</strong></td><td>Enterprise-scale evolution</td><td>Multi-website support, improved RAG/semantic search accuracy, advanced conversation analytics, automated reporting, algorithmic response-quality evaluation, fully automated knowledge synchronization</td></tr></table>
+  <p>The phased roadmap enables incremental development while minimizing implementation risk — each phase builds on the existing foundation, allowing the chatbot to evolve into a scalable, intelligent customer support solution without a complete redesign.</p>
+</div>
+
+<!-- APPENDIX A -->
+<div class="chapter">
+  <div class="kicker">APPENDIX A — LLM COST COMPARISON</div>
+  <h1 class="section-title">Appendix A – LLM Cost Comparison</h1>
+
+  <h2>A.1 LLM Pricing Reference</h2>
+  <table class="spec"><tr><th>Model</th><th>Provider</th><th>Input (/1M)</th><th>Output (/1M)</th><th>Suitability</th></tr>
+  <tr><td>Gemini 3.1 Flash Lite</td><td>Google</td><td>$0.25</td><td>$1.50</td><td>Default choice for high-speed RAG Q&amp;A</td></tr>
+  <tr><td>GPT-5.4 mini</td><td>OpenAI</td><td>$0.75</td><td>$4.50</td><td>Secondary comparison &amp; fallback model</td></tr>
+  <tr><td>Gemini 3.5 Flash</td><td>Google</td><td>$1.50</td><td>$9.00</td><td>Advanced reasoning &amp; multi-turn context</td></tr>
+  <tr><td>GPT-5.6 Luna</td><td>OpenAI</td><td>$1.00</td><td>$6.00</td><td>Enterprise fallback model</td></tr></table>
+
+  <h2>A.2 Per-Conversation Cost &amp; Reduction Strategies</h2>
+  <p>Assuming ~2,000 input tokens (retrieved context + prompt + question) and a 500-token response on Gemini 3.1 Flash Lite: input cost ≈ $0.0005, output cost ≈ $0.00075, for a total of <strong>~$0.00125 per conversation</strong>.</p>
+  <div class="callout"><span class="lbl">ROI IMPACT</span>At this rate, 1,000 complete customer conversations cost approximately <strong>$1.25 USD</strong> in AI API fees — extremely low operational expense.</div>
+  <table class="spec"><tr><th>Strategy</th><th>Impact</th></tr>
+  <tr><td>Local Embedding Models</td><td>100% savings on embedding API fees — Sentence Transformers runs locally at zero per-token cost</td></tr>
+  <tr><td>Semantic Caching</td><td>Caching common answers (hours, location, core services) reduces LLM calls by 30–40%</td></tr>
+  <tr><td>Self-Hosted Vector Store</td><td>Qdrant/PostgreSQL+pgvector in Docker avoids monthly cloud vector-DB subscriptions</td></tr>
+  <tr><td>Prompt Compression &amp; Chunk Pruning</td><td>Filtering low-relevance chunks keeps context under 2,000 tokens, lowering input billing</td></tr></table>
+</div>
+
+<!-- APPENDIX B -->
+<div class="chapter">
+  <div class="kicker">APPENDIX B — REQUIREMENT GATHERING</div>
+  <h1 class="section-title">Appendix B – Requirement Gathering Questions</h1>
+  <p>These discovery questions shape the chatbot's scope, data architecture, and infrastructure decisions before implementation begins.</p>
+
+  <h2>B.1 Project Scope &amp; Knowledge Base</h2>
+  <ul>
+    <li><strong>Which website(s) should the chatbot support</strong> — one domain or multiple (e.g., .in, .com, .ca)? Determines whether a single knowledge base suffices or separate collections/metadata are needed.</li>
+    <li><strong>How frequently is website content updated</strong> (service pages, portfolios, case studies, blogs)? Sets the appropriate synchronization schedule.</li>
+    <li><strong>Can the knowledge base update be automated via the existing CMS</strong>, or will updates require manual notification? Determines whether sync can be CMS-triggered or must remain manual.</li>
+  </ul>
+
+  <h2>B.2 Existing Chatbot &amp; Audience</h2>
+  <ul>
+    <li><strong>Does the existing manual inquiry widget store conversation data</strong> (queries, responses, timestamps), and if so, where and is it accessible? Historical data could reveal common questions and inform the new knowledge base.</li>
+    <li><strong>Who is the primary audience</strong> — potential clients, existing clients, job seekers, or general visitors? Shapes communication style, response depth, and prioritized content.</li>
+  </ul>
+
+  <h2>B.3 Placement, Infrastructure &amp; Administration</h2>
+  <ul>
+    <li><strong>Should the chatbot appear on every page or only selected pages?</strong> Affects frontend integration and any context-specific behavior needed.</li>
+    <li><strong>Does the existing server have sufficient CPU, RAM, and storage?</strong> Determines whether on-premise hosting is sufficient or cloud deployment is required.</li>
+    <li><strong>Is an admin dashboard required</strong> for knowledge base management, configuration, or analytics? Directly informs the choice between Qdrant and PostgreSQL + pgvector.</li>
+  </ul>
+
+  <h2>B.4 AI Usage &amp; Budget</h2>
+  <ul>
+    <li><strong>Is there a monthly budget limit for AI API usage?</strong> Influences model selection, response generation strategy, and long-term cost planning.</li>
+  </ul>
+</div>
+
+</body></html>
