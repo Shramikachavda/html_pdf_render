@@ -1488,21 +1488,21 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 <!-- ============ SHEET 01 ============ -->
   <sheet label="THETA CHATBOT · FRONTEND" kicker="CHAPTER 8 — FRONTEND INTEGRATION" footnum="27" title="Chapter 8 – Frontend Integration">
     <h2>8.1 Overview</h2>
-    <mermaid-diagram>
+    <mermaid-diagram height="350px">
 flowchart TB
     %% =========================
     %% User Layer
     %% =========================
     subgraph USER
-        U["👤 Website Visitor"]
+        U["Website Visitor"]
     end
 
     %% =========================
     %% Presentation Layer
     %% =========================
     subgraph FRONTEND
-        WEB["🌐 Theta Website&lt;br/&gt;(Webflow)"]
-        CHAT["💬 AI Chat Widget"]
+        WEB["Theta Website (Webflow)"]
+        CHAT["AI Chat Widget"]
     end
 
     %% =========================
