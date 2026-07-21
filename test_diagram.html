@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div class="mermaid">
+flowchart TB
+
+A([User Query])
+
+subgraph Query_Processing
+    direction LR
+    B[Query Processing]
+    C[Embedding Generation]
+    D[Embedding Model]
+    B --> C --> D
+end
+
+subgraph Knowledge_Retrieval
+    direction LR
+    E[Semantic Search]
+    F[(Vector Database)]
+    G[Ranking Engine]
+    H[Context Builder]
+    I[Metadata Retrieval]
+    E --> F --> G --> H --> I
+end
+
+subgraph Response_Generation
+    direction LR
+    J[Prompt Builder]
+    K[LLM Provider]
+    L[Response Formatter]
+    M[Attach Source References]
+    J --> K --> L --> M
+end
+
+N([Final Response])
+
+A --> Query_Processing
+Query_Processing --> Knowledge_Retrieval
+Knowledge_Retrieval --> Response_Generation
+Response_Generation --> N
+
+%% ===========================
+%% Colors
+%% ===========================
+classDef default fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#0d2b45;
+classDef db fill:#0d2b45,stroke:#7fd0e6,stroke-width:2px,color:#fff;
+
+class F db;
+</div>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({ startOnLoad: true });
+</script>
+</body>
+</html>

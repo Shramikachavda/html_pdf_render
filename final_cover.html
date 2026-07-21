@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Cover</title>
+<style>
+@page {
+  size: A4;
+  margin: 25mm 20mm 25mm 20mm;
+  @bottom-right {
+    content: "PAGE " counter(page);
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 8pt;
+    color: #6b7a86;
+  }
+  @bottom-left {
+    content: "Theta ChatBot Technical Documentation";
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 8pt;
+    color: #6b7a86;
+  }
+}
+@page:first {
+  margin: 0;
+  @bottom-right { content: normal; }
+  @bottom-left { content: normal; }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size: 10.1pt; line-height: 1.52; background: #fff; overflow-wrap: break-word; word-wrap: break-word; }
+img, svg, pre, table { max-width: 100%; }
+.mono { font-family: "DejaVu Sans Mono", monospace; }
+.chapter { page-break-after: always; }
+.cover { background:#0d2b45; color:#e8f1f6; padding:0; box-sizing: border-box; min-height: 100vh; page-break-after: always; }
+.cover .kicker2 { font-family:"DejaVu Sans Mono",monospace; color:#bfe3ef; letter-spacing:4px; font-size:9.5pt; margin-bottom:10mm; text-transform: uppercase; font-weight: bold; }
+.cover h1 { font-size:36pt; color:#ffffff; line-height:1.15; margin-bottom:6mm; border-bottom:none; font-weight: 800; letter-spacing: -1px; }
+.cover .subtitle { font-size:14pt; color:#bfe3ef; max-width:135mm; margin-bottom:40mm; font-weight: 500; }
+table.revtable { width:100%; border-collapse:collapse; margin-top:4mm; font-family:"DejaVu Sans Mono",monospace; font-size:8.5pt; }
+table.revtable th, table.revtable td { border:0.5pt solid rgba(255, 255, 255, 0.15); padding:2.5mm 3mm; color:#cfe4ee; text-align:left; }
+table.revtable th { background:rgba(0, 0, 0, 0.15); color:#7fd0e6; letter-spacing:1px; font-weight:bold; }
+tr { page-break-inside: avoid; }
+table { page-break-inside: avoid; break-inside: avoid; }
+h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+.kicker { font-family:"DejaVu Sans Mono",monospace; font-size:8pt; letter-spacing:2.5px; color:#1c5d8c; font-weight:bold; margin-bottom:2mm; }
+h1.section-title { font-size:20pt; color:#0d2b45; border-bottom:2pt solid #0d2b45; padding-bottom:3mm; margin-bottom:6mm; }
+h2 { font-size:12.5pt; color:#0d2b45; margin-top:6.5mm; margin-bottom:3mm; padding-left:3mm; border-left:3pt solid #e8a33d; }
+h3 { font-size:10.3pt; color:#1c5d8c; margin-top:4.5mm; margin-bottom:2mm; font-family:"DejaVu Sans Mono",monospace; letter-spacing:0.5px; }
+p { margin-bottom:2.8mm; text-align:justify; }
+ul, ol { margin:2mm 0 3mm 5mm; padding-left: 5mm; }
+li { margin-bottom:1.4mm; }
+strong { color:#0d2b45; }
+table.spec { width:100%; border-collapse:collapse; margin:3mm 0 5mm 0; font-size:8.8pt; }
+table.spec th { background:#0d2b45; color:#fff; text-align:left; padding:2.1mm 3mm; font-family:"DejaVu Sans Mono",monospace; font-size:7.8pt; letter-spacing:0.5px; }
+table.spec td { padding:2.1mm 3mm; border-bottom:0.5pt solid #d8dfe4; vertical-align:top; }
+table.spec tr:nth-child(even) td { background:#f4f7f9; }
+table.spec td .mono { font-family:"DejaVu Sans Mono",monospace; font-size:8.1pt; color:#1c5d8c; }
+.callout { background:#f4f7f9; border-left:3pt solid #1c5d8c; padding:3mm 4mm; margin:4mm 0; font-size:9.1pt; page-break-inside: avoid; }
+.callout .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; letter-spacing:2px; color:#1c5d8c; font-weight:bold; display:block; margin-bottom:1.5mm; }
+.decision { background:#fdf6ea; border-left:3pt solid #e8a33d; padding:3mm 4mm; margin:4mm 0; font-size:9.1pt; page-break-inside: avoid; }
+.decision .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; letter-spacing:2px; color:#b5791c; font-weight:bold; display:block; margin-bottom:1.5mm; }
+.tag { display:inline-block; font-family:"DejaVu Sans Mono",monospace; font-size:7.3pt; letter-spacing:1px; color:#1c5d8c; background:#f4f7f9; border:0.5pt solid #1c5d8c; padding:0.6mm 2mm; border-radius:3px; margin-right:1.6mm; margin-bottom:1.5mm; }
+.tag-danger { color:#7f1d1d; background:#fef2f2; border:0.5pt solid #fecaca; }
+.mermaid { background-color:#f8fafc; padding:5mm; border-radius:3px; border:0.5pt solid #e2e8f0; margin:5mm 0; text-align:center; page-break-inside: avoid; display: flex; justify-content: center; white-space: pre-wrap; font-family: inherit; zoom: 0.75; }
+pre.mermaid svg { max-height: 155mm !important; max-width: 100% !important; height: auto !important; width: auto !important; }
+.steps { margin:3mm 0; }
+.step { position:relative; padding:2mm 0 2mm 11mm; border-bottom:0.4pt dotted #c7d2da; page-break-inside: avoid; }
+.step:last-child { border-bottom:none; }
+.step .n { position:absolute; left:0; top:2mm; width:7mm; height:7mm; background:#0d2b45; color:#bfe3ef;
+  font-family:"DejaVu Sans Mono",monospace; font-size:8pt; font-weight:bold; text-align:center; line-height:7mm; }
+.step .t { font-weight:bold; color:#0d2b45; font-size:9.3pt; }
+.step .d { font-size:8.8pt; color:#3a4954; }
+
+.adr { border: 0.6pt solid #d8dfe4; margin: 4mm 0 6mm 0; page-break-inside: avoid; }
+.adr-head { background: #0d2b45; color: #bfe3ef; font-family: "DejaVu Sans Mono", monospace; font-size: 9.5pt; font-weight: bold; padding: 2.5mm 4mm; letter-spacing: 0.5px; }
+.adr-body { padding: 3mm 4mm; font-size: 9pt; }
+.adr-row { margin-bottom: 2.5mm; }
+.adr-row .k { font-family: "DejaVu Sans Mono", monospace; font-size: 7.8pt; letter-spacing: 1px; color: #1c5d8c; font-weight: bold; display: block; margin-bottom: 0.8mm; }
+.adr-row ul { margin: 1mm 0 0 4.5mm; }
+.impact-pos { color: #1c7c4d; }
+.impact-neg { color: #b5791c; }
+
+.toc-row { display:block; padding:2mm 0; border-bottom:0.4pt dotted #c7d2da; page-break-inside: avoid; }
+.toc-row .tn { font-family:"DejaVu Sans Mono",monospace; color:#1c5d8c; font-weight:bold; display:inline-block; width:12mm; }
+.toc-row .tt { font-size:10.2pt; color:#0d2b45; font-weight:bold; }
+.toc-row .td { font-size:8.4pt; color:#6b7a86; display:block; margin-left:12mm; }
+svg { display:block; margin:3mm auto; }
+
+body { margin: 0; padding: 0; background: #0d2b45; }
+.cover { height: 100vh; padding: 0; margin: 0; box-sizing: border-box; }
+</style>
+</head>
+<body style="background: #0d2b45;">
+
+<div class="cover">
+  <div style="padding: 40mm 20mm;">
+    
+    <div class="kicker2">TECHNICAL DESIGN DOCUMENT</div>
+    <h1>Theta Chat Bot</h1>
+    <div class="subtitle">Comprehensive Architecture, API, and AI Guardrails Strategy</div>
+    <table class="revtable"><tr><th>Field</th><th>Value</th></tr><tr><td>Project Name</td><td>Theta Chat Bot</td></tr><tr><td>Prepared For</td><td>Theta Technolabs</td></tr><tr><td>Author</td><td>Shramika Chavda</td></tr><tr><td>Document Version</td><td>1.0</td></tr><tr><td>Document Status</td><td>Internal Use Only</td></tr><tr><td>Date</td><td>July 2026</td></tr></table>
+  </div>
+</div>
+
+</body></html>

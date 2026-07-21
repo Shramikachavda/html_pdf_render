@@ -1,0 +1,179 @@
+Failed to fetch mermaid diagram: HTTP Error 400: Bad Request - Error 400: Error: An error occurred while converting the diagram: Failed to launch the browser process:  Code: null
+
+stderr:
+[1962327:1962327:0721/094033.838209:FATAL:third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc:237] posix_spawn /usr/lib/chromium/chrome_crashpad_handler: Resource temporarily unavailable (11)
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+Error: Failed to launch the browser process:  Code: null
+
+stderr:
+[1962327:1962327:0721/094033.838209:FATAL:third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc:237] posix_spawn /usr/lib/chromium/chrome_crashpad_handler: Resource temporarily unavailable (11)
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+    at ChildProcess.onClose (file:///usr/local/kroki/node_modules/@puppeteer/browsers/lib/launch.js:339:24)
+    at ChildProcess.emit (node:events:521:24)
+    at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+Diagram code was:
+flowchart TB
+
+%% Nodes
+A([Content Update Detected])
+B[Retrieve Latest Content]
+C[Parse and Clean HTML]
+D[Semantic Chunking]
+E[Generate Embeddings]
+F[Update Vector Database]
+G([Synchronization Complete])
+
+%% Flow
+A --> B
+B --> C
+C --> D
+D --> E
+E --> F
+F --> G
+
+%% Styling
+classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
+classDef highlight fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c;
+classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
+
+class A,G startend;
+class B,C,D process;
+class E,F highlight;
+linkStyle default stroke:#0d2b45,stroke-width:2px;
+Failed to fetch mermaid diagram: HTTP Error 400: Bad Request - Error 400: Error: An error occurred while converting the diagram: Failed to launch the browser process:  Code: null
+
+stderr:
+[1962345:1962345:0721/094041.543281:FATAL:third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc:237] posix_spawn /usr/lib/chromium/chrome_crashpad_handler: Resource temporarily unavailable (11)
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+Error: Failed to launch the browser process:  Code: null
+
+stderr:
+[1962345:1962345:0721/094041.543281:FATAL:third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc:237] posix_spawn /usr/lib/chromium/chrome_crashpad_handler: Resource temporarily unavailable (11)
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+    at ChildProcess.onClose (file:///usr/local/kroki/node_modules/@puppeteer/browsers/lib/launch.js:339:24)
+    at ChildProcess.emit (node:events:521:24)
+    at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+Diagram code was:
+flowchart TB
+    %% =========================
+    %% User Layer
+    %% =========================
+    subgraph USER["🌍 User Layer"]
+        U["👤 Website Visitor"]
+    end
+
+    %% =========================
+    %% Presentation Layer
+    %% =========================
+    subgraph FRONTEND["💻 Presentation Layer"]
+        WEB["🌐 Theta Website<br/>(Webflow)"]
+        CHAT["💬 AI Chat Widget"]
+    end
+
+    %% =========================
+    %% Application Layer
+    %% =========================
+    subgraph BACKEND["⚙️ Application Layer"]
+        API["FastAPI REST API"]
+    end
+
+    U --> WEB
+    WEB --> CHAT
+    CHAT <--> API
+
+    %% Colors
+    style USER fill:#f4f7f9,stroke:#1c5d8c,stroke-width:2px,color:#0d2b45
+    style FRONTEND fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c
+    style BACKEND fill:#123a5c,stroke:#7fd0e6,stroke-width:2px,color:#ffffff
+Failed to fetch mermaid diagram: HTTP Error 400: Bad Request - Error 400: Error: An error occurred while converting the diagram: Failed to launch the browser process:  Code: null
+
+stderr:
+[1962351:1962351:0721/094043.033124:FATAL:third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc:237] posix_spawn /usr/lib/chromium/chrome_crashpad_handler: Resource temporarily unavailable (11)
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+Error: Failed to launch the browser process:  Code: null
+
+stderr:
+[1962351:1962351:0721/094043.033124:FATAL:third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc:237] posix_spawn /usr/lib/chromium/chrome_crashpad_handler: Resource temporarily unavailable (11)
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+    at ChildProcess.onClose (file:///usr/local/kroki/node_modules/@puppeteer/browsers/lib/launch.js:339:24)
+    at ChildProcess.emit (node:events:521:24)
+    at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+Diagram code was:
+flowchart TB
+    A([User Question])
+    B[Input Validation]
+    C[Scope & Security Check]
+    D[Knowledge Base Retrieval]
+    E[Context & Confidence Check]
+    F[AI Response Generation]
+    G[Response Validation]
+    H([Return Response])
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+
+    classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
+    classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
+
+    class A,H startend;
+    class B,C,D,E,F,G process;
+Failed to fetch mermaid diagram: HTTP Error 400: Bad Request - Error 400: Error: An error occurred while converting the diagram: Failed to launch the browser process:  Code: null
+
+stderr:
+[1962354:1962354:0721/094043.685762:FATAL:third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc:237] posix_spawn /usr/lib/chromium/chrome_crashpad_handler: Resource temporarily unavailable (11)
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+Error: Failed to launch the browser process:  Code: null
+
+stderr:
+[1962354:1962354:0721/094043.685762:FATAL:third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc:237] posix_spawn /usr/lib/chromium/chrome_crashpad_handler: Resource temporarily unavailable (11)
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+    at ChildProcess.onClose (file:///usr/local/kroki/node_modules/@puppeteer/browsers/lib/launch.js:339:24)
+    at ChildProcess.emit (node:events:521:24)
+    at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+Diagram code was:
+flowchart TB
+    A([User Question])
+    B[Search Knowledge Base]
+    C{Relevant Context Available?}
+    D[Generate Response]
+    E{Is Query Related to Theta?}
+    F([Suggest Contact or Official Page])
+    G([Politely Decline])
+
+    A --> B
+    B --> C
+    C --|Yes|--> D
+    C --|No|--> E
+    E --|Yes|--> F
+    E --|No|--> G
+
+    classDef process fill:#1c5d8c,stroke:#0d2b45,stroke-width:2px,color:#ffffff;
+    classDef startend fill:#0d2b45,stroke:#e8a33d,stroke-width:3px,color:#ffffff;
+    classDef decision fill:#fdf6ea,stroke:#e8a33d,stroke-width:2px,color:#b5791c;
+
+    class A,D,F,G startend;
+    class B process;
+    class C,E decision;
+Wrote intermediate HTML files
+Wrote final.pdf

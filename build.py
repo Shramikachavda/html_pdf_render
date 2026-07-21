@@ -25,7 +25,7 @@ CSS = """
     color: #6b7a86;
   }
   @bottom-left {
-    content: "Theta ChatBot Technical Documentation";
+    content: string(doctitle, first);
     font-family: "DejaVu Sans Mono", monospace;
     font-size: 8pt;
     color: #6b7a86;
@@ -37,7 +37,7 @@ CSS = """
   @bottom-left { content: normal; }
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size: 10.1pt; line-height: 1.52; background: #fff; max-width: 170mm; margin: 0 auto; overflow-wrap: break-word; word-wrap: break-word; }
+body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size: 10.1pt; line-height: 1.52; background: #fff; overflow-wrap: break-word; word-wrap: break-word; }
 img, svg, pre, table { max-width: 100%; }
 .mono { font-family: "DejaVu Sans Mono", monospace; }
 .chapter { page-break-after: always; }
@@ -52,7 +52,7 @@ tr { page-break-inside: avoid; }
 table { page-break-inside: avoid; break-inside: avoid; }
 h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
 .kicker { font-family:"DejaVu Sans Mono",monospace; font-size:8pt; letter-spacing:2.5px; color:#1c5d8c; font-weight:bold; margin-bottom:2mm; }
-h1.section-title { font-size:20pt; color:#0d2b45; border-bottom:2pt solid #0d2b45; padding-bottom:3mm; margin-bottom:6mm; }
+h1.section-title { font-size:20pt; color:#0d2b45; border-bottom:2pt solid #0d2b45; padding-bottom:3mm; margin-bottom:6mm; string-set: doctitle content(); }
 h2 { font-size:12.5pt; color:#0d2b45; margin-top:6.5mm; margin-bottom:3mm; padding-left:3mm; border-left:3pt solid #e8a33d; }
 h3 { font-size:10.3pt; color:#1c5d8c; margin-top:4.5mm; margin-bottom:2mm; font-family:"DejaVu Sans Mono",monospace; letter-spacing:0.5px; }
 p { margin-bottom:2.8mm; text-align:justify; }
@@ -224,7 +224,7 @@ def render_adr(el):
 
 def render_why(el):
     """Renders the <why> tag as an info callout."""
-    icon = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:5px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
+    icon = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin: 0 5px 0 0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
     return f'<div class="callout"><span class="lbl">{icon}WHY THIS IS ASKED</span>{inline_html(el)}</div>'
 
 def render_block(el):
@@ -260,7 +260,8 @@ def render_block(el):
     if t == "raw":
         return (el.text or "").strip()
     if t == "mermaid-diagram":
-        return f'<pre class="mermaid">{esc((el.text or "").strip())}</pre>'
+        diagram_code = (el.text or "").strip()
+        return f'<div class="mermaid" style="text-align:center; margin: 20px 0;">\n{diagram_code}\n</div>'
     return ""
 
 
@@ -324,35 +325,36 @@ def render_toc(toc_el, doc_title):
 """
 
 
-def build_html(xml_path):
+def build_docs(xml_path):
     tree = ET.parse(xml_path)
     root = tree.getroot()  # <doc>
     doc_title = root.get("title", "Untitled Document")
 
-    body_parts = []
+    cover_parts = []
+    content_parts = []
     for child in root:
         if child.tag == "cover":
-            body_parts.append(render_cover(child, doc_title))
+            cover_parts.append(render_cover(child, doc_title))
         elif child.tag == "toc":
-            body_parts.append(render_toc(child, doc_title))
+            content_parts.append(render_toc(child, doc_title))
         elif child.tag == "sheet":
-            body_parts.append(render_sheet(child, doc_title))
+            content_parts.append(render_sheet(child, doc_title))
 
-    html = f"""<!DOCTYPE html>
+    final_html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><title>{esc(doc_title)}</title>
 <style>{CSS}</style>
 </head>
 <body>
-{''.join(body_parts)}
-<script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {{
-    mermaid.initialize({{startOnLoad:true}});
-    mermaid.init(undefined, document.querySelectorAll('.mermaid'));
-  }});
+{''.join(cover_parts)}
+{''.join(content_parts)}
+
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({{ startOnLoad: true }});
 </script>
 </body></html>"""
-    return html
+
+    return final_html
 
 
 def main():
@@ -360,34 +362,65 @@ def main():
         print("Usage: python3 build.py content.xml output.pdf")
         sys.exit(1)
     xml_path, pdf_path = sys.argv[1], sys.argv[2]
-    html_path = pdf_path.rsplit(".", 1)[0] + ".html"
+    base_name = pdf_path.rsplit(".", 1)[0]
+    html_path = base_name + ".html"
 
-    html = build_html(xml_path)
+    final_html = build_docs(xml_path)
+    
     with open(html_path, "w", encoding="utf-8") as f:
-        f.write(html)
-    print(f"Wrote {html_path}")
+        f.write(final_html)
 
+    print(f"Wrote intermediate HTML file: {html_path}")
+
+    from playwright.sync_api import sync_playwright
+    import os
+    import urllib.parse
+    import base64
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        # Use a high device scale factor for crisp PNGs
+        page = browser.new_page(viewport={"width": 1920, "height": 3000}, device_scale_factor=3)
+        
+        file_url = "file://" + urllib.parse.quote(os.path.abspath(html_path))
+        page.goto(file_url, wait_until="networkidle")
+        
+        # Wait for all mermaid diagrams to be processed
+        page.wait_for_function('() => document.querySelectorAll(".mermaid:not([data-processed=\\"true\\"])").length === 0')
+        
+        # Convert each Mermaid SVG to a high-res PNG
+        mermaids = page.locator(".mermaid").all()
+        for el in mermaids:
+            svg_locator = el.locator("svg")
+            if svg_locator.count() > 0:
+                # Screenshot the SVG
+                image_bytes = svg_locator.first.screenshot(omit_background=True)
+                b64 = base64.b64encode(image_bytes).decode('utf-8')
+                data_uri = f"data:image/png;base64,{b64}"
+                # Replace the content with the image
+                el.evaluate('(node, uri) => node.innerHTML = `<img src="${uri}" style="max-width: 100%;" alt="Mermaid Diagram" />`', data_uri)
+        
+        rendered_html = page.content()
+        browser.close()
+        
+    rendered_path = base_name + "_rendered.html"
+    with open(rendered_path, "w", encoding="utf-8") as f:
+        f.write(rendered_html)
+        
+    print(f"Wrote fully rendered HTML to {rendered_path}")
+    
     result = subprocess.run(
         [
-            "./wkhtmltopdf", "--enable-local-file-access", "--quiet",
-            "--page-size", "A4",
-            "--margin-top", "25mm", "--margin-bottom", "25mm",
-            "--margin-left", "20mm", "--margin-right", "20mm",
-            "--footer-right", "PAGE [page]",
-            "--footer-left", "Theta ChatBot Technical Documentation",
-            "--footer-font-name", "DejaVu Sans Mono",
-            "--footer-font-size", "8",
-            "--footer-spacing", "5",
-            html_path, pdf_path
+            "weasyprint", rendered_path, pdf_path
         ],
         capture_output=True, text=True,
     )
     if result.returncode != 0:
-        print("wkhtmltopdf failed:")
+        print("weasyprint failed:")
         print(result.stderr)
         sys.exit(1)
-    print(f"Wrote {pdf_path}")
 
+    print(f"Wrote {pdf_path}")
 
 if __name__ == "__main__":
     main()
