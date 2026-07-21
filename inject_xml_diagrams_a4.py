@@ -21,10 +21,21 @@ def get_mermaid_from_xml(filename, figure_title):
 
 diagram_mapping = {
     "{{DIAGRAM_WORKFLOW}}": ("final_content.xml", "System Workflow"),
+    "{{DIAGRAM_SYNC_WORKFLOW}}": ("final_content.xml", "Synchronization Workflow"),
+    "{{DIAGRAM_KNOWLEDGE_LIFECYCLE}}": ("final_content.xml", "Knowledge Lifecycle"),
     "{{DIAGRAM_SEQUENCE}}": ("final_content.xml", "Request Processing Sequence"),
+    "{{DIAGRAM_PROMPT_FLOW}}": ("final_content.xml", "Prompt Assembly Flow"),
+    "{{DIAGRAM_E2E_HANDLING}}": ("final_content.xml", "End-to-End Query Handling"),
     "{{DIAGRAM_COMPONENTS}}": ("final_content.xml", "Component Communication"),
+    "{{DIAGRAM_COMP_INTERACTION}}": ("final_content.xml", "Component Interaction Architecture"),
+    "{{DIAGRAM_API_ARCH}}": ("final_content.xml", "API Communication Architecture"),
+    "{{DIAGRAM_FRONTEND_INTEGRATION}}": ("final_content.xml", "Frontend Integration Overview"),
+    "{{DIAGRAM_FRONTEND_REQUEST_FLOW}}": ("final_content.xml", "Frontend Request Flow"),
     "{{DIAGRAM_GUARDRAIL}}": ("final_content.xml", "Guardrail Workflow"),
-    "{{DIAGRAM_FALLBACK}}": ("final_content.xml", "Frontend Request Flow")
+    "{{DIAGRAM_FALLBACK_STRATEGY}}": ("final_content.xml", "Fallback Handling Strategy"),
+    "{{DIAGRAM_DASHBOARD}}": ("final_content.xml", "Dashboard & Analytics Architecture"),
+    "{{DIAGRAM_MONITORING}}": ("final_content.xml", "Monitoring Scope"),
+    "{{DIAGRAM_FALLBACK}}": ("final_content.xml", "Frontend Request Flow") # For backward compatibility just in case
 }
 
 with open("new_html.html", 'r', encoding='utf-8') as f:
@@ -74,6 +85,14 @@ for placeholder, (xml_file, figure_name) in diagram_mapping.items():
         print(f"Replaced {placeholder} with diagram: {figure_name} (Height: {height})")
     else:
         print(f"Could not find diagram for {placeholder} ({figure_name})")
+
+image_html = """
+<div style="text-align:center; margin: 25px 0;">
+<img src="chatbot_placement.png" style="max-height: 90mm; width: auto;" />
+<div style="text-align:center; font-size: 8.5pt; font-weight: bold; color: #1c5d8c; margin-top: 8px;">Figure 8.2: Chatbot Widget Placement Options</div>
+</div>
+"""
+html_content = html_content.replace("{{IMAGE_CHATBOT}}", image_html)
 
 mermaid_script = """
 <script src="https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.min.js"></script>

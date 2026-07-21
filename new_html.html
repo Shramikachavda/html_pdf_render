@@ -192,11 +192,13 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
 
   <h2>3.5 Knowledge Synchronization</h2>
   <p>Since content changes only when pages are published or updated, scheduled re-crawling would waste compute reprocessing unchanged data. The chatbot instead uses <strong>Event-Driven Incremental Synchronization</strong>: whenever content is created, modified, or deleted, only the affected pages are re-cleaned, re-chunked, re-embedded, and updated in the vector database — reducing processing time and embedding costs while keeping the knowledge base current.</p>
+  {{DIAGRAM_SYNC_WORKFLOW}}
   <table class="spec"><tr><th>Strategy</th><th>Trade-off</th></tr>
   <tr><td>Manual Refresh</td><td>Simple but time-consuming, depends on manual action</td></tr>
   <tr><td>Scheduled Synchronization</td><td>Automated but reprocesses unchanged content unnecessarily</td></tr>
   <tr><td><strong>Event-Driven Incremental (Recommended)</strong></td><td>Efficient and fast; requires CMS/publishing-workflow integration</td></tr></table>
 
+  {{DIAGRAM_KNOWLEDGE_LIFECYCLE}}
   <h2>3.6 Metadata &amp; Key Design Decisions</h2>
   <p>Every chunk stores: Chunk ID, Page URL, Page Title, Section Heading, Content Category, Last Indexed Date, Version, and Vector ID — enabling source citations, versioning, analytics, and auditing.</p>
   <table class="spec"><tr><th>Decision</th><th>Justification</th></tr>
@@ -226,6 +228,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
 
   <h2>4.4 Prompt Engineering &amp; Context Construction</h2>
   <p>The backend assembles a structured context (retrieved content, source page info, user question, session history if enabled, system instructions) into a prompt ordered as: <strong>1)</strong> System Instructions, <strong>2)</strong> Retrieved Context, <strong>3)</strong> Conversation Context (optional), <strong>4)</strong> User Question. The system prompt instructs the LLM to answer only from provided content, avoid unsupported claims or speculation, state clearly when information is unavailable, stay concise and professional, and prefer Theta's official terminology.</p>
+  {{DIAGRAM_PROMPT_FLOW}}
 
   <h2>4.5 Conversation Memory</h2>
   <p><strong>Session-Based Conversation Memory</strong> is the recommended approach — the chatbot remembers prior messages for the active browser session only, discarding history when the session expires. This supports follow-up questions and better contextual understanding at the cost of slightly higher token usage, compared to a simpler stateless mode that cannot handle follow-ups but uses fewer tokens and no session storage.</p>
@@ -239,6 +242,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <tr><td>Out of Scope</td><td>Explain the chatbot's scope and redirect to Contact/Inquiry page</td></tr></table>
   <p>The validated response is returned to the frontend as JSON containing the answer, optional source reference, feedback controls (future), and a contact/inquiry action when required.</p>
 
+  {{DIAGRAM_E2E_HANDLING}}
   <h2>4.7 Key Design Decisions</h2>
   <table class="spec"><tr><th>Decision</th><th>Justification</th></tr>
   <tr><td>Semantic search over keyword search</td><td>Better natural-language understanding</td></tr>
@@ -318,6 +322,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
     <div class="adr-row"><span class="k">IMPACT</span><span class="impact-pos">Positive:</span> lower long-term cost, maximum data control. <span class="impact-neg">Trade-off:</span> requires internal server management.</div>
   </div></div>
   <p>Vector storage (Qdrant vs. PostgreSQL+pgvector) follows the same fork described in Section 3.4, and applies consistently to hosting and monitoring choices. Every service (FastAPI, vector store, Nginx) ships as a container defined once in <span class="mono">docker-compose.yml</span>, giving identical dev/staging/production environments, one-command startup, and simple rollback by pinning image tags.</p>
+  {{DIAGRAM_COMP_INTERACTION}}
 
   <h2>6.4 APIs Used</h2>
   <table class="spec"><tr><th>API</th><th>Type</th><th>Purpose</th></tr>
@@ -337,6 +342,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
 
   <h2>7.1 Overview</h2>
   <p>The chatbot widget communicates with FastAPI over secure HTTPS REST endpoints using JSON payloads — lightweight, language-independent, and easy to integrate. FastAPI validates requests, retrieves knowledge, communicates with the LLM, and returns structured responses. Flow: <span class="mono">Widget → REST API → Retrieval Engine → Vector DB → Prompt Builder → Gemini API → JSON Response → Widget</span>.</p>
+  {{DIAGRAM_API_ARCH}}
 
   <h2>7.2 Representative Endpoints</h2>
   <p><em>Note: representative examples — actual endpoints and payloads may expand as the backend grows.</em></p>
@@ -390,6 +396,9 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <tr><td>Chat Window</td><td>Conversation history, input, typing indicators, AI responses, source references, fallback options</td></tr>
   <tr><td>API Communication Layer</td><td>Sends REST requests, receives JSON, handles network failures, retries (future)</td></tr></table>
   <p>The launcher can sit in the main navigation ("Chat with AI") or as a persistent floating button in the bottom-right corner.</p>
+  {{DIAGRAM_FRONTEND_INTEGRATION}}
+  {{IMAGE_CHATBOT}}
+  {{DIAGRAM_FRONTEND_REQUEST_FLOW}}
 
   <h2>8.2 User Journey &amp; UI States</h2>
   <div class="steps">
@@ -441,7 +450,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
 
   <h2>9.5 Security &amp; Fallback Strategy</h2>
   <p>The chatbot safely handles attempts to manipulate its behavior or expose system internals (prompt injection, API keys, system instructions), and politely declines unrelated topics (sports, weather, politics, general coding) with a standard scope clarification.</p>
-  {{DIAGRAM_FALLBACK}}
+  {{DIAGRAM_FALLBACK_STRATEGY}}
   <p>Benefits: responses stay grounded in approved information; hallucinations and prompt-injection risk are reduced; communication stays consistent and verifiable; and out-of-scope or low-confidence queries get predictable fallback handling.</p>
 </div>
 
@@ -452,6 +461,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
 
   <h2>10.1 Overview &amp; Architecture</h2>
   <p>An <strong>optional</strong> Operational Dashboard gives administrators visibility into usage, AI performance, cost, and interactions — recommended for production deployments needing long-term monitoring and business insight. When enabled, PostgreSQL + pgvector is the primary database, storing both embeddings and operational data (conversation metadata, feedback, API requests, token usage, response time, error logs, sync history, dashboard config) in a single platform.</p>
+  {{DIAGRAM_DASHBOARD}}
 
   <h2>10.2 Dashboard Modules</h2>
   <div class="callout"><span class="lbl">A. CONVERSATION ANALYTICS</span>Total conversations, volume trends, average length/response time, active sessions — measures adoption and engagement.</div>
@@ -546,6 +556,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
 
   <h2>13.1 Objectives &amp; Coverage</h2>
   <p>Monitoring targets three areas — <strong>Application Health</strong>, <strong>AI Performance</strong>, and <strong>Knowledge Base Freshness</strong> — to ensure availability, catch issues early, measure response quality, track cost, and support troubleshooting.</p>
+  {{DIAGRAM_MONITORING}}
 
   <h2>13.2 Metrics</h2>
   <table class="spec"><tr><th>Category</th><th>Key Metrics</th></tr>
