@@ -32,7 +32,7 @@ flowchart TB
 
     class A,H startend;
     class B,C,D,E,F,G process;
-    </mermaid-diagram height="400px">
+    </mermaid-diagram>
     <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 9.1: Guardrail Workflow</b></p>
 
     <h2>9.3 Scope Guardrail</h2>
