@@ -319,6 +319,14 @@ def render_block(el):
             style += f" width: {width};"
             
         return f'<div class="{cls}" style="{style}">\n{diagram_code}\n</div>'
+    if t == "diagram":
+        src = esc(el.get("src", ""))
+        caption = esc(el.get("caption", ""))
+        height = esc(el.get("height", ""))
+        style = f"max-height: {height}; width: auto;" if height else "max-width: 100%;"
+        img_html = f'<img src="{src}" style="{style}" />' if src else ""
+        caption_html = f'<div style="text-align:center; font-size: 8.5pt; font-weight: bold; color: #1c5d8c; margin-top: 8px;">{caption}</div>' if caption else ""
+        return f'<div style="text-align:center; margin: 25px 0;">{img_html}{caption_html}</div>'
     return ""
 
 

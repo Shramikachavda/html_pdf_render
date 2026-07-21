@@ -1545,7 +1545,7 @@ flowchart TB
       <row><cell><b>API Communication Layer</b></cell><cell>Responsible for communication with the backend.</cell><cell>Send REST API requests, receive JSON responses, handle network failures, retry failed requests (future enhancement)</cell></row>
     </table>
     <p><b>Widget Placement Options:</b> The chatbot interface can be triggered either via the main navigation menu (e.g., "Chat with AI" button) or through a persistent floating widget in the bottom-right corner of the screen, as illustrated below:</p>
-    <diagram id="chatbot-placement" caption="Figure 8.2: Chatbot Widget Placement Options" height="90mm" />
+    <diagram src="chatbot_placement.png" caption="Figure 8.2: Chatbot Widget Placement Options" height="90mm" />
 
     <h2>8.3 Frontend Request Flow</h2>
     <p>Every user interaction follows the same communication flow:</p>
