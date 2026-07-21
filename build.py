@@ -15,28 +15,42 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 CSS = """
-@page { size: A4; margin: 0; }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size: 10.1pt; line-height: 1.52; background: #fff; }
+@page {
+  size: A4;
+  margin: 25mm 20mm 25mm 20mm;
+  @bottom-right {
+    content: "PAGE " counter(page);
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 8pt;
+    color: #6b7a86;
+  }
+  @bottom-left {
+    content: "Theta ChatBot Technical Documentation";
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 8pt;
+    color: #6b7a86;
+  }
+}
+@page:first {
+  margin: 0;
+  @bottom-right { content: normal; }
+  @bottom-left { content: normal; }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: "DejaVu Sans", Arial, sans-serif; color: #16232f; font-size: 10.1pt; line-height: 1.52; background: #fff; max-width: 170mm; margin: 0 auto; overflow-wrap: break-word; word-wrap: break-word; }
+img, svg, pre, table { max-width: 100%; }
 .mono { font-family: "DejaVu Sans Mono", monospace; }
-.sheet { position: relative; width: 210mm; min-height: 297mm; padding: 20mm 16mm 16mm 16mm; page-break-after: always; }
-.sheet:last-child { page-break-after: auto; }
-.rail { position: absolute; top:0; left:0; bottom:0; width:9mm; background:#0d2b45; }
-.rail-label { position:absolute; top:50%; left:-38mm; width:90mm; transform:rotate(-90deg); transform-origin:left top;
-  color:#bfe3ef; font-family:"DejaVu Sans Mono",monospace; font-size:8pt; letter-spacing:3px; text-align:left; }
-.sheet-body { margin-left:9mm; padding-left:9mm; }
-.sheet-foot { position:absolute; bottom:8mm; left:18mm; right:16mm; border-top:0.5pt solid #c7d2da; padding-top:3mm;
-  font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; color:#6b7a86; }
-.sheet-foot .num { float:right; }
-.cover { background:#ffffff; color:#0d2b45; padding:0; border: 4mm solid #0d2b45; box-sizing: border-box; }
-.cover-inner { padding:22mm 14mm; }
-.cover .kicker2 { font-family:"DejaVu Sans Mono",monospace; color:#e8a33d; letter-spacing:4px; font-size:9.5pt; margin-bottom:10mm; text-transform: uppercase; font-weight: bold; }
-.cover h1 { font-size:36pt; color:#0d2b45; line-height:1.15; margin-bottom:6mm; border-bottom:none; font-weight: 800; letter-spacing: -1px; }
-.cover .subtitle { font-size:14pt; color:#1c5d8c; max-width:135mm; margin-bottom:40mm; font-weight: 500; }
+.chapter { page-break-after: always; }
+.cover { background:#0d2b45; color:#e8f1f6; padding:0; box-sizing: border-box; min-height: 100vh; page-break-after: always; }
+.cover .kicker2 { font-family:"DejaVu Sans Mono",monospace; color:#bfe3ef; letter-spacing:4px; font-size:9.5pt; margin-bottom:10mm; text-transform: uppercase; font-weight: bold; }
+.cover h1 { font-size:36pt; color:#ffffff; line-height:1.15; margin-bottom:6mm; border-bottom:none; font-weight: 800; letter-spacing: -1px; }
+.cover .subtitle { font-size:14pt; color:#bfe3ef; max-width:135mm; margin-bottom:40mm; font-weight: 500; }
 table.revtable { width:100%; border-collapse:collapse; margin-top:4mm; font-family:"DejaVu Sans Mono",monospace; font-size:8.5pt; }
-table.revtable th, table.revtable td { border:1pt solid #d8dfe4; padding:2.5mm 3mm; color:#0d2b45; text-align:left; }
-table.revtable th { background:#0d2b45; color:#ffffff; letter-spacing:1px; font-weight:bold; }
+table.revtable th, table.revtable td { border:0.5pt solid rgba(255, 255, 255, 0.15); padding:2.5mm 3mm; color:#cfe4ee; text-align:left; }
+table.revtable th { background:rgba(0, 0, 0, 0.15); color:#7fd0e6; letter-spacing:1px; font-weight:bold; }
 tr { page-break-inside: avoid; }
+table { page-break-inside: avoid; break-inside: avoid; }
+h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
 .kicker { font-family:"DejaVu Sans Mono",monospace; font-size:8pt; letter-spacing:2.5px; color:#1c5d8c; font-weight:bold; margin-bottom:2mm; }
 h1.section-title { font-size:20pt; color:#0d2b45; border-bottom:2pt solid #0d2b45; padding-bottom:3mm; margin-bottom:6mm; }
 h2 { font-size:12.5pt; color:#0d2b45; margin-top:6.5mm; margin-bottom:3mm; padding-left:3mm; border-left:3pt solid #e8a33d; }
@@ -56,8 +70,8 @@ table.spec td .mono { font-family:"DejaVu Sans Mono",monospace; font-size:8.1pt;
 .decision .lbl { font-family:"DejaVu Sans Mono",monospace; font-size:7.5pt; letter-spacing:2px; color:#b5791c; font-weight:bold; display:block; margin-bottom:1.5mm; }
 .tag { display:inline-block; font-family:"DejaVu Sans Mono",monospace; font-size:7.3pt; letter-spacing:1px; color:#1c5d8c; background:#f4f7f9; border:0.5pt solid #1c5d8c; padding:0.6mm 2mm; border-radius:3px; margin-right:1.6mm; margin-bottom:1.5mm; }
 .tag-danger { color:#7f1d1d; background:#fef2f2; border:0.5pt solid #fecaca; }
-.mermaid { background-color:#f8fafc; padding:5mm; border-radius:3px; border:0.5pt solid #e2e8f0; margin:5mm 0; text-align:center; page-break-inside: avoid; display: flex; justify-content: center; max-height: 220mm; overflow: hidden; }
-.mermaid svg { max-height: 100% !important; height: auto !important; width: auto !important; max-width: 100% !important; }
+.mermaid { background-color:#f8fafc; padding:5mm; border-radius:3px; border:0.5pt solid #e2e8f0; margin:5mm 0; text-align:center; page-break-inside: avoid; display: flex; justify-content: center; white-space: pre-wrap; font-family: inherit; zoom: 0.75; }
+pre.mermaid svg { max-height: 155mm !important; max-width: 100% !important; height: auto !important; width: auto !important; }
 .steps { margin:3mm 0; }
 .step { position:relative; padding:2mm 0 2mm 11mm; border-bottom:0.4pt dotted #c7d2da; page-break-inside: avoid; }
 .step:last-child { border-bottom:none; }
@@ -208,6 +222,10 @@ def render_adr(el):
     </div>
     """
 
+def render_why(el):
+    """Renders the <why> tag as an info callout."""
+    icon = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:5px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
+    return f'<div class="callout"><span class="lbl">{icon}WHY THIS IS ASKED</span>{inline_html(el)}</div>'
 
 def render_block(el):
     """Dispatch one block-level XML element to its HTML rendering."""
@@ -234,32 +252,28 @@ def render_block(el):
         return render_list(el, "ol")
     if t == "adr":
         return render_adr(el)
+    if t == "why":
+        return render_why(el)
     if t == "svg":
         import xml.etree.ElementTree as ET
         return ET.tostring(el, encoding="utf-8").decode("utf-8")
     if t == "raw":
         return (el.text or "").strip()
     if t == "mermaid-diagram":
-        return f'<div class="mermaid">{esc((el.text or "").strip())}</div>'
+        return f'<pre class="mermaid">{esc((el.text or "").strip())}</pre>'
     return ""
 
 
 def render_sheet(sheet_el, doc_title):
-    label = esc(sheet_el.get("label", doc_title))
     kicker = esc(sheet_el.get("kicker", ""))
     title = esc(sheet_el.get("title", ""))
-    footnum = esc(sheet_el.get("footnum", ""))
     body_html = "".join(render_block(child) for child in sheet_el)
     kicker_html = f'<div class="kicker">{kicker}</div>' if kicker else ""
     return f"""
-<div class="sheet">
-  <div class="rail"><div class="rail-label mono">{label}</div></div>
-  <div class="sheet-body">
-    {kicker_html}
-    <h1 class="section-title">{title}</h1>
-    {body_html}
-  </div>
-  <div class="sheet-foot"><span>{esc(doc_title)}</span><span class="num">SHEET {footnum}</span></div>
+<div class="chapter">
+  {kicker_html}
+  <h1 class="section-title">{title}</h1>
+  {body_html}
 </div>
 """
 
@@ -278,8 +292,8 @@ def render_cover(cover_el, doc_title):
     img_html = f'<div style="text-align:left; margin-bottom: 25mm;"><img src="{image}" style="max-width:280px;" /></div>' if image else ""
     
     return f"""
-<div class="sheet cover">
-  <div class="cover-inner">
+<div class="cover">
+  <div style="padding: 40mm 20mm;">
     {img_html}
     <div class="kicker2">{kicker}</div>
     <h1>{title}</h1>
@@ -300,17 +314,12 @@ def render_toc(toc_el, doc_title):
             f'<span class="toc-row"><span class="tn">{n}</span>'
             f'<span class="tt">{title}</span><span class="td">{desc}</span></span>'
         )
-    label = esc(toc_el.get("label", doc_title))
     heading = esc(toc_el.get("title", "Contents"))
     return f"""
-<div class="sheet">
-  <div class="rail"><div class="rail-label mono">{label}</div></div>
-  <div class="sheet-body">
-    <div class="kicker">SHEET INDEX</div>
-    <h1 class="section-title">{heading}</h1>
-    {''.join(rows)}
-  </div>
-  <div class="sheet-foot"><span>{esc(doc_title)}</span><span class="num">SHEET 00</span></div>
+<div class="chapter">
+  <div class="kicker">DOCUMENT INDEX</div>
+  <h1 class="section-title">{heading}</h1>
+  {''.join(rows)}
 </div>
 """
 
@@ -331,9 +340,17 @@ def build_html(xml_path):
 
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><title>{esc(doc_title)}</title>
-<style>{CSS}</style></head>
+<style>{CSS}</style>
+</head>
 <body>
 {''.join(body_parts)}
+<script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {{
+    mermaid.initialize({{startOnLoad:true}});
+    mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+  }});
+</script>
 </body></html>"""
     return html
 
@@ -351,7 +368,18 @@ def main():
     print(f"Wrote {html_path}")
 
     result = subprocess.run(
-        ["./wkhtmltopdf", "--enable-local-file-access", "--quiet", html_path, pdf_path],
+        [
+            "./wkhtmltopdf", "--enable-local-file-access", "--quiet",
+            "--page-size", "A4",
+            "--margin-top", "25mm", "--margin-bottom", "25mm",
+            "--margin-left", "20mm", "--margin-right", "20mm",
+            "--footer-right", "PAGE [page]",
+            "--footer-left", "Theta ChatBot Technical Documentation",
+            "--footer-font-name", "DejaVu Sans Mono",
+            "--footer-font-size", "8",
+            "--footer-spacing", "5",
+            html_path, pdf_path
+        ],
         capture_output=True, text=True,
     )
     if result.returncode != 0:

@@ -251,6 +251,9 @@ flowchart TB
     <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 5.1: Component Communication</b></p>
 
     <p>The system components communicate in a strictly sequential flow: the frontend passes user queries to the FastAPI backend, which retrieves semantically similar vectors, constructs a prompt, invokes the LLM, validates the response, and returns the final answer along with source citations.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="00">
     <h2>5.11 Scalability Considerations</h2>
     <p>The proposed architecture supports future enhancements without requiring major redesign.</p>
     <p><b>Possible future extensions include:</b></p>

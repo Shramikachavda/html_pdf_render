@@ -348,9 +348,8 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
 
   <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="13">
     <h2>3.4 Content Chunking</h2>
-    <p>Since modern language models and vector databases perform better with smaller, focused contextual units, each webpage is divided into multiple semantic chunks before embeddings are generated.</p>
-    <p>The system utilizes a <b>Sliding Window Overlap Chunking Strategy</b>. A <b>500-token chunk size</b> (approx. 350–400 words) with a <b>50–100 token overlap</b> is used as a baseline example in this document. Note that the exact chunk size and character/token boundaries are fully configurable and will be adjusted dynamically at runtime based on the document type, content density, and model context window optimization.</p>
-    <p>The chunking strategy follows these core principles:</p>
+    <p>Webpages are divided into semantic chunks before embeddings are generated to optimize language model and vector database performance.</p>
+    <p>The system utilizes a <b>Sliding Window Overlap Chunking Strategy</b> with a <b>500-token baseline</b> and <b>50–100 token overlap</b>. Chunk sizes and boundaries adjust dynamically at runtime based on document type and density. The strategy follows these core principles:</p>
     <list>
       <item><b>Configurable Chunk Size</b>: 500-token baseline (adjustable at runtime) optimized for embedding models and vector retrieval.</item>
       <item><b>Overlapping Window</b>: 50–100 token overlap prevents context loss across chunk boundaries.</item>
@@ -358,10 +357,6 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <item><b>Heading Context Preservation</b>: Keeps headings attached to their respective body text chunks.</item>
       <item><b>Metadata Attachment</b>: Stores URL, page title, section name, and chunk index with every vector record.</item>
     </list>
-    <decision label="CHUNKING STRATEGY JUSTIFICATION">
-      <p><b>1. Context Cohesion (500 Tokens):</b> Smaller chunks (e.g., 100-200 tokens) often lose the broader context, forcing the LLM to guess connections. 500 tokens provide enough surrounding text to fully answer multi-part questions while remaining granular enough for accurate vector search.</p>
-      <p><b>2. Edge-Case Prevention (Overlap):</b> The 50–100 token overlapping window prevents critical information from being split across two separate chunks, ensuring the retrieval engine doesn't miss a fact that spans a boundary.</p>
-    </decision>
     <p>Example (Baseline Configuration):</p>
     <table>
       <row header="1"><cell>Chunk ID</cell><cell>Page</cell><cell>Section</cell><cell>Description</cell></row>
@@ -370,6 +365,9 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <row><cell>CH-003</cell><cell>Portfolio</cell><cell>Healthcare Solution</cell><cell>Project Description (~500 tokens example)</cell></row>
     </table>
     <p>This improves retrieval precision by allowing the chatbot to retrieve only the most relevant section instead of an entire webpage.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="14">
     <h2>3.5 Embedding Generation</h2>
     <p>After chunking, each content block is converted into a numerical vector representation known as an embedding.</p>
     <p>Embeddings capture the semantic meaning of text rather than relying solely on keyword matching. This enables the chatbot to understand user intent even when different words or phrases are used.</p>
@@ -533,7 +531,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->
-  <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="14" title="Chapter 4 – Retrieval &amp; Response Generation">
+  <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="15" title="Chapter 4 – Retrieval &amp; Response Generation">
     <h2>4.1 Overview</h2>
     <p>The Retrieval &amp; Response Generation Pipeline is the core processing layer of the Theta Chat Bot. It is responsible for transforming a user's natural language query into an accurate, context-aware response by retrieving relevant website content and providing it to the Large Language Model (LLM).</p>
     <p>Instead of relying solely on the language model's pre-trained knowledge, the system first searches the organization's indexed knowledge base. Only the retrieved content is supplied to the LLM, ensuring that responses remain grounded in official Theta Technolabs information.</p>
@@ -757,7 +755,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <p>This provides users with a consistent and intuitive conversational experience.</p>
   </sheet>
 
-  <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="15">
+  <sheet label="THETA CHATBOT · RETRIEVAL" kicker="CHAPTER 4 — RETRIEVAL PIPELINE" footnum="16">
     <h2>4.11 Complete Processing Flow</h2>
     <p>The complete end-to-end request handling workflow illustrates how a user's question travels from the frontend floating widget through validation, semantic retrieval, prompt assembly, LLM inference, and response delivery:</p>
 
@@ -815,7 +813,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
   <!-- ======================= sec_5.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="16" title="Chapter 5 – System Architecture">
+  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="17" title="Chapter 5 – System Architecture">
     <h2>5.1 Architecture Overview</h2>
     <p>The Theta Chat Bot follows a modular, service-oriented architecture designed around the principles of scalability, maintainability, and loose coupling. Each major component has a clearly defined responsibility, allowing individual services to be upgraded or replaced without impacting the rest of the system.</p>
     <p>The architecture separates the user interface, application logic, artificial intelligence layer, knowledge storage, and operational services into independent layers. This design ensures the chatbot remains easy to maintain while supporting future enhancements such as analytics dashboards, multilingual support, CRM integration, or migration to different Large Language Models (LLMs).</p>
@@ -968,7 +966,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
     <p>If future scalability requirements increase, the same Docker architecture can be deployed on cloud platforms with minimal modifications.</p>
   </sheet>
 
-  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="17">
+  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="18">
     <h2>5.10 Component Communication</h2>
     <mermaid-diagram>
 flowchart TB
@@ -1065,6 +1063,9 @@ flowchart TB
     <p align="center" style="text-align: center !important; color: #555555 !important;"><b>Figure 5.1: Component Communication</b></p>
 
     <p>The system components communicate in a strictly sequential flow: the frontend passes user queries to the FastAPI backend, which retrieves semantically similar vectors, constructs a prompt, invokes the LLM, validates the response, and returns the final answer along with source citations.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · ARCHITECTURE" kicker="CHAPTER 5 — SYSTEM ARCHITECTURE" footnum="19">
     <h2>5.11 Scalability Considerations</h2>
     <p>The proposed architecture supports future enhancements without requiring major redesign.</p>
     <p><b>Possible future extensions include:</b></p>
@@ -1098,7 +1099,7 @@ flowchart TB
 
   <!-- ======================= sec_6.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="18" title="Chapter 6 – Technology Stack">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="20" title="Chapter 6 – Technology Stack">
     <h2>6.1 Introduction</h2>
     <p>The Theta Chat Bot is a modular AI-powered customer support solution that integrates with the existing Theta Technolabs website without requiring changes to the current Webflow implementation. It follows a service-oriented architecture where the frontend communicates with a FastAPI backend through REST APIs. The backend manages request validation, knowledge retrieval, prompt construction, LLM interaction, and response generation.</p>
     <p>The technology stack was selected against four criteria:</p>
@@ -1112,7 +1113,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="19">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="21">
     <h2>6.2 Technology Stack Overview</h2>
     <p>The Theta Chat Bot is built on a modern, modular technology stack that emphasizes scalability, maintainability, performance, and cost-effectiveness. Each technology was chosen for its suitability for AI application development, ease of integration, community support, and flexibility for future enhancements, so individual components can be upgraded or replaced with minimal impact on the rest of the system.</p>
 
@@ -1136,7 +1137,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="20">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="22">
     <h2>6.3 Technology Selection Rationale</h2>
     <p>Each major component was evaluated against realistic alternatives using performance, scalability, maintainability, operational cost, ease of deployment, and compatibility with AI-based applications — rather than picked by popularity. This section is the single source of truth for <i>why</i> each choice was made; later sections (6.4–6.6) describe <i>how</i> the chosen components fit together and are not repeated here.</p>
 
@@ -1177,7 +1178,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="21">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="23">
     <h2>6.3.3 Vector Storage: Qdrant, or PostgreSQL + pgvector</h2>
     <p><b>Option 1 — Dedicated Vector Database (Qdrant).</b> When the chatbot only requires semantic search over the knowledge base and does not need conversation logging, analytics, or an administrative dashboard, Qdrant is the recommended solution. Qdrant is purpose-built for vector similarity search and provides excellent retrieval performance with minimal infrastructure overhead.</p>
     <p><b>Option 2 — PostgreSQL with pgvector.</b> When the application requires conversation history, user feedback, operational metrics, API logs, or an administrative dashboard, PostgreSQL with the pgvector extension is the recommended architecture. In this approach, PostgreSQL stores both relational application data and vector embeddings using the pgvector extension within a single database system, eliminating the need for a separate vector database.</p>
@@ -1208,7 +1209,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 05 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="22">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="24">
     <h2>6.4 Component Interaction</h2>
     <p>The Theta Chat Bot follows a modular request-processing workflow in which each component handles one stage of the chatbot lifecycle. User interactions begin through the custom JavaScript chat widget embedded in the existing Webflow website. The widget communicates with the backend through secure REST APIs exposed by the FastAPI application.</p>
     <p><b>Step-by-step request flow:</b></p>
@@ -1273,7 +1274,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
   </sheet>
 
   <!-- ============ SHEET 06 ============ -->
-  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="23">
+  <sheet label="THETA CHATBOT · TECHNOLOGY" kicker="CHAPTER 6 — TECHNOLOGY STACK" footnum="25">
     <h2>6.5 APIs Used</h2>
     <table>
       <row header="1"><cell>API</cell><cell>Type</cell><cell>Purpose</cell></row>
@@ -1299,7 +1300,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
   <!-- ======================= sec_7.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · API DESIGN" kicker="CHAPTER 7 — API DESIGN" footnum="24" title="Chapter 7 – API Design &amp; Communication Flow">
+  <sheet label="THETA CHATBOT · API DESIGN" kicker="CHAPTER 7 — API DESIGN" footnum="26" title="Chapter 7 – API Design &amp; Communication Flow">
     <h2>7.1 Overview</h2>
 
 
@@ -1485,7 +1486,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
   <!-- ======================= sec_8.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · FRONTEND" kicker="CHAPTER 8 — FRONTEND INTEGRATION" footnum="25" title="Chapter 8 – Frontend Integration">
+  <sheet label="THETA CHATBOT · FRONTEND" kicker="CHAPTER 8 — FRONTEND INTEGRATION" footnum="27" title="Chapter 8 – Frontend Integration">
     <h2>8.1 Overview</h2>
     <mermaid-diagram>
 flowchart TB
@@ -1684,7 +1685,7 @@ linkStyle default stroke:#0d2b45,stroke-width:2px;
 
   <!-- ======================= gradrails.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="26" title="Chapter 9 – AI Guardrails Strategy">
+  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="28" title="Chapter 9 – AI Guardrails Strategy">
     <h2>9.1 Overview</h2>
     <p>To ensure the Theta Chat Bot provides accurate, reliable, and business-appropriate responses, a comprehensive set of AI guardrails is implemented. These guardrails define how the chatbot processes user queries, retrieves information, generates responses, and handles situations where sufficient information is unavailable.</p>
     <p>The primary objective is to ensure that every response is based on the approved Theta Technolabs knowledge base while preventing hallucinations, prompt injection attacks, and responses outside the chatbot's intended scope.</p>
@@ -1731,7 +1732,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="27">
+  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="29">
     <h2>9.5 Confidence Guardrail</h2>
     <p>After retrieving relevant content from Qdrant, the system evaluates the similarity score to determine whether there is enough confidence to answer the question.</p>
     <table>
@@ -1756,7 +1757,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="28">
+  <sheet label="THETA CHATBOT · GUARDRAILS" kicker="CHAPTER 9 — AI GUARDRAILS STRATEGY" footnum="30">
     <h2>9.9 Security Guardrail</h2>
     <p>The chatbot safely handles requests attempting to manipulate behavior or expose system information (e.g., prompt injection, revealing API keys or system instructions).</p>
 
@@ -1803,7 +1804,7 @@ flowchart TB
 
   <!-- ======================= sec_9_10_11.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · DASHBOARD" kicker="CHAPTER 10 — DASHBOARD &amp; ANALYTICS" footnum="29" title="Chapter 10 – Operational Dashboard &amp; Analytics">
+  <sheet label="THETA CHATBOT · DASHBOARD" kicker="CHAPTER 10 — DASHBOARD &amp; ANALYTICS" footnum="31" title="Chapter 10 – Operational Dashboard &amp; Analytics">
     <h2>10.1 Overview</h2>
     <mermaid-diagram>
 flowchart TB
@@ -1962,7 +1963,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · SECURITY" kicker="CHAPTER 11 — SECURITY &amp; BOT PREVENTION" footnum="30" title="Chapter 11 – Security &amp; Bot Prevention">
+  <sheet label="THETA CHATBOT · SECURITY" kicker="CHAPTER 11 — SECURITY &amp; BOT PREVENTION" footnum="32" title="Chapter 11 – Security &amp; Bot Prevention">
     <h2>11.1 Overview</h2>
     <p>Although the Theta Chat Bot is publicly accessible and does not require user authentication, security remains a critical aspect of the overall system design. The chatbot communicates with external AI services, processes user input, and retrieves information from the company's knowledge base. Therefore, appropriate security controls must be implemented to ensure system reliability, protect sensitive configurations, and prevent misuse.</p>
     <p>The proposed security strategy follows a <b>defense-in-depth approach</b>, where multiple layers of protection work together to reduce potential risks.</p>
@@ -2090,7 +2091,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · DEPLOYMENT" kicker="CHAPTER 12 — DEPLOYMENT STRATEGY" footnum="31" title="Chapter 12 – Deployment Strategy">
+  <sheet label="THETA CHATBOT · DEPLOYMENT" kicker="CHAPTER 12 — DEPLOYMENT STRATEGY" footnum="33" title="Chapter 12 – Deployment Strategy">
     <h2>12.1 Overview</h2>
     <p>The chatbot is containerized using Docker for consistent, portable deployment across development, testing, and production. Initial deployment is on-premise, hosted within company infrastructure — giving full control, predictable costs, and easier compliance. The architecture remains cloud-ready for future migration to AWS, Azure, or GCP with minimal changes.</p>
 
@@ -2150,7 +2151,7 @@ flowchart TB
   </sheet>
 
   <!-- ======================= sec_12.xml ======================= -->
-<sheet label="THETA CHATBOT · MONITORING" kicker="CHAPTER 13 — MONITORING &amp; LOGGING" footnum="32" title="Chapter 13 – Monitoring &amp; Logging">
+<sheet label="THETA CHATBOT · MONITORING" kicker="CHAPTER 13 — MONITORING &amp; LOGGING" footnum="34" title="Chapter 13 – Monitoring &amp; Logging">
     <h2>13.1 Overview</h2>
     <p>Monitoring and logging are essential for maintaining the reliability, performance, and operational health of the Theta Chat Bot. Continuous visibility into application behavior helps administrators catch issues early, optimize performance, and improve response quality over time.</p>
     <p>The monitoring strategy covers three primary areas: Application Health, AI Performance, and Knowledge Base Freshness.</p>
@@ -2247,7 +2248,7 @@ flowchart TB
 
   <!-- ======================= appendics.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · TESTING" kicker="CHAPTER 14 — TESTING STRATEGY" footnum="33" title="Chapter 14 – AI System Validation &amp; Testing">
+  <sheet label="THETA CHATBOT · TESTING" kicker="CHAPTER 14 — TESTING STRATEGY" footnum="35" title="Chapter 14 – AI System Validation &amp; Testing">
     <h2>14.1 Overview</h2>
     <p>Unlike traditional software, the Theta Chat Bot requires validating both software functionality <i>and</i> AI response quality. Because it uses a RAG architecture, testing extends beyond API checks to retrieval accuracy, prompt effectiveness, chunking quality, and response reliability — combining manual evaluation with technical verification across the full pipeline.</p>
 
@@ -2290,7 +2291,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · TESTING" kicker="CHAPTER 14 — TESTING STRATEGY" footnum="34">
+  <sheet label="THETA CHATBOT · TESTING" kicker="CHAPTER 14 — TESTING STRATEGY" footnum="36">
     <h2>14.6 Regression &amp; Performance Testing</h2>
     <p>Regression testing runs after any prompt modification, content update, knowledge sync, embedding/LLM provider change, or backend change — using a standardized reference question set covering every major website category (services, technologies, portfolio, careers, contact, general inquiries) for objective before/after comparison.</p>
     <p>Performance is measured via average response time, retrieval latency, LLM generation time, end-to-end processing time, and concurrent request handling.</p>
@@ -2323,7 +2324,7 @@ flowchart TB
 
   <!-- ======================= sec_13.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="35" title="Chapter 15 – Risk Assessment &amp; Mitigation">
+  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="37" title="Chapter 15 – Risk Assessment &amp; Mitigation">
     <h2>15.1 Overview</h2>
     <p>Every software solution introduces technical and operational risks that should be identified during the design phase. Evaluating these risks early enables the team to define appropriate mitigation strategies and reduces the likelihood of unexpected issues during deployment or production.</p>
     <p>The following table summarizes the primary risks identified for the Theta Chat Bot project.</p>
@@ -2340,7 +2341,7 @@ flowchart TB
     </table>
   </sheet>
 
-  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="36">
+  <sheet label="THETA CHATBOT · RISK MANAGEMENT" kicker="CHAPTER 15 — RISK ASSESSMENT" footnum="38">
     <h2>15.3 Technical Risks</h2>
     <p>Several technical risks are associated with AI-powered chatbot systems.</p>
 
@@ -2410,7 +2411,7 @@ flowchart TB
 
   <!-- ======================= SEC_14.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="37" title="Chapter 16 – Future Roadmap">
+  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="39" title="Chapter 16 – Future Roadmap">
     <h2>16.1 Overview</h2>
     <p>The Theta Chat Bot has been designed using a modular and extensible architecture that supports future enhancements with minimal changes to the existing system. While the initial implementation focuses on delivering accurate website-based responses using a Retrieval-Augmented Generation (RAG) architecture, the proposed design enables the chatbot to evolve incrementally as business requirements grow.</p>
     <p>The roadmap below outlines the planned evolution of the chatbot while maintaining scalability, maintainability, and deployment flexibility.</p>
@@ -2428,7 +2429,7 @@ flowchart TB
     </table>
   </sheet>
   
-  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="38">
+  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="40">
     <h2>16.3 Phase 2 – Monitoring &amp; Analytics</h2>
     <p>Following the initial deployment, the focus shifts toward improving operational visibility, monitoring, and performance analysis.</p>
     <table>
@@ -2453,7 +2454,7 @@ flowchart TB
     </table>
   </sheet>
 
-  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="39">
+  <sheet label="THETA CHATBOT · ROADMAP" kicker="CHAPTER 16 — FUTURE ROADMAP" footnum="41">
     <h2>16.5 Long-Term Vision</h2>
     <p>The long-term vision is to continuously enhance the Theta Chat Bot by improving response quality, user experience, and operational efficiency. Future enhancements will focus on increasing system performance, simplifying maintenance, and supporting evolving business requirements without requiring significant architectural changes.</p>
     <table>
@@ -2478,7 +2479,7 @@ flowchart TB
 
   <!-- ======================= llm_cost.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX A — LLM COST COMPARISON" footnum="40" title="Appendix A – LLM Cost Comparison">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX A — LLM COST COMPARISON" footnum="42" title="Appendix A – LLM Cost Comparison">
     <h2>A.1 Overview</h2>
     <p>This appendix provides a comprehensive financial and operational cost breakdown for Large Language Model (LLM) providers and local embedding models evaluated for the Theta Chat Bot.</p>
 
@@ -2513,7 +2514,7 @@ flowchart TB
 
   <!-- ======================= req_question.xml ======================= -->
 <!-- ============ SHEET 01 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" title="Requirement Gathering Questions" footnum="41">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" title="Requirement Gathering Questions" footnum="43">
     
     <h2>B.1 Project Scope</h2>
     <p><b>Q1: Which website(s) should the chatbot support (e.g., only thetatechnolabs.in or multiple domains such as .com and .ca)?</b></p>
@@ -2531,7 +2532,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 02 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="42">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="44">
 
     <h2>B.3 Existing Chatbot</h2>
     <p><b>Q1: The existing website already has a manual inquiry chat widget on the right side of the website. Are conversation details such as user queries, responses, timestamps, and other interaction data currently being stored? If yes, where is this data stored, and can I access it?</b></p>
@@ -2543,7 +2544,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 03 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="43">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="45">
 
     <h2>B.5 Chatbot Placement</h2>
     <p><b>Q1: Should the chatbot be available on every page of the website or only on selected pages?</b></p>
@@ -2555,7 +2556,7 @@ flowchart TB
   </sheet>
 
   <!-- ============ SHEET 04 ============ -->
-  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="44">
+  <sheet label="THETA CHATBOT · APPENDIX" kicker="APPENDIX B — REQUIREMENT GATHERING" footnum="46">
 
     <h2>B.7 Administration</h2>
     <p><b>Q1: Is an admin dashboard required for managing the knowledge base, chatbot configuration, or analytics?</b></p>

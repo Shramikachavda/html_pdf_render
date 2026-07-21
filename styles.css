@@ -38,6 +38,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 body {
@@ -771,6 +773,10 @@ strong {
   vertical-align: middle;
 }
 
+/* Global Pagination Rules */
+table { page-break-inside: avoid; break-inside: avoid; }
+h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+
 /* Table spec & revtable */
 table.spec {
   width: 100%;
@@ -858,6 +864,15 @@ table.spec td.mono, table.spec td .mono {
   border: 1px solid #e2e8f0;
   margin: 20px 0;
   text-align: center;
+  page-break-inside: avoid;
+  white-space: pre-wrap;
+  zoom: 0.75;
+}
+pre.mermaid svg {
+  max-height: 155mm !important;
+  max-width: 100% !important;
+  height: auto !important;
+  width: auto !important;
 }
 
 .adr { border: 0.6pt solid var(--doc-border); margin: 4mm 0 6mm 0; page-break-inside: avoid; }

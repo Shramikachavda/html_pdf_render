@@ -189,9 +189,8 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
 
   <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="00">
     <h2>3.4 Content Chunking</h2>
-    <p>Since modern language models and vector databases perform better with smaller, focused contextual units, each webpage is divided into multiple semantic chunks before embeddings are generated.</p>
-    <p>The system utilizes a <b>Sliding Window Overlap Chunking Strategy</b>. A <b>500-token chunk size</b> (approx. 350–400 words) with a <b>50–100 token overlap</b> is used as a baseline example in this document. Note that the exact chunk size and character/token boundaries are fully configurable and will be adjusted dynamically at runtime based on the document type, content density, and model context window optimization.</p>
-    <p>The chunking strategy follows these core principles:</p>
+    <p>Webpages are divided into semantic chunks before embeddings are generated to optimize language model and vector database performance.</p>
+    <p>The system utilizes a <b>Sliding Window Overlap Chunking Strategy</b> with a <b>500-token baseline</b> and <b>50–100 token overlap</b>. Chunk sizes and boundaries adjust dynamically at runtime based on document type and density. The strategy follows these core principles:</p>
     <list>
       <item><b>Configurable Chunk Size</b>: 500-token baseline (adjustable at runtime) optimized for embedding models and vector retrieval.</item>
       <item><b>Overlapping Window</b>: 50–100 token overlap prevents context loss across chunk boundaries.</item>
@@ -199,10 +198,6 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <item><b>Heading Context Preservation</b>: Keeps headings attached to their respective body text chunks.</item>
       <item><b>Metadata Attachment</b>: Stores URL, page title, section name, and chunk index with every vector record.</item>
     </list>
-    <decision label="CHUNKING STRATEGY JUSTIFICATION">
-      <p><b>1. Context Cohesion (500 Tokens):</b> Smaller chunks (e.g., 100-200 tokens) often lose the broader context, forcing the LLM to guess connections. 500 tokens provide enough surrounding text to fully answer multi-part questions while remaining granular enough for accurate vector search.</p>
-      <p><b>2. Edge-Case Prevention (Overlap):</b> The 50–100 token overlapping window prevents critical information from being split across two separate chunks, ensuring the retrieval engine doesn't miss a fact that spans a boundary.</p>
-    </decision>
     <p>Example (Baseline Configuration):</p>
     <table>
       <row header="1"><cell>Chunk ID</cell><cell>Page</cell><cell>Section</cell><cell>Description</cell></row>
@@ -211,6 +206,9 @@ style F fill:#ffffff,stroke:#e8a33d,stroke-width:3px,color:#0d2b45
       <row><cell>CH-003</cell><cell>Portfolio</cell><cell>Healthcare Solution</cell><cell>Project Description (~500 tokens example)</cell></row>
     </table>
     <p>This improves retrieval precision by allowing the chatbot to retrieve only the most relevant section instead of an entire webpage.</p>
+  </sheet>
+
+  <sheet label="THETA CHATBOT · KNOWLEDGE" kicker="CHAPTER 3 — KNOWLEDGE PIPELINE" footnum="00">
     <h2>3.5 Embedding Generation</h2>
     <p>After chunking, each content block is converted into a numerical vector representation known as an embedding.</p>
     <p>Embeddings capture the semantic meaning of text rather than relying solely on keyword matching. This enables the chatbot to understand user intent even when different words or phrases are used.</p>
