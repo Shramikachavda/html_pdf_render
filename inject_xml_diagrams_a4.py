@@ -32,9 +32,9 @@ diagram_mapping = {
     "{{DIAGRAM_FRONTEND_INTEGRATION}}": ("final_content.xml", "Frontend Integration Overview"),
     "{{DIAGRAM_FRONTEND_REQUEST_FLOW}}": ("final_content.xml", "Frontend Request Flow"),
     "{{DIAGRAM_GUARDRAIL}}": ("final_content.xml", "Guardrail Workflow"),
-    "{{DIAGRAM_FALLBACK_STRATEGY}}": ("final_content.xml", "Fallback Handling Strategy"),
-    "{{DIAGRAM_DASHBOARD}}": ("final_content.xml", "Dashboard & Analytics Architecture"),
-    "{{DIAGRAM_MONITORING}}": ("final_content.xml", "Monitoring Scope"),
+    "{{DIAGRAM_FALLBACK_STRATEGY}}": ("final_content.xml", "Fallback Strategy Decision Process"),
+    "{{DIAGRAM_DASHBOARD}}": ("final_content.xml", "Dashboard Architecture Overview"),
+    "{{DIAGRAM_MONITORING}}": ("final_content.xml", "Monitoring and Observability Strategy"),
     "{{DIAGRAM_FALLBACK}}": ("final_content.xml", "Frontend Request Flow") # For backward compatibility just in case
 }
 

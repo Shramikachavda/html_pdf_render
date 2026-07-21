@@ -135,7 +135,13 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <td>Personal opinions, medical/legal/financial advice, current news, general internet search, information unrelated to Theta Technolabs</td></tr></table>
 
   <h2>1.5 High-Level Solution</h2>
-  <p>For every query, the chatbot executes four steps: <strong>(1) User Query Processing</strong> — validates natural language input; <strong>(2) Semantic Knowledge Retrieval</strong> — searches the vector database for relevant chunks; <strong>(3) Contextual Prompt Construction</strong> — injects retrieved content and guardrails into a structured prompt; <strong>(4) Grounded Response Delivery</strong> — returns a concise, source-referenced answer.</p>
+  <p>For every query, the chatbot executes four steps:</p>
+  <ol>
+    <li><strong>User Query Processing:</strong> Validates natural language input.</li>
+    <li><strong>Semantic Knowledge Retrieval:</strong> Searches the vector database for relevant chunks.</li>
+    <li><strong>Contextual Prompt Construction:</strong> Injects retrieved content and guardrails into a structured prompt.</li>
+    <li><strong>Grounded Response Delivery:</strong> Returns a concise, source-referenced answer.</li>
+  </ol>
   <div class="callout"><span class="lbl">EXAMPLE INTERACTION</span><strong>Visitor:</strong> "Do you develop AI Agents?"<br><strong>Chatbot:</strong> "Yes. Theta Technolabs develops custom AI agents, conversational AI solutions, LLM applications, and intelligent automation systems tailored to business needs." — with a link to the AI Development Services page.</div>
 </div>
 
@@ -145,7 +151,15 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <h1 class="section-title">2. Solution Architecture &amp; RAG Approach</h1>
 
   <h2>2.1 Overview</h2>
-  <p>The chatbot dynamically retrieves relevant website content and supplies it as context to the LLM, rather than storing predefined Q&amp;A pairs or training a custom model. Five modular stages make up the architecture: <strong>Knowledge Acquisition</strong> (content collected and prepared), <strong>Knowledge Storage</strong> (indexed in a vector database), <strong>Query Processing</strong> (user questions analyzed and matched), <strong>Response Generation</strong> (context + query sent to the LLM), and <strong>Response Delivery</strong> (answer returned via the widget). Separating knowledge storage from language generation lets content update independently of the model.</p>
+  <p>The chatbot dynamically retrieves relevant website content and supplies it as context to the LLM, rather than storing predefined Q&amp;A pairs or training a custom model. Five modular stages make up the architecture:</p>
+  <ul>
+    <li><strong>Knowledge Acquisition:</strong> Content collected and prepared.</li>
+    <li><strong>Knowledge Storage:</strong> Indexed in a vector database.</li>
+    <li><strong>Query Processing:</strong> User questions analyzed and matched.</li>
+    <li><strong>Response Generation:</strong> Context + query sent to the LLM.</li>
+    <li><strong>Response Delivery:</strong> Answer returned via the widget.</li>
+  </ul>
+  <p>Separating knowledge storage from language generation lets content update independently of the model.</p>
 
   <h2>2.2 Why Retrieval-Augmented Generation?</h2>
   <table class="spec"><tr><th>Approach</th><th>Limitation</th></tr>
@@ -257,7 +271,15 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <h1 class="section-title">5. System Architecture</h1>
 
   <h2>5.1 Architecture Layers</h2>
-  <p>The system separates concerns into six layers, each independently upgradeable: <strong>Presentation</strong> (embedded JS widget on the existing Webflow site — captures input, displays responses/sources/fallbacks, manages session IDs); <strong>API</strong> (FastAPI REST endpoints — validates requests, routes to the AI pipeline, returns structured JSON); <strong>Business Logic</strong> (orchestrates validation, session management, prompting, error handling, logging); <strong>AI &amp; Retrieval</strong> (embedding, semantic search, context construction, prompt engineering, confidence validation); <strong>Data</strong> (knowledge base and optional analytics store); and <strong>Infrastructure</strong> (Docker containers for portability and on-premise hosting).</p>
+  <p>The system separates concerns into six layers, each independently upgradeable:</p>
+  <ul>
+    <li><strong>Presentation:</strong> Embedded JS widget on the existing Webflow site — captures input, displays responses/sources/fallbacks, manages session IDs.</li>
+    <li><strong>API:</strong> FastAPI REST endpoints — validates requests, routes to the AI pipeline, returns structured JSON.</li>
+    <li><strong>Business Logic:</strong> Orchestrates validation, session management, prompting, error handling, logging.</li>
+    <li><strong>AI &amp; Retrieval:</strong> Embedding, semantic search, context construction, prompt engineering, confidence validation.</li>
+    <li><strong>Data:</strong> Knowledge base and optional analytics store.</li>
+    <li><strong>Infrastructure:</strong> Docker containers for portability and on-premise hosting.</li>
+  </ul>
 
   <h2>5.2 Component Communication</h2>
   {{DIAGRAM_COMPONENTS}}
@@ -268,7 +290,10 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <div class="callout"><span class="lbl">LLM ABSTRACTION INTERFACE (PSEUDOCODE)</span><span class="mono">class BaseLLMProvider(ABC):<br>&nbsp;&nbsp;@abstractmethod<br>&nbsp;&nbsp;async def generate_response(self, prompt, context) -&gt; str:<br>&nbsp;&nbsp;&nbsp;&nbsp;"""Generates a grounded response using the provided context."""</span></div>
 
   <h2>5.4 Data &amp; Infrastructure Layer</h2>
-  <p><strong>Architecture A (Lightweight):</strong> Qdrant only — stores embeddings, performs similarity search, returns relevant content. Recommended when only chatbot functionality is required.<br><strong>Architecture B (Enterprise):</strong> PostgreSQL + pgvector — stores embeddings plus conversation logs, feedback, API usage, token consumption, dashboard metrics, and configuration. Recommended when an admin dashboard and reporting are required.</p>
+  <ul>
+    <li><strong>Architecture A (Lightweight):</strong> Qdrant only — stores embeddings, performs similarity search, returns relevant content. Recommended when only chatbot functionality is required.</li>
+    <li><strong>Architecture B (Enterprise):</strong> PostgreSQL + pgvector — stores embeddings plus conversation logs, feedback, API usage, token consumption, dashboard metrics, and configuration. Recommended when an admin dashboard and reporting are required.</li>
+  </ul>
   <p>The entire solution is containerized with Docker for consistent environments across development, testing, and production. Containers may include the FastAPI app, Nginx reverse proxy, Qdrant or PostgreSQL+pgvector, and pgAdmin (enterprise). Deployment defaults to an on-premise Docker environment for infrastructure control, data management, and lower long-term cost, with the same architecture portable to the cloud if scalability demands increase.</p>
 
   <h2>5.5 Scalability &amp; Key Design Decisions</h2>
@@ -286,7 +311,14 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <h1 class="section-title">6. Technology Stack &amp; Design Rationale</h1>
 
   <h2>6.1 Selection Criteria</h2>
-  <p>The stack was chosen against four criteria: <strong>Cost</strong> (minimize development, deployment, and operational expense), <strong>Control</strong> (retain ownership of application data and infrastructure), <strong>Development Velocity</strong> (rapid development, testing, and deployment), and <strong>Scalability</strong> (support future multilingual, analytics, and traffic growth without major redesign). The architecture is organized into four independent layers — Frontend, Backend, AI &amp; Knowledge Retrieval, and Infrastructure — reusing the existing Webflow site and keeping infrastructure lightweight and cost-effective.</p>
+  <p>The stack was chosen against four criteria:</p>
+  <ul>
+    <li><strong>Cost:</strong> Minimize development, deployment, and operational expense.</li>
+    <li><strong>Control:</strong> Retain ownership of application data and infrastructure.</li>
+    <li><strong>Development Velocity:</strong> Rapid development, testing, and deployment.</li>
+    <li><strong>Scalability:</strong> Support future multilingual, analytics, and traffic growth without major redesign.</li>
+  </ul>
+  <p>The architecture is organized into four independent layers — Frontend, Backend, AI &amp; Knowledge Retrieval, and Infrastructure — reusing the existing Webflow site and keeping infrastructure lightweight and cost-effective.</p>
 
   <h2>6.2 Technology Stack Overview</h2>
   <table class="spec"><tr><th>Layer</th><th>Technology</th><th>Role</th></tr>
@@ -355,7 +387,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
 
   <h2>7.3 Request &amp; Response Schema</h2>
   <p><strong>POST /api/v1/chat</strong> request body: <span class="mono">session_id</span> (string, required — browser session identifier), <span class="mono">message</span> (string, required — user's question), <span class="mono">timestamp</span> (ISO 8601, optional).</p>
-  <div class="jblock"><div class="jhead">SAMPLE SUCCESS RESPONSE — 200 OK</div><div class="jbody">{
+  <div class="jblock"><div class="jhead">SAMPLE SUCCESS RESPONSE — 200 OK<br><span style="font-size: 8.5pt; font-weight: normal; color: #888;">ⓘ Sample payload only. Field values are illustrative and will be populated at runtime.</span></div><div class="jbody">{
   <span class="jkey">"status"</span>: <span class="jval">"success"</span>,
   <span class="jkey">"session_id"</span>: <span class="jval">"c9a3d9b7-f21a-4b8e"</span>,
   <span class="jkey">"response"</span>: <span class="jval">"Theta Technolabs provides AI Development, Machine Learning..."</span>,
@@ -366,7 +398,7 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <p>Success responses always include status, echoed session ID, the generated answer, optional source array, a confidence classification (High/Medium/Low), and processing time — improving transparency and letting users verify answers on the website.</p>
 
   <h2>7.4 Error Handling</h2>
-  <div class="jblock"><div class="jhead">SAMPLE ERROR RESPONSE — 404 / 500</div><div class="jbody">{
+  <div class="jblock"><div class="jhead">SAMPLE ERROR RESPONSE — 404 / 500<br><span style="font-size: 8.5pt; font-weight: normal; color: #888;">ⓘ Sample payload only. Field values are illustrative and will be populated at runtime.</span></div><div class="jbody">{
   <span class="jkey">"status"</span>: <span class="jval">"error"</span>,
   <span class="jkey">"error_code"</span>: <span class="jval">"KB_404"</span>,
   <span class="jkey">"message"</span>: <span class="jval">"Relevant information could not be found within the current knowledge base."</span>
@@ -626,7 +658,14 @@ table.spec tr:nth-child(even) td { background:#f4f7f9; }
   <tr><td>Business</td><td>Unpredictable API costs at scale</td><td>Token tracking, prompt optimization, optional rate limiting</td></tr></table>
 
   <h2>15.3 Risk Review Process</h2>
-  <p>Risks are reviewed periodically during development and after deployment: <strong>1)</strong> analyze API cost, token usage, and latency metrics; <strong>2)</strong> review user feedback (helpful/unhelpful, comments); <strong>3)</strong> audit failed, unanswered, or low-confidence queries; <strong>4)</strong> assess accuracy and hallucination rate; <strong>5)</strong> expand knowledge base coverage to address identified gaps.</p>
+  <p>Risks are reviewed periodically during development and after deployment:</p>
+  <ol>
+    <li>Analyze API cost, token usage, and latency metrics.</li>
+    <li>Review user feedback (helpful/unhelpful, comments).</li>
+    <li>Audit failed, unanswered, or low-confidence queries.</li>
+    <li>Assess accuracy and hallucination rate.</li>
+    <li>Expand knowledge base coverage to address identified gaps.</li>
+  </ol>
 </div>
 
 <!-- 16 ROADMAP -->
