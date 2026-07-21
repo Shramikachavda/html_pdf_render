@@ -1224,7 +1224,7 @@ flowchart TB
     </list>
     <p>Separating user interaction, business logic, knowledge retrieval, and AI inference into independent components improves maintainability, simplifies testing, enables future technology replacement, and supports incremental enhancements without major architectural changes.</p>
     
-    <mermaid-diagram height="550px">
+    <mermaid-diagram height="1100px">
 flowchart TB
 
 U([User])

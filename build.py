@@ -96,6 +96,23 @@ pre.mermaid svg { max-height: 155mm !important; max-width: 100% !important; heig
 .toc-row .tt { font-size:10.2pt; color:#0d2b45; font-weight:bold; }
 .toc-row .td { font-size:8.4pt; color:#6b7a86; display:block; margin-left:12mm; }
 svg { display:block; margin:3mm auto; }
+.json-block { margin: 4mm 0; page-break-inside: avoid; border-radius: 4px; border: 0.6pt solid #d8dfe4; background: #fafcff; overflow: hidden; }
+.json-block.error { border-color: #fecaca; background: #fffcfc; }
+.json-block .jhead { padding: 2.5mm 4mm; display: block; overflow: hidden; }
+.json-block:not(.error) .jhead { background: #0d2b45; color: #fff; border-bottom: 0.6pt solid #0d2b45; }
+.json-block.error .jhead { background: #ed5f5f; color: #fff; border-bottom: 0.6pt solid #ed5f5f; }
+.json-block .jlabel { font-family: "DejaVu Sans Mono", monospace; font-weight: bold; font-size: 8pt; letter-spacing: 1px; float: left; text-transform: uppercase; }
+.json-block:not(.error) .jlabel { color: #e8a33d; }
+.json-block.error .jlabel { color: #fff; }
+.json-block .badge { float: right; font-family: "DejaVu Sans Mono", monospace; font-size: 8pt; opacity: 0.8; }
+.json-block .jbody { padding: 4mm; font-family: "DejaVu Sans Mono", monospace; font-size: 8.5pt; color: #5a6b7c; }
+.json-block .jrow { margin: 1mm 0; }
+.json-block .jkey { font-weight: bold; }
+.json-block:not(.error) .jkey { color: #1c5d8c; }
+.json-block.error .jkey { color: #dc2626; }
+.json-block .jval { color: #40a070; }
+.json-block .jnote { border-top: 0.6pt solid #d8dfe4; padding: 2mm 4mm; font-size: 7.5pt; color: #8292a1; background: #f4f7f9; }
+.json-block.error .jnote { border-top-color: #fecaca; color: #d64a4a; background: #fdf3f3; }
 """
 
 INLINE_TAG_MAP = {
@@ -229,6 +246,31 @@ def render_why(el):
     icon = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin: 0 5px 0 0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
     return f'<div class="callout"><span class="lbl">{icon}WHY THIS IS ASKED</span>{inline_html(el)}</div>'
 
+def render_json_block(el):
+    type_attr = esc(el.get("type", ""))
+    label = esc(el.get("label", ""))
+    badge = esc(el.get("badge", ""))
+    note = esc(el.get("note", ""))
+    
+    jfields = el.findall("jfield")
+    rows = []
+    for i, jfield in enumerate(jfields):
+        key = esc(jfield.get("key", ""))
+        val = esc(jfield.get("val", ""))
+        comma = "," if i < len(jfields) - 1 else ""
+        rows.append(f'<div class="jrow">&nbsp;&nbsp;<span class="jkey">"{key}"</span>: <span class="jval">"{val}"</span>{comma}</div>')
+    
+    body = '<div>{</div>\n' + "\n".join(rows) + '\n<div>}</div>'
+    
+    badge_html = f'<span class="badge">{badge}</span>' if badge else ""
+    header_html = f'<div class="jhead"><span class="jlabel">{label}</span>{badge_html}</div>'
+    
+    note_html = ""
+    if note:
+        note_html = f'<div class="jnote"><span style="margin-right:2px; display:inline-block; transform:translateY(1px);">&#9432;</span> {note}</div>'
+        
+    return f'<div class="json-block {type_attr}">{header_html}<div class="jbody">{body}</div>{note_html}</div>'
+
 def render_block(el):
     """Dispatch one block-level XML element to its HTML rendering."""
     t = el.tag
@@ -236,6 +278,8 @@ def render_block(el):
         return f"<h2>{inline_html(el)}</h2>"
     if t == "h3":
         return f"<h3>{inline_html(el)}</h3>"
+    if t == "json-block":
+        return render_json_block(el)
     if t == "p":
         return f"<p>{inline_html(el)}</p>"
     if t == "table":
